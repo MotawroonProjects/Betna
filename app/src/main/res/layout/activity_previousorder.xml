@@ -145,7 +145,7 @@
                 android:gravity="center"
 
                 android:lineSpacingExtra="15dp"
-                android:text="@string/there_are_no_current_requests_please_request_the_right_services_for_you"
+                android:text="@string/there_are_no_pre_requests_please_request_the_right_services_for_you"
                 android:textColor="@color/gray32"
                 android:textSize="15sp"
                 android:textStyle="bold" />
