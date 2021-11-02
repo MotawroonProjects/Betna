@@ -43,5 +43,6 @@
     <string name="send">Send</string>
     <string name="inv_email">Invaild Email</string>
     <string name="suc">Sucess</string>
+    <string name="reorder">Re Order</string>
 
 </resources>

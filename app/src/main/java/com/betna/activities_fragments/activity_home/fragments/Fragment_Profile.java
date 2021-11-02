@@ -86,6 +86,12 @@ public class Fragment_Profile extends Fragment implements Listeners.ProfileActio
 
     @Override
     public void onMyPreOrder() {
+        if (userModel != null) {
+            Intent intent = new Intent(activity, ContactUsActivity.class);
+            startActivity(intent);
+        } else {
+            activity.navigateToSignInActivity();
+        }
 
     }
 

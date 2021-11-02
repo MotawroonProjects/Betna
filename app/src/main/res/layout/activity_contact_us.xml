@@ -139,7 +139,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_user"
-                            android:tint="@color/gray2" />
+                            app:tint="@color/gray2" />
 
                         <EditText
                             error="@{contactModel.error_name}"
@@ -185,7 +185,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_mail"
-                            android:tint="@color/gray2" />
+                            app:tint="@color/gray2" />
 
                         <EditText
                             error="@{contactModel.error_email}"
@@ -231,7 +231,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_subject"
-                            android:tint="@color/gray2" />
+                            app:tint="@color/gray2" />
 
                         <EditText
                             error="@{contactModel.error_subject}"
@@ -278,7 +278,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="top"
                             android:src="@drawable/ic_subject"
-                            android:tint="@color/gray2" />
+                            app:tint="@color/gray2" />
 
                         <EditText
                             error="@{contactModel.error_message}"

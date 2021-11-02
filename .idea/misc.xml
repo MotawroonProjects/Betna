@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/circle_white.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_gallery.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_loadarrow.xml" value="0.1515625" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_mail.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_search2.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/item_nav_bg.xml" value="0.15885416666666666" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_contact_us.xml" value="0.21" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_previousorder.xml" value="0.13541666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_splash.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_verification_code.xml" value="0.27291666666666664" />
@@ -28,6 +30,7 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/fragment_profile.xml" value="0.29088471849865954" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/k.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/order_row.xml" value="0.25" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/pre_order_row.xml" value="0.13541666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/service_row.xml" value="0.13541666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/slider_row.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/top_service_row.xml" value="0.14270833333333333" />
