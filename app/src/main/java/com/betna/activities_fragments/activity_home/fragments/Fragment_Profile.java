@@ -21,6 +21,7 @@ import com.betna.R;
 
 import com.betna.activities_fragments.activity_contactus.ContactUsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
+import com.betna.activities_fragments.activity_previousorder.PreviousOrderActivity;
 import com.betna.databinding.FragmentProfileBinding;
 import com.betna.interfaces.Listeners;
 import com.betna.models.UserModel;
@@ -87,7 +88,7 @@ public class Fragment_Profile extends Fragment implements Listeners.ProfileActio
     @Override
     public void onMyPreOrder() {
         if (userModel != null) {
-            Intent intent = new Intent(activity, ContactUsActivity.class);
+            Intent intent = new Intent(activity, PreviousOrderActivity.class);
             startActivity(intent);
         } else {
             activity.navigateToSignInActivity();
