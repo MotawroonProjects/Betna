@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Betna</string>
+    <string name="field_req">Field Required</string>
+    <string name="phone">Phone</string>
+    <string name="login">Login</string>
+    <string name="please_enter_the_activation_code_sent_to">Please enter the activation code sent to</string>
+    <string name="confirm">Confirm</string>
+    <string name="resend">Resend</string>
+    <string name="failed">Faild</string>
+    <string name="wait">Wait</string>
+    <string name="start">Start</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="cancel">Cancel</string>
+    <string name="perm_image_denied">Permission image denied</string>
+    <string name="top_services">Top Services</string>
+    <string name="show_all">Show All</string>
+    <string name="no_data_to_show">No Data To Show</string>
+    <string name="departments">Departments</string>
+    <string name="search_for_service">Search For Service</string>
+    <string name="there_are_no_current_requests_please_request_the_right_services_for_you">There are no current requests \n please request the right services for you.</string>
+    <string name="services">Services</string>
+    <string name="phone_found">Phone Found</string>
+    <string name="status">Status</string>
+    <string name="egp">EGP</string>
+    <string name="edit">Edit</string>
+    <string name="welcome">Welcome</string>
+    <string name="my_profile">My Profile</string>
+    <string name="my_previous_orders">My Previous Orders</string>
+    <string name="my_rates">My Rates</string>
+    <string name="more">More</string>
+    <string name="language">Language</string>
+    <string name="about_app">About App</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="rate_app">Rate App</string>
+    <string name="deleget_app">Deleget App</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="inv_email">Invaild Email</string>
+    <string name="suc">Sucess</string>
+
+</resources>

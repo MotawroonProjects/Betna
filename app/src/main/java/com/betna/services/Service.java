@@ -1,0 +1,78 @@
+package com.betna.services;
+
+
+
+import com.betna.models.CategoryDataModel;
+import com.betna.models.OrderDataModel;
+import com.betna.models.ServiceDataModel;
+import com.betna.models.SliderDataModel;
+import com.betna.models.StatusResponse;
+import com.betna.models.UserModel;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
+
+public interface Service {
+
+
+
+    @FormUrlEncoded
+    @POST("api/login")
+    Call<UserModel> login(
+            @Field("phone") String phone
+
+    );
+    @FormUrlEncoded
+    @POST("api/register")
+    Call<UserModel> signUp(@Field("first_name") String first_name,
+                           @Field("last_name") String last_name,
+                           @Field("phone") String phone
+
+    );
+    @Multipart
+    @POST("api/register")
+    Call<UserModel> signUpWithImage(@Part("first_name") RequestBody first_name,
+                                    @Part("last_name") RequestBody last_name,
+                                    @Part("phone") RequestBody phone,
+                                    @Part MultipartBody.Part logo
+
+
+    );
+    @GET("api/bestServices")
+    Call<ServiceDataModel> getTopService(
+    );
+    @GET("api/departments")
+    Call<CategoryDataModel> getDepartments(
+    );
+    @GET("api/searchServices")
+    Call<ServiceDataModel> searchService(
+            @Query("department_id") String department_id,
+            @Query("title") String title
+    );
+    @GET("api/orders")
+    Call<OrderDataModel> getOrders(
+            @Query("user_id") int user_id
+    );
+    @FormUrlEncoded
+    @POST("api/contact-us")
+    Call<StatusResponse> contactUs(@Field("name") String name,
+                                   @Field("email") String email,
+                                   @Field("subject") String subject,
+                                   @Field("message") String message
+
+
+    );
+    @GET("api/slider")
+    Call<SliderDataModel> get_slider(
+         );
+}
