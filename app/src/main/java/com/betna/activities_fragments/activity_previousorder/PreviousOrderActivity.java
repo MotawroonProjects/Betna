@@ -102,13 +102,13 @@ public class PreviousOrderActivity extends AppCompatActivity {
         userModel = preferences.getUserData(this);
 
         binding.progBar.setVisibility(View.VISIBLE);
-        binding.tvNoData.setVisibility(View.GONE);
+        binding.llNoData.setVisibility(View.GONE);
         list.clear();
         adapter.notifyDataSetChanged();
         if (userModel == null) {
             binding.swipeRefresh.setRefreshing(false);
             binding.progBar.setVisibility(View.GONE);
-            binding.tvNoData.setVisibility(View.VISIBLE);
+            binding.llNoData.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -124,15 +124,15 @@ public class PreviousOrderActivity extends AppCompatActivity {
 
                             if (response.body() != null && response.body().getOld() != null && response.body().getStatus() == 200) {
                                 if (response.body().getOld().size() > 0) {
-                                    binding.tvNoData.setVisibility(View.GONE);
+                                    binding.llNoData.setVisibility(View.GONE);
                                     list.addAll(response.body().getOld());
                                     adapter.notifyDataSetChanged();
                                 } else {
-                                    binding.tvNoData.setVisibility(View.VISIBLE);
+                                    binding.llNoData.setVisibility(View.VISIBLE);
 
                                 }
                             } else {
-                                binding.tvNoData.setVisibility(View.VISIBLE);
+                                binding.llNoData.setVisibility(View.VISIBLE);
 
                             }
 

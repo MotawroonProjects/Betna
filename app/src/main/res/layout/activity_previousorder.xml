@@ -122,16 +122,37 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/tvNoData"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llNoData"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/no_data_to_show"
-            android:textColor="@color/black"
-            android:textSize="17sp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:src="@drawable/noorder" />
+
+            <TextView
+                android:id="@+id/tvNoDataService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+
+                android:lineSpacingExtra="15dp"
+                android:text="@string/there_are_no_current_requests_please_request_the_right_services_for_you"
+                android:textColor="@color/gray32"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
     </FrameLayout>
 </layout>
 
