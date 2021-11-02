@@ -21,7 +21,7 @@
     <string name="departments">Departments</string>
     <string name="search_for_service">Search For Service</string>
     <string name="there_are_no_current_requests_please_request_the_right_services_for_you">There are no current requests \n please request the right services for you.</string>
-    <string name="there_are_no_pre_requests_please_request_the_right_services_for_you">There are no Previous requests \n please request the right services for you.</string>
+    <string name="there_are_no_pre_requests_please_request_the_right_services_for_you">There are no Previous requests</string>
 
     <string name="services">Services</string>
     <string name="phone_found">Phone Found</string>
