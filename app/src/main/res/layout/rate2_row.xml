@@ -91,7 +91,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginStart="7dp"
+                        android:layout_marginStart="10dp"
                         app:drawablePadding="2dp"
                         app:drawableWidth="9dp"
                         app:enable="false"
@@ -111,7 +111,8 @@
 
                         android:layout_gravity="center"
                         android:text="@{model.desc}"
-                        android:textColor="@color/gray14"
+                        android:layout_marginStart="16dp"
+                        android:textColor="@color/gray33"
                         android:textSize="14sp" />
 
 
