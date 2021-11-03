@@ -65,7 +65,7 @@
                             android:layout_height="wrap_content"
 
                             android:layout_gravity="center"
-                            android:text="@{model.service.title}"
+                            android:text="@{model.user.first_name+model.user.last_name}"
                             android:textColor="@color/gray14"
                             android:textSize="14sp" />
 
@@ -110,8 +110,8 @@
                         android:layout_height="wrap_content"
 
                         android:layout_gravity="center"
-                        android:text="@{model.desc}"
                         android:layout_marginStart="16dp"
+                        android:text="@{model.desc}"
                         android:textColor="@color/gray33"
                         android:textSize="14sp" />
 
