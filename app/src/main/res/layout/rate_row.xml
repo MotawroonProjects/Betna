@@ -73,11 +73,11 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         app:drawablePadding="2dp"
+                        app:drawableWidth="9dp"
                         app:enable="false"
                         app:maxRating="5"
-                        app:drawableWidth="9dp"
-                        android:layout_gravity="center"
                         app:rating='@{model.rate}' />
                 </LinearLayout>
 
