@@ -1,10 +1,11 @@
 package com.betna.services;
 
 
-
 import com.betna.models.CategoryDataModel;
 import com.betna.models.OrderDataModel;
+import com.betna.models.RateDataModel;
 import com.betna.models.ServiceDataModel;
+import com.betna.models.SingleServiceDataModel;
 import com.betna.models.SliderDataModel;
 import com.betna.models.StatusResponse;
 import com.betna.models.UserModel;
@@ -25,13 +26,13 @@ import retrofit2.http.Query;
 public interface Service {
 
 
-
     @FormUrlEncoded
     @POST("api/login")
     Call<UserModel> login(
             @Field("phone") String phone
 
     );
+
     @FormUrlEncoded
     @POST("api/register")
     Call<UserModel> signUp(@Field("first_name") String first_name,
@@ -39,6 +40,7 @@ public interface Service {
                            @Field("phone") String phone
 
     );
+
     @Multipart
     @POST("api/register")
     Call<UserModel> signUpWithImage(@Part("first_name") RequestBody first_name,
@@ -48,21 +50,31 @@ public interface Service {
 
 
     );
+
     @GET("api/bestServices")
     Call<ServiceDataModel> getTopService(
     );
+
     @GET("api/departments")
     Call<CategoryDataModel> getDepartments(
     );
+
     @GET("api/searchServices")
     Call<ServiceDataModel> searchService(
             @Query("department_id") String department_id,
             @Query("title") String title
     );
+
     @GET("api/orders")
     Call<OrderDataModel> getOrders(
             @Query("user_id") int user_id
     );
+
+    @GET("api/getRates")
+    Call<RateDataModel> getRates(
+            @Query("user_id") int user_id
+    );
+
     @FormUrlEncoded
     @POST("api/contact-us")
     Call<StatusResponse> contactUs(@Field("name") String name,
@@ -72,7 +84,26 @@ public interface Service {
 
 
     );
+
     @GET("api/slider")
     Call<SliderDataModel> get_slider(
-         );
+    );
+
+    @FormUrlEncoded
+    @POST("api/storeRate")
+    Call<StatusResponse> addRate(
+            @Field("user_id") String user_id,
+            @Field("service_id") String service_id,
+            @Field("desc") String desc,
+            @Field("rate") int rate
+
+    );
+    @GET("api/servicesByDepartment")
+    Call<ServiceDataModel> getservice(
+            @Query("department_id") String department_id
+    );
+    @GET("api/oneServices")
+    Call<SingleServiceDataModel> getServiceById(@Query("service_id") int service_id
+    );
+
 }

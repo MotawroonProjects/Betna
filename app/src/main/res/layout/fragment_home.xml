@@ -100,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:minHeight="200dp">
+         >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewTopService"
@@ -159,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:minHeight="200dp">
+           >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewDepartments"

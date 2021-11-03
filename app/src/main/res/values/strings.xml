@@ -46,5 +46,12 @@
     <string name="inv_email">Invaild Email</string>
     <string name="suc">Sucess</string>
     <string name="reorder">Re Order</string>
+    <string name="rate_service">Rate Service</string>
+    <string name="rate">rate</string>
+    <string name="write_comment">Write Comment</string>
+    <string name="service_detials">Service Detials</string>
+    <string name="previous_work">Previous Work</string>
+    <string name="customer_rates">Customer Rates</string>
+    <string name="order_now">Order Now</string>
 
 </resources>

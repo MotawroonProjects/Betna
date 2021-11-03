@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
+import com.betna.activities_fragments.activity_home.fragments.FragmentDepartments;
+import com.betna.activities_fragments.activity_services.ServiceActivity;
 import com.betna.databinding.ServiceRowBinding;
 import com.betna.databinding.TopServiceRowBinding;
 import com.betna.models.ServiceModel;
@@ -50,8 +52,20 @@ public class ServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         MyHolder myHolder = (MyHolder) holder;
-        Log.e("dldkkd",list.get(position).getColor());
-
+        myHolder.binding.setModel(list.get(position));
+myHolder.itemView.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        if(fragment instanceof FragmentDepartments){
+            FragmentDepartments fragmentDepartments=(FragmentDepartments) fragment;
+            fragmentDepartments.showService(list.get(holder.getLayoutPosition()));
+        }
+        else if(context instanceof ServiceActivity){
+            ServiceActivity serviceActivity=(ServiceActivity) context;
+            serviceActivity.showService(list.get(holder.getLayoutPosition()));
+        }
+    }
+});
 
 
     }

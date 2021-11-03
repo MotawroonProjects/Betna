@@ -1,0 +1,76 @@
+package com.betna.adapters;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.betna.R;
+import com.betna.activities_fragments.activity_my_rates.MyRatesActivity;
+import com.betna.databinding.Rate2RowBinding;
+import com.betna.databinding.RateRowBinding;
+import com.betna.models.RateModel;
+
+import java.util.List;
+
+public class Rate2Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private List<RateModel> list;
+    private Context context;
+    private LayoutInflater inflater;
+
+    //private Fragment_Main fragment_main;
+    public Rate2Adapter(List<RateModel> list, Context context) {
+        this.list = list;
+        this.context = context;
+        inflater = LayoutInflater.from(context);
+        //  this.fragment_main=fragment_main;
+
+
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+
+        Rate2RowBinding binding = DataBindingUtil.inflate(inflater, R.layout.rate2_row, parent, false);
+        return new MyHolder(binding);
+
+
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+        MyHolder myHolder = (MyHolder) holder;
+        myHolder.binding.setModel(list.get(position));
+
+
+//Log.e("eeee",list.get(position).getOffer_value()+""+(list.get(position).getAmount()%list.get(position).getOffer_min()));
+        // Log.e("ssss",((list.get(position).getHave_offer().equals("yes")?(list.get(position).getOffer_type().equals("per")?(list.get(position).getProduct_default_price().getPrice()-((list.get(position).getProduct_default_price().getPrice()*list.get(position).getOffer_value())/100)):list.get(position).getProduct_default_price().getPrice()-list.get(position).getOffer_value()):list.get(position).getProduct_default_price().getPrice())+""));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public class MyHolder extends RecyclerView.ViewHolder {
+        public Rate2RowBinding binding;
+
+        public MyHolder(@NonNull Rate2RowBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+
+        }
+    }
+
+
+}

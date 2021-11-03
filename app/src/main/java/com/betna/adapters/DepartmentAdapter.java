@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
+import com.betna.activities_fragments.activity_home.fragments.Fragment_Home;
 import com.betna.databinding.DepartmentRowBinding;
 import com.betna.databinding.TopServiceRowBinding;
 import com.betna.models.CategoryModel;
@@ -57,7 +58,10 @@ public class DepartmentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         myHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+if(fragment instanceof Fragment_Home){
+    Fragment_Home fragment_home=(Fragment_Home) fragment;
+    fragment_home.showservice(list.get(holder.getLayoutPosition()));
+}
             }
         });
 

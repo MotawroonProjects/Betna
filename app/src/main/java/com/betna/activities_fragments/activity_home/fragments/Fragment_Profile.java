@@ -21,6 +21,7 @@ import com.betna.R;
 
 import com.betna.activities_fragments.activity_contactus.ContactUsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
+import com.betna.activities_fragments.activity_my_rates.MyRatesActivity;
 import com.betna.activities_fragments.activity_previousorder.PreviousOrderActivity;
 import com.betna.databinding.FragmentProfileBinding;
 import com.betna.interfaces.Listeners;
@@ -98,7 +99,12 @@ public class Fragment_Profile extends Fragment implements Listeners.ProfileActio
 
     @Override
     public void onMyRates() {
-
+        if (userModel != null) {
+            Intent intent = new Intent(activity, MyRatesActivity.class);
+            startActivity(intent);
+        } else {
+            activity.navigateToSignInActivity();
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.betna.activities_fragments.activity_home.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.betna.R;
+import com.betna.activities_fragments.activity_doctor_detials.ServiceDetialsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 
+import com.betna.activities_fragments.activity_services.ServiceActivity;
 import com.betna.adapters.DepartmentAdapter;
 import com.betna.adapters.SliderAdapter;
 import com.betna.adapters.TopServiceAdapter;
@@ -55,6 +58,7 @@ public class Fragment_Home extends Fragment {
     private SliderAdapter sliderAdapter;
     private Timer timer;
     private TimerTask timerTask;
+
     public static Fragment_Home newInstance() {
         return new Fragment_Home();
     }
@@ -76,7 +80,7 @@ public class Fragment_Home extends Fragment {
 
     private void initView() {
         serviceModelList = new ArrayList<>();
-        categoryModelList=new ArrayList<>();
+        categoryModelList = new ArrayList<>();
         activity = (HomeActivity) getActivity();
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(activity);
@@ -173,6 +177,7 @@ public class Fragment_Home extends Fragment {
                 });
 
     }
+
     public void getDepartments() {
         binding.tvNoDataDepartments.setVisibility(View.GONE);
 
@@ -250,6 +255,7 @@ public class Fragment_Home extends Fragment {
                 });
 
     }
+
     private void get_slider() {
 
         binding.progBarSlider.setVisibility(View.VISIBLE);
@@ -308,6 +314,19 @@ public class Fragment_Home extends Fragment {
         });
 
     }
+
+    public void showservice(CategoryModel categoryModel) {
+        Intent intent = new Intent(activity, ServiceActivity.class);
+        intent.putExtra("data", categoryModel);
+        startActivity(intent);
+    }
+
+    public void showService(ServiceModel serviceModel) {
+        Intent intent = new Intent(activity, ServiceDetialsActivity.class);
+        intent.putExtra("data", serviceModel);
+        startActivity(intent);
+    }
+
     public class MyTask extends TimerTask {
         @Override
         public void run() {

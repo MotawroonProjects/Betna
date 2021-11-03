@@ -1,5 +1,6 @@
 package com.betna.activities_fragments.activity_home.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.betna.R;
+import com.betna.activities_fragments.activity_doctor_detials.ServiceDetialsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 
 import com.betna.adapters.CategoryAdapter;
@@ -267,6 +269,12 @@ public class FragmentDepartments extends Fragment {
     public void show(String s) {
         departmentid = s;
         getServices();
+    }
+
+    public void showService(ServiceModel serviceModel) {
+        Intent intent = new Intent(activity, ServiceDetialsActivity.class);
+        intent.putExtra("data", serviceModel);
+        startActivity(intent);
     }
 }
 
