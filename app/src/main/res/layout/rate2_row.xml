@@ -48,6 +48,7 @@
                         android:layout_height="40dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
+                        android:src="@drawable/user_avatar"
                         app:riv_border_width="0dp"
                         app:riv_corner_radius="8dp"
 
@@ -89,10 +90,11 @@
                         style="?android:attr/ratingBarStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:drawablePadding="2dp"
-                        app:enable="false"
-                        app:drawableWidth="9dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="7dp"
+                        app:drawablePadding="2dp"
+                        app:drawableWidth="9dp"
+                        app:enable="false"
                         app:maxRating="5"
                         app:rating='@{model.rate}' />
                 </LinearLayout>
