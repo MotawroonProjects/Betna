@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
 import com.betna.activities_fragments.activity_doctor_detials.ServiceDetialsActivity;
@@ -49,8 +51,8 @@ public class FragmentDepartments extends Fragment {
     private List<CategoryModel> categoryModelList;
     private CategoryAdapter departmentAdapter;
     private List<ServiceModel> serviceModelList;
-    private ServiceAdapter ServiceAdapter;
-    private String departmentid, query;
+    private ServiceAdapter serviceAdapter;
+    private String departmentid="0", query;
 
     public static FragmentDepartments newInstance() {
         return new FragmentDepartments();
@@ -75,11 +77,11 @@ public class FragmentDepartments extends Fragment {
         Paper.init(activity);
         lang = Paper.book().read("lang", "ar");
         departmentAdapter = new CategoryAdapter(categoryModelList, activity, this);
-        binding.recViewDepartments.setLayoutManager(new GridLayoutManager(activity, 2));
+        binding.recViewDepartments.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL,false));
         binding.recViewDepartments.setAdapter(departmentAdapter);
-        ServiceAdapter = new ServiceAdapter(serviceModelList, activity, this);
+        serviceAdapter = new ServiceAdapter(serviceModelList, activity, this);
         binding.recViewService.setLayoutManager(new GridLayoutManager(activity, 3));
-        binding.recViewService.setAdapter(ServiceAdapter);
+        binding.recViewService.setAdapter(serviceAdapter);
         getDepartments();
         binding.edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -124,7 +126,9 @@ public class FragmentDepartments extends Fragment {
                             if (response.body() != null && response.body().getStatus() == 200) {
                                 if (response.body().getData() != null) {
                                     if (response.body().getData().size() > 0) {
+                                        categoryModelList.add(new CategoryModel(getResources().getString(R.string.all),true));
                                         categoryModelList.addAll(response.body().getData());
+
                                         departmentAdapter.notifyDataSetChanged();
                                     } else {
                                         binding.tvNoDataDepartments.setVisibility(View.VISIBLE);
@@ -188,6 +192,8 @@ public class FragmentDepartments extends Fragment {
     }
 
     public void getServices() {
+        serviceModelList.clear();
+        serviceAdapter.notifyDataSetChanged();
         binding.tvNoDataService.setVisibility(View.GONE);
 
         binding.progBarService.setVisibility(View.VISIBLE);
@@ -203,7 +209,7 @@ public class FragmentDepartments extends Fragment {
                                 if (response.body().getData() != null) {
                                     if (response.body().getData().size() > 0) {
                                         serviceModelList.addAll(response.body().getData());
-                                        ServiceAdapter.notifyDataSetChanged();
+                                        serviceAdapter.notifyDataSetChanged();
                                     } else {
                                         binding.tvNoDataService.setVisibility(View.VISIBLE);
 
@@ -268,6 +274,7 @@ public class FragmentDepartments extends Fragment {
 
     public void show(String s) {
         departmentid = s;
+
         getServices();
     }
 

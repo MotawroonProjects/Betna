@@ -18,6 +18,7 @@ import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_verification_code.VerificationCodeActivity;
 import com.betna.databinding.ActivityLoginBinding;
 import com.betna.language.Language;
+import com.betna.models.AddServiceModel;
 import com.betna.models.LoginModel;
 import com.betna.preferences.Preferences;
 import com.betna.share.Common;
@@ -29,25 +30,27 @@ public class LoginActivity extends AppCompatActivity {
     private String lang;
     private LoginModel loginModel;
     private Preferences preferences;
-//    private CountryModel[] countries;
+    //    private CountryModel[] countries;
 //    private List<CountryModel> countryModelList = new ArrayList<>();
 //    private CountriesAdapter countriesAdapter;
-   // private AlertDialog dialog;
+    // private AlertDialog dialog;
     private String phone_code = "+20";
-    private String type;
+    private AddServiceModel addServiceModel;
 
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
         super.attachBaseContext(Language.updateResources(newBase, Paper.book().read("lang", "ar")));
     }
+
     private void getDataFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
 
-            type = intent.getStringExtra("type");
+            addServiceModel = (AddServiceModel) intent.getSerializableExtra("data");
 
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,13 +102,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         binding.btnLogin.setOnClickListener(view -> {
-         //   navigateToHomeActivity();
+            //   navigateToHomeActivity();
             if (loginModel.isDataValid(this)) {
                 Common.CloseKeyBoard(this, binding.edtPhone);
                 login();
             }
         });
-
 
 
 //        binding.arrow.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
 
-
     private void navigateToHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
@@ -168,9 +169,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void navigateToConfirmCode() {
         Intent intent = new Intent(this, VerificationCodeActivity.class);
-        intent.putExtra("phone_code",loginModel.getPhone_code());
+        intent.putExtra("phone_code", loginModel.getPhone_code());
         intent.putExtra("phone", loginModel.getPhone());
-        intent.putExtra("type",type);
+
+        intent.putExtra("data", addServiceModel);
         startActivity(intent);
     }
 

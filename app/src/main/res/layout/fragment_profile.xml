@@ -470,20 +470,20 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"
-                android:text="@string/deleget_app"
-                android:textColor="@color/gray34"
-                android:textSize="16sp"
-                android:onClick="@{()->actions.onDelegeteApp()}"
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:text="@string/deleget_app"-->
+<!--                android:textColor="@color/gray34"-->
+<!--                android:textSize="16sp"-->
+<!--                android:onClick="@{()->actions.onDelegeteApp()}"-->
 
-                />
+<!--                />-->
 
         </LinearLayout>
     </ScrollView>

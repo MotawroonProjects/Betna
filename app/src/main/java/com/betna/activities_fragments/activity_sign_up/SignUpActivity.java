@@ -25,9 +25,11 @@ import androidx.databinding.DataBindingUtil;
 
 import com.betna.R;
 
+import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.databinding.ActivitySignupBinding;
 import com.betna.language.Language;
+import com.betna.models.AddServiceModel;
 import com.betna.models.SignUpModel;
 import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
@@ -60,8 +62,9 @@ public class SignUpActivity extends AppCompatActivity {
     private final int READ_REQ = 1, CAMERA_REQ = 2;
     private int selectedReq = 0;
     private Uri uri = null;
-    private String phone_code,phone;
+    private String phone_code, phone;
     private Preferences preferences;
+    private AddServiceModel addServiceModel;
 
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -81,16 +84,17 @@ public class SignUpActivity extends AppCompatActivity {
         if (intent != null) {
             phone_code = intent.getStringExtra("phone_code");
             phone = intent.getStringExtra("phone");
-
+            addServiceModel = (AddServiceModel) intent.getSerializableExtra("data");
         }
     }
+
     private void initView() {
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         model = new SignUpModel();
         binding.setModel(model);
-        preferences=Preferences.getInstance();
+        preferences = Preferences.getInstance();
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                 if (selectedReq == READ_REQ) {
@@ -132,10 +136,10 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnCancel.setOnClickListener(view -> closeSheet());
 
         binding.btnSignup.setOnClickListener(v -> {
-           // navigateToHomeActivity();
+            // navigateToHomeActivity();
             if (model.isDataValid(this)) {
 
-               // Common.CloseKeyBoard(this, binding.edtCv);
+                // Common.CloseKeyBoard(this, binding.edtCv);
                 if (uri == null) {
                     signUpWithoutImage();
                 } else {
@@ -252,7 +256,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                         dialog.dismiss();
                         if (response.isSuccessful() && response.body() != null) {
-                           // Log.e("flkfkfk", response.body().getStatus() + "");
+                            // Log.e("flkfkfk", response.body().getStatus() + "");
                             if (response.body().getStatus() == 200) {
                                 preferences.create_update_userdata(SignUpActivity.this, response.body());
                                 preferences.create_update_session(SignUpActivity.this, Tags.session_login);
@@ -377,7 +381,15 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void navigateToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent;
+        if (addServiceModel == null) {
+            intent = new Intent(this, HomeActivity.class);
+
+        } else {
+            intent = new Intent(this, CompleteOrderActivity.class);
+
+        }
+        intent.putExtra("data", addServiceModel);
         startActivity(intent);
         finish();
     }

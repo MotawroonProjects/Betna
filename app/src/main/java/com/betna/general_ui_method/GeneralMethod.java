@@ -124,20 +124,23 @@ public class GeneralMethod {
     @BindingAdapter("order_status")
     public static void orderStatus(Button textView, String status) {
         if (status.equals("sent")){
-          //  textView.setText(textView.getContext().getString(R.string.order_sent));
+            textView.setText(textView.getContext().getString(R.string.order_sent));
         }else if (status.equals("accept")){
-            //textView.setText(textView.getContext().getString(R.string.perpation));
+            textView.setText(textView.getContext().getString(R.string.accept));
 
         }
-        else if (status.equals("refuse")){
-            //textView.setText(textView.getContext().getString(R.string.order_refused));
+        else if (status.equals("start")){
+            textView.setText(textView.getContext().getString(R.string.is_start));
+
+        }
+        else if (status.equals("waiting")){
+            textView.setText(textView.getContext().getString(R.string.preparing));
 
         }
         else if (status.equals("end")){
-            //textView.setText(textView.getContext().getString(R.string.order_complete));
+            textView.setText(textView.getContext().getString(R.string.end));
 
         }
-
     }
 
 }

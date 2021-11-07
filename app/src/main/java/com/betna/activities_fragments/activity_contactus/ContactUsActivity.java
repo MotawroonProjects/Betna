@@ -15,6 +15,7 @@ import com.betna.interfaces.Listeners;
 import com.betna.language.Language;
 import com.betna.models.ContactUsModel;
 import com.betna.models.StatusResponse;
+import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
 import com.betna.remote.Api;
 import com.betna.share.Common;
@@ -32,6 +33,7 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
     private Preferences preferences;
     private ContactUsModel contactUsModel;
     private String lang = "ar";
+    private UserModel userModel;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -52,7 +54,10 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
         preferences = Preferences.getInstance();
         contactUsModel = new ContactUsModel();
 
-
+        userModel = preferences.getUserData(this);
+        if (userModel != null) {
+            contactUsModel.setName(userModel.getUser().getFirst_name() + userModel.getUser().getLast_name());
+        }
         binding.setContactModel(contactUsModel);
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
@@ -76,20 +81,18 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
                         dialog.dismiss();
-                        if (response.isSuccessful()&&response.body().getStatus()==200) {
-                            Toast.makeText(ContactUsActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-                            finish();
+                        if (response.isSuccessful()) {
+                            if (response.body().getStatus() == 200) {
+                                Toast.makeText(ContactUsActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                finish();
 
+                            }
                         } else {
                             dialog.dismiss();
-                            try {
-                                Log.e("error", response.code() + "__" + response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
 
                             if (response.code() == 500) {
-                              //  Toast.makeText(ContactUsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(ContactUsActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
                             } else {
                                 //Toast.makeText(ContactUsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                             }
@@ -104,7 +107,7 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
                                 Log.e("error", t.getMessage() + "__");
 
                                 if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
-                                   // Toast.makeText(ContactUsActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(ContactUsActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Toast.makeText(ContactUsActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                                 }

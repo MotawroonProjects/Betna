@@ -53,5 +53,25 @@
     <string name="previous_work">Previous Work</string>
     <string name="customer_rates">Customer Rates</string>
     <string name="order_now">Order Now</string>
+    <string name="service_request">Service Request</string>
+    <string name="the_price_of_the_service_varies_according_to_the_area_and_the_type_of_location_in_which_the_service_will_be_performed">The price of the service varies according to the area and the type of location in which the service will be performed</string>
+    <string name="choose_day">Choose Day : </string>
+    <string name="location_type">Location Type :</string>
+    <string name="site_area_m">Site area (m) :</string>
+    <string name="total" />
+    <string name="pay">Pay</string>
+    <string name="select">Select</string>
+    <string name="pay_ment">Pay Ment</string>
+    <string name="service_type">Service Type</string>
+    <string name="day">Day</string>
+    <string name="area">Area</string>
+    <string name="total2">Total</string>
+    <string name="write_a_note">Write A Note</string>
+    <string name="all">All</string>
+    <string name="order_sent">Request is Done</string>
+    <string name="accept">Order Accept</string>
+    <string name="is_start">Start</string>
+    <string name="preparing">Preparing</string>
+    <string name="end">End</string>
 
 </resources>

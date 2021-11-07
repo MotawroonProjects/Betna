@@ -5,9 +5,11 @@ import com.betna.models.CategoryDataModel;
 import com.betna.models.OrderDataModel;
 import com.betna.models.RateDataModel;
 import com.betna.models.ServiceDataModel;
+import com.betna.models.SettingDataModel;
 import com.betna.models.SingleServiceDataModel;
 import com.betna.models.SliderDataModel;
 import com.betna.models.StatusResponse;
+import com.betna.models.TypeDataModel;
 import com.betna.models.UserModel;
 
 import okhttp3.MultipartBody;
@@ -75,11 +77,15 @@ public interface Service {
             @Query("user_id") int user_id
     );
 
+    @GET("api/servicesPlacesType")
+    Call<TypeDataModel> getTYpe(
+    );
+
     @FormUrlEncoded
-    @POST("api/contact-us")
+    @POST("api/contactUs")
     Call<StatusResponse> contactUs(@Field("name") String name,
                                    @Field("email") String email,
-                                   @Field("subject") String subject,
+                                   @Field("title") String title,
                                    @Field("message") String message
 
 
@@ -98,12 +104,30 @@ public interface Service {
             @Field("rate") int rate
 
     );
+
     @GET("api/servicesByDepartment")
     Call<ServiceDataModel> getservice(
             @Query("department_id") String department_id
     );
+
     @GET("api/oneServices")
     Call<SingleServiceDataModel> getServiceById(@Query("service_id") int service_id
     );
+
+    @FormUrlEncoded
+    @POST("api/storeOrder")
+    Call<StatusResponse> storeOrder(@Field("user_id") String user_id,
+                                    @Field("service_id") String service_id,
+                                    @Field("type_id") String type_id,
+                                    @Field("area") String area,
+                                    @Field("longitude") String longitude,
+                                    @Field("latitude") String latitude,
+                                    @Field("notes") String notes,
+                                    @Field("total") String total,
+                                    @Field("date") String date
+
+    );
+    @GET("api/aboutUs")
+    Call<SettingDataModel> getSetting();
 
 }

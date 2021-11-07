@@ -59,7 +59,18 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
 
         </activity>
-
+        <activity
+            android:name=".activities_fragments.activity_about_us.AboutUsActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity
+            android:name=".activities_fragments.activity_complete_order.CompleteOrderActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity
+            android:name=".activities_fragments.activity_send_order.SendOrderActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".activities_fragments.activity_contactus.ContactUsActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"

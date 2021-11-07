@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.betna.models.AddServiceModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.FragmentDepartments;
@@ -46,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     private UserModel userModel;
     private String lang;
     private boolean backPressed = false;
+    private String type;
 
 
     protected void attachBaseContext(Context newBase) {
@@ -58,27 +60,41 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        getDataFromIntent();
         initView();
 
 
     }
 
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            type = intent.getStringExtra("type");
+
+        }
+    }
+
     private void initView() {
         fragmentManager = getSupportFragmentManager();
         preferences = Preferences.getInstance();
-       
+
         userModel = preferences.getUserData(this);
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
 
-      
-        displayFragmentMain();
+
 
         if (userModel != null) {
             //   updateFirebaseToken();
         }
         setUpBottomNavigation();
+        if (type!=null&&type.equals("order")) {
+            displayFragmentOrders();
+        }
+        else{
+            displayFragmentMain();
 
+        }
     }
 
     private void setUpBottomNavigation() {
@@ -115,9 +131,9 @@ public class HomeActivity extends AppCompatActivity {
 
                     break;
                 case 2:
-                    if(userModel!=null){
-                    displayFragmentOrders();}
-                    else {
+                    if (userModel != null) {
+                        displayFragmentOrders();
+                    } else {
                         navigateToSignInActivity();
                     }
                     break;
@@ -138,7 +154,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     public void displayFragmentMain() {
         try {
             if (fragment_home == null) {
@@ -155,7 +170,7 @@ public class HomeActivity extends AppCompatActivity {
             if (fragmentDepartments != null && fragmentDepartments.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragmentDepartments).commit();
             }
-           
+
 
             if (fragment_home.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_home).commit();
@@ -188,7 +203,7 @@ public class HomeActivity extends AppCompatActivity {
             if (fragmentDepartments != null && fragmentDepartments.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragmentDepartments).commit();
             }
-           
+
 
             if (fragment_profile != null && fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_profile).commit();
@@ -222,7 +237,7 @@ public class HomeActivity extends AppCompatActivity {
             if (fragmentOrders != null && fragmentOrders.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragmentOrders).commit();
             }
-           
+
             if (fragment_profile != null && fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().hide(fragment_profile).commit();
             }
@@ -262,7 +277,6 @@ public class HomeActivity extends AppCompatActivity {
             }
 
 
-           
             if (fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_profile).commit();
 

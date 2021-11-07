@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "340746954112",
+    "project_id": "betna-4045c",
+    "storage_bucket": "betna-4045c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340746954112:android:0e386e22c645a8be150d65",
+        "android_client_info": {
+          "package_name": "com.betna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340746954112-giae2vkj5d7lrrc69vvargb992sqt8t6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.betna",
+            "certificate_hash": "02234e9655300f70fcb3d1f946434728fcb0fcea"
+          }
+        },
+        {
+          "client_id": "340746954112-8k3v1j0mi8g80i1oo58a7phn9mm0k0km.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw82xD1uRX_WAhYaihi1QumunZVUX3x4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340746954112-8k3v1j0mi8g80i1oo58a7phn9mm0k0km.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "340746954112-ia7dbracmmh7kc2u5u41pc7c2mut5scp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "creativeShare.Betna"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

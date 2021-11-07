@@ -119,9 +119,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/resend"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:visibility="gone" />
+                        />
 
                     <Space
                         android:layout_width="0dp"

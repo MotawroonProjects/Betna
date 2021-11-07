@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.betna.R;
 
+import com.betna.activities_fragments.activity_about_us.AboutUsActivity;
 import com.betna.activities_fragments.activity_contactus.ContactUsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_my_rates.MyRatesActivity;
@@ -122,7 +123,8 @@ public class Fragment_Profile extends Fragment implements Listeners.ProfileActio
 
     @Override
     public void onAboutApp() {
-
+        Intent intent = new Intent(activity, AboutUsActivity.class);
+        startActivity(intent);
     }
 
     @Override

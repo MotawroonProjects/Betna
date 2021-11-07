@@ -15,10 +15,12 @@ import androidx.databinding.DataBindingUtil;
 
 import com.betna.R;
 
+import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_sign_up.SignUpActivity;
 import com.betna.databinding.ActivityVerificationCodeBinding;
 import com.betna.language.Language;
+import com.betna.models.AddServiceModel;
 import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
 import com.betna.remote.Api;
@@ -51,7 +53,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private String smsCode;
     private Preferences preferences;
     private boolean canSend = false;
-    private String type;
+    private AddServiceModel addServiceModel;
 
 
     @Override
@@ -74,7 +76,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         if (intent != null) {
             phone_code = intent.getStringExtra("phone_code");
             phone = intent.getStringExtra("phone");
-            type = intent.getStringExtra("type");
+            addServiceModel = (AddServiceModel) intent.getSerializableExtra("data");
 
         }
     }
@@ -82,7 +84,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private void initView() {
         preferences = Preferences.getInstance();
 
-    //    mAuth = FirebaseAuth.getInstance();
+            mAuth = FirebaseAuth.getInstance();
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
@@ -99,7 +101,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 //            Intent intent=getIntent();
 //            setResult(RESULT_OK,intent);
 //            finish();
-           login();
+           // login();
             if (!code.isEmpty()) {
                 binding.edtCode.setError(null);
                 Common.CloseKeyBoard(this, binding.edtCode);
@@ -109,7 +111,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             }
 
         });
-       // sendSmsCode();
+         sendSmsCode();
 
     }
 
@@ -209,7 +211,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .login( phone)
+                .login(phone)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -265,9 +267,16 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
 
     private void navigateToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent;
+        if (addServiceModel == null) {
+            intent = new Intent(this, HomeActivity.class);
 
-        intent.putExtra("type", type);
+        } else {
+            intent = new Intent(this, CompleteOrderActivity.class);
+
+        }
+
+        intent.putExtra("data", addServiceModel);
         startActivity(intent);
         finish();
 
@@ -277,7 +286,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignUpActivity.class);
         intent.putExtra("phone", phone);
         intent.putExtra("phone_code", phone_code);
-        intent.putExtra("type", type);
+        intent.putExtra("data", addServiceModel);
         startActivity(intent);
         finish();
     }

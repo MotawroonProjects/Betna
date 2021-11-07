@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.betna.R;
+import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
 import com.betna.adapters.PreWorkAdapter;
 import com.betna.adapters.Rate2Adapter;
 import com.betna.adapters.RateAdapter;
@@ -100,7 +101,15 @@ public class ServiceDetialsActivity extends AppCompatActivity implements Listene
                 finish();
             }
         });
+        binding.btnOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent intent = new Intent(ServiceDetialsActivity.this, SendOrderActivity.class);
+                intent.putExtra("data", serviceModel);
+                startActivity(intent);
+            }
+        });
 
         getservicebyId();
 
