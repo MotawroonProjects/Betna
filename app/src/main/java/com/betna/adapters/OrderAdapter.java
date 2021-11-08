@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.FragmentDepartments;
+import com.betna.activities_fragments.activity_home.fragments.FragmentOrders;
 import com.betna.databinding.CategoryRowBinding;
 import com.betna.databinding.OrderRowBinding;
 import com.betna.models.CategoryModel;
@@ -53,13 +54,22 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         myHolder.binding.setModel(list.get(position));
 
-        myHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        myHolder.binding.btnServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-if(fragment instanceof FragmentDepartments){
-    FragmentDepartments fragmentDepartments=(FragmentDepartments) fragment;
-    fragmentDepartments.show(list.get(holder.getLayoutPosition()).getId()+"");
+if(fragment instanceof FragmentOrders){
+    FragmentOrders fragmentOrders=(FragmentOrders) fragment;
+    fragmentOrders.showorder(list.get(holder.getLayoutPosition()).getId());
 }
+            }
+        });
+        myHolder.binding.llEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fragment instanceof FragmentOrders){
+                    FragmentOrders fragmentOrders=(FragmentOrders) fragment;
+                    fragmentOrders.update(list.get(holder.getLayoutPosition()));
+                }
             }
         });
 

@@ -6,6 +6,7 @@ import com.betna.models.OrderDataModel;
 import com.betna.models.RateDataModel;
 import com.betna.models.ServiceDataModel;
 import com.betna.models.SettingDataModel;
+import com.betna.models.SingleOrderModel;
 import com.betna.models.SingleServiceDataModel;
 import com.betna.models.SliderDataModel;
 import com.betna.models.StatusResponse;
@@ -127,7 +128,30 @@ public interface Service {
                                     @Field("date") String date
 
     );
+
     @GET("api/aboutUs")
     Call<SettingDataModel> getSetting();
+
+    @GET("api/oneOrder")
+    Call<SingleOrderModel> getOrderById(
+            @Query("order_id") int order_id
+
+    );
+
+    @FormUrlEncoded
+    @POST("api/updateOrder")
+    Call<StatusResponse> updateOrder(
+            @Field("order_id") String order_id,
+            @Field("user_id") String user_id,
+            @Field("service_id") String service_id,
+            @Field("type_id") String type_id,
+            @Field("area") String area,
+            @Field("longitude") String longitude,
+            @Field("latitude") String latitude,
+            @Field("notes") String notes,
+            @Field("total") String total,
+            @Field("date") String date
+
+    );
 
 }

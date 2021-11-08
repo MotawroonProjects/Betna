@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable-v24/rounded_white_strock_primary.xml" value="0.2212962962962963" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/circle_not_bg.xml" value="0.2846153846153846" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/circle_white.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_gallery.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_load.xml" value="0.2846153846153846" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_loadarrow.xml" value="0.1515625" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_mail.xml" value="0.15885416666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/drawable/ic_search2.xml" value="0.15885416666666666" />
@@ -23,7 +25,8 @@
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_contact_us.xml" value="0.21" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_my_rates.xml" value="0.40847784200385356" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_my_rates.xml" value="0.1" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_order_steps.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_previousorder.xml" value="0.13541666666666666" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_send_order.xml" value="0.3103448275862069" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_service_detials.xml" value="0.33" />

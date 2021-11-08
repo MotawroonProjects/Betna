@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.betna.R;
 import com.betna.activities_fragments.activity_my_rates.MyRatesActivity;
 import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
+import com.betna.activities_fragments.activity_update_order.UpdateOrderActivity;
 import com.betna.databinding.RateRowBinding;
 import com.betna.databinding.TypeRowBinding;
 import com.betna.models.RateModel;
@@ -83,6 +84,11 @@ public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             list.set(selectedPos, specialModel);
             if (context instanceof SendOrderActivity) {
                 SendOrderActivity activity = (SendOrderActivity) context;
+                activity.setselection(specialModel);
+
+            }
+            else   if (context instanceof UpdateOrderActivity) {
+                UpdateOrderActivity activity = (UpdateOrderActivity) context;
                 activity.setselection(specialModel);
 
             }

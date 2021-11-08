@@ -40,7 +40,14 @@
             android:name=".activities_fragments.activity_sign_up.SignUpActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
-
+        <activity
+            android:name=".activities_fragments.activity_update_order.UpdateOrderActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity
+            android:name=".activities_fragments.activity_order_steps.OrderStepsActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
         <activity
             android:name=".activities_fragments.activity_home.HomeActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"

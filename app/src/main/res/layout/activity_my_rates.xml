@@ -439,7 +439,7 @@
                         android:text="@string/confirm"
                         android:textColor="@color/white"
                         android:textSize="13sp"
-                        android:visibility="gone" />
+                         />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

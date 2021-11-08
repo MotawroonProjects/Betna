@@ -73,5 +73,11 @@
     <string name="is_start">Start</string>
     <string name="preparing">Preparing</string>
     <string name="end">End</string>
+    <string name="the_request_has_been_sent_and_is_awaiting_approval">The request has been sent and is awaiting approval</string>
+    <string name="order_status">Order Status</string>
+    <string name="equipment_is_being_prepared_to_fulfill_your_order">Equipment is being prepared to fulfill your order</string>
+    <string name="your_request_has_been_started">Your request has been started</string>
+    <string name="we_thank_you_for_choosing_us_to_implement_your_request_and_we_hope_you_liked_it">We thank you for choosing us to implement your request, and we hope you liked it</string>
+    <string name="order_detials">Order Detials</string>
 
 </resources>

@@ -14,6 +14,8 @@ public class AddServiceModel implements Serializable {
     private String notes;
     private String total;
     private String date;
+    private String type;
+    private int orderid;
 
     public int getService_id() {
         return service_id;
@@ -85,6 +87,22 @@ public class AddServiceModel implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getOrderid() {
+        return orderid;
+    }
+
+    public void setOrderid(int orderid) {
+        this.orderid = orderid;
     }
 }
 

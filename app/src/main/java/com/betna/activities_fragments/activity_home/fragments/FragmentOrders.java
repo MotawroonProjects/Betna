@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 
+import com.betna.activities_fragments.activity_order_steps.OrderStepsActivity;
+import com.betna.activities_fragments.activity_update_order.UpdateOrderActivity;
 import com.betna.adapters.OrderAdapter;
 import com.betna.databinding.FragmentOrdersBinding;
 
@@ -156,4 +158,20 @@ public class FragmentOrders extends Fragment {
                 });
     }
 
+    public void showorder(int s) {
+        Intent intent = new Intent(activity, OrderStepsActivity.class);
+        intent.putExtra("order_id", s);
+        startActivity(intent);
+    }
+
+    public void update(OrderModel orderModel) {
+        Intent intent = new Intent(activity, UpdateOrderActivity.class);
+        intent.putExtra("data", orderModel);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

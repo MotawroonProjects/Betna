@@ -48,13 +48,13 @@
     <string name="reorder">اعادة طلب</string>
     <string name="rate_service">تقييم الخدمة</string>
     <string name="rate">تقييم</string>
-    <string name="write_comment">اكتب تعليقt</string>
+    <string name="write_comment">اكتب تعليق</string>
     <string name="service_detials">تفاصيل الخدمة</string>
     <string name="previous_work">العمل السابق</string>
     <string name="customer_rates">تقييمات العميل</string>
     <string name="order_now">اطلب الان</string>
     <string name="service_request">طلب الخدمة</string>
-    <string name="the_price_of_the_service_varies_according_to_the_area_and_the_type_of_location_in_which_the_service_will_be_performed">The price of the service varies according to the area and the type of location in which the service will be performed</string>
+    <string name="the_price_of_the_service_varies_according_to_the_area_and_the_type_of_location_in_which_the_service_will_be_performed">يختلف سعر الخدمة باختلاف المساحة ونوع الموقع الذي سيتم فية الخدمة</string>
     <string name="choose_day">اختر اليوم </string>
     <string name="location_type">نوع الموقع : </string>
     <string name="site_area_m">مساحة الموقع (م):</string>
@@ -69,9 +69,16 @@
     <string name="write_a_note">اكتب ملاحظه</string>
     <string name="all">الكل</string>
     <string name="order_sent">تم الطلب</string>
-    <string name="accept">تم القبول</string>
-    <string name="is_start">تم البدا</string>
+    <string name="accept">تم الموافقه على طلبك</string>
     <string name="preparing">جارى التجهيز</string>
     <string name="end">تم الانتهاء</string>
+    <string name="is_start">تم البدء</string>
+
+    <string name="the_request_has_been_sent_and_is_awaiting_approval">تم ارسال الطلب وفي انتظار الموافقة</string>
+    <string name="order_status">حالة الطلب</string>
+    <string name="equipment_is_being_prepared_to_fulfill_your_order">جاري تجهيز المعدات لتنفيذ طلبك</string>
+    <string name="your_request_has_been_started">تم البدء في تنفيذ طلبك</string>
+    <string name="we_thank_you_for_choosing_us_to_implement_your_request_and_we_hope_you_liked_it">نشكرك علي اختيارنا لتنفيذ طلبك ونرجو ان يكون قد نال اعجابك</string>
+    <string name="order_detials">تفاصيل الطلب</string>
 
 </resources>
