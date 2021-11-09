@@ -55,6 +55,9 @@ public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         MyHolder myHolder = (MyHolder) holder;
         myHolder.binding.setModel(list.get(position));
       //  updateSelection(selectedPos);
+        if(list.get(position).isSelected()){
+            oldPos = position;
+        }
         myHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
