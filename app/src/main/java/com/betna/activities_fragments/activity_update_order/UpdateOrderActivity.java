@@ -265,6 +265,12 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                 datePickerDialog.show(getFragmentManager(), "");
             }
         });
+        binding.tvDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show(getFragmentManager(), "");
+            }
+        });
         binding.btBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -295,7 +301,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
         createDateDialog();
         updateData();
-        CheckPermission();
+    //    CheckPermission();
 
     }
 
