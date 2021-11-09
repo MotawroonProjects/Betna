@@ -16,6 +16,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.betna.R;
+import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
+import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.adapters.PreviousOrderAdapter;
 import com.betna.databinding.ActivityPreviousorderBinding;
 import com.betna.language.Language;
@@ -76,7 +78,7 @@ public class PreviousOrderActivity extends AppCompatActivity {
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
         if (userModel != null) {
-          //  EventBus.getDefault().register(this);
+            //  EventBus.getDefault().register(this);
 
         }
         Paper.init(this);
@@ -171,11 +173,65 @@ public class PreviousOrderActivity extends AppCompatActivity {
                 });
     }
 
-    public void show(OrderModel orderModel) {
+    public void reOrder(int orderid) {
+        // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .reOrder(orderid + "")
+                .enqueue(new Callback<StatusResponse>() {
+                    @Override
+                    public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                        dialog.dismiss();
+                       // Log.e("ldkkf", response.body().getStatus() + " " + response.code());
+                        if (response.isSuccessful()) {
+                            if (response.body().getStatus() == 200) {
+                                Intent intent = new Intent(PreviousOrderActivity.this, HomeActivity.class);
+                                intent.putExtra("type", "order");
+                                startActivity(intent);
+                                finishAffinity();
+
+
+                            }
+                        } else {
+                            try {
+                                Log.e("mmmmmmmmmm", response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            if (response.code() == 500) {
+                                //    Toast.makeText(VerificationCodeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("mmmmmmmmmm", response.code() + "");
+
+                                //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<StatusResponse> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            if (t.getMessage() != null) {
+                                Log.e("msg_category_error", t.toString() + "__");
+
+                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                    // Toast.makeText(VerificationCodeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("Error", e.getMessage() + "__");
+                        }
+                    }
+                });
 
     }
-
-
 
 
     @Override

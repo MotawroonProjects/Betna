@@ -2,6 +2,7 @@ package com.betna.services;
 
 
 import com.betna.models.CategoryDataModel;
+import com.betna.models.NotificationDataModel;
 import com.betna.models.OrderDataModel;
 import com.betna.models.RateDataModel;
 import com.betna.models.ServiceDataModel;
@@ -15,6 +16,7 @@ import com.betna.models.UserModel;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -139,6 +141,12 @@ public interface Service {
     );
 
     @FormUrlEncoded
+    @POST("api/reOrder")
+    Call<StatusResponse> reOrder(
+            @Field("order_id") String order_id
+    );
+
+    @FormUrlEncoded
     @POST("api/updateOrder")
     Call<StatusResponse> updateOrder(
             @Field("order_id") String order_id,
@@ -154,4 +162,32 @@ public interface Service {
 
     );
 
+    @FormUrlEncoded
+    @POST("api/deleteOrder")
+    Call<StatusResponse> deleteOrder(
+            @Field("order_id") String order_id
+    );
+
+    @FormUrlEncoded
+    @POST("api/updateRate")
+    Call<StatusResponse> reRate(
+            @Field("rate_id") String rate_id,
+            @Field("user_id") String user_id,
+            @Field("service_id") String service_id,
+            @Field("desc") String desc,
+            @Field("rate") int rate
+
+    );
+
+    @GET("api/notifications")
+    Call<NotificationDataModel> getNotifications(@Query("user_id") int user_id,
+                                                 @Query("rev_id") int rev_id);
+    @FormUrlEncoded
+    @POST("api/storeToken")
+    Call<ResponseBody> updatePhoneToken(
+            @Field("token") String token,
+            @Field("rev_id") int rev_id,
+            @Field("user_id") int user_id,
+            @Field("type") String type
+    );
 }

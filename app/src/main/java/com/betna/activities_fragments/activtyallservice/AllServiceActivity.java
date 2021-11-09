@@ -1,4 +1,4 @@
-package com.betna.activities_fragments.activity_services;
+package com.betna.activities_fragments.activtyallservice;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import com.betna.activities_fragments.activity_service_detials.ServiceDetialsAct
 import com.betna.adapters.ServiceAdapter;
 import com.betna.databinding.ActivityServicesBinding;
 import com.betna.language.Language;
-import com.betna.models.CategoryModel;
 import com.betna.models.ServiceDataModel;
 import com.betna.models.ServiceModel;
 import com.betna.models.UserModel;
@@ -34,13 +33,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ServiceActivity extends AppCompatActivity {
+public class AllServiceActivity extends AppCompatActivity {
     private ActivityServicesBinding binding;
     private String lang;
     private Preferences preferences;
     private UserModel userModel;
 
-    private CategoryModel categoryModel;
     private List<ServiceModel> serviceModelList;
     private ServiceAdapter ServiceAdapter;
 
@@ -54,17 +52,9 @@ public class ServiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_services);
-        getDataFromIntent();
         initView();
     }
 
-    private void getDataFromIntent() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            categoryModel = (CategoryModel) intent.getSerializableExtra("data");
-
-        }
-    }
 
     private void initView() {
 
@@ -72,7 +62,7 @@ public class ServiceActivity extends AppCompatActivity {
         Paper.init(this);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
-        binding.setTitle(categoryModel.getTitle());
+        binding.setTitle(getResources().getString(R.string.services));
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
         if (userModel != null) {
@@ -108,7 +98,7 @@ public class ServiceActivity extends AppCompatActivity {
 
         binding.progBar.setVisibility(View.VISIBLE);
         Api.getService(Tags.base_url)
-                .getservice(categoryModel.getId() + "")
+                .getTopService()
                 .enqueue(new Callback<ServiceDataModel>() {
                     @Override
                     public void onResponse(Call<ServiceDataModel> call, Response<ServiceDataModel> response) {

@@ -19,6 +19,7 @@ import com.betna.R;
 import com.betna.databinding.ActivityOrderStepsBinding;
 import com.betna.interfaces.Listeners;
 import com.betna.language.Language;
+import com.betna.models.NotFireModel;
 import com.betna.models.RateDataModel;
 import com.betna.models.RateModel;
 import com.betna.models.SingleOrderModel;
@@ -28,6 +29,10 @@ import com.betna.preferences.Preferences;
 import com.betna.remote.Api;
 import com.betna.share.Common;
 import com.betna.tags.Tags;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 
@@ -65,10 +70,29 @@ public class OrderStepsActivity extends AppCompatActivity implements Listeners.B
         order_id = intent.getIntExtra("order_id", 0);
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenToNewMessage(NotFireModel notFireModel) {
+        if (notFireModel.getId() == order_id) {
+            getOrderById();
+
+        }
+    }
 
     private void initView() {
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
+        if (userModel != null) {
+            EventBus.getDefault().register(this);
+
+        }
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);

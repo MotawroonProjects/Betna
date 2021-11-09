@@ -50,7 +50,7 @@
     <string name="rate">rate</string>
     <string name="write_comment">Write Comment</string>
     <string name="service_detials">Service Detials</string>
-    <string name="previous_work">Previous Work</string>
+    <string name="previous_work">Gallery</string>
     <string name="customer_rates">Customer Rates</string>
     <string name="order_now">Order Now</string>
     <string name="service_request">Service Request</string>
@@ -79,5 +79,6 @@
     <string name="your_request_has_been_started">Your request has been started</string>
     <string name="we_thank_you_for_choosing_us_to_implement_your_request_and_we_hope_you_liked_it">We thank you for choosing us to implement your request, and we hope you liked it</string>
     <string name="order_detials">Order Detials</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

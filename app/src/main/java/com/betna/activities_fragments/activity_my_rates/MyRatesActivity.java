@@ -338,6 +338,22 @@ public class MyRatesActivity extends AppCompatActivity {
 
     public void openSheet(RateModel rateModel) {
         this.rateModel = rateModel;
+        binding.edtDesc.setText(rateModel.getDesc());
+        if(rateModel.getRate()==1){
+            updateui1();
+        }
+        else  if(rateModel.getRate()==2){
+            updateui2();
+        }
+        else  if(rateModel.getRate()==3){
+            updateui3();
+        }
+        else  if(rateModel.getRate()==4){
+            updateui4();
+        }
+        else  if(rateModel.getRate()==5){
+            updateui5();
+        }
         binding.flSheet.clearAnimation();
         animation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         binding.flSheet.startAnimation(animation);
@@ -396,12 +412,12 @@ public class MyRatesActivity extends AppCompatActivity {
         dialog.show();
 
         Api.getService(Tags.base_url)
-                .addRate(userModel.getUser().getId() + "", rateModel.getService().getId() + "", comment, rate)
+                .reRate(rateModel.getId()+"",userModel.getUser().getId() + "", rateModel.getService().getId() + "", comment, rate)
                 .enqueue(new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
                         dialog.dismiss();
-                        Log.e("dkkd",response.body().getStatus()+"");
+                       // Log.e("dkkd",response.body().getStatus()+"");
                         if (response.isSuccessful() && response.body() != null) {
                             if (response.body().getStatus() == 200) {
                                 getData();

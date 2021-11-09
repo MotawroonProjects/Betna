@@ -48,7 +48,6 @@ public class GeneralMethod {
     @BindingAdapter("image")
     public static void image(View view, String endPoint) {
         if(endPoint!=null)
-            Log.e("dlldldl",Tags.IMAGE_URL + endPoint);
         if (view instanceof CircleImageView) {
             CircleImageView imageView = (CircleImageView) view;
             if (endPoint != null) {

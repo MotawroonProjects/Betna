@@ -14,10 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.betna.R;
-import com.betna.activities_fragments.activity_doctor_detials.ServiceDetialsActivity;
+import com.betna.activities_fragments.activity_service_detials.ServiceDetialsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 
 import com.betna.activities_fragments.activity_services.ServiceActivity;
+import com.betna.activities_fragments.activtyallservice.AllServiceActivity;
 import com.betna.adapters.DepartmentAdapter;
 import com.betna.adapters.SliderAdapter;
 import com.betna.adapters.TopServiceAdapter;
@@ -87,7 +88,7 @@ public class Fragment_Home extends Fragment {
         Paper.init(activity);
         lang = Paper.book().read("lang", "ar");
         topServiceAdapter = new TopServiceAdapter(serviceModelList, activity, this);
-        binding.recViewTopService.setLayoutManager(new GridLayoutManager(activity, 2));
+        binding.recViewTopService.setLayoutManager(new GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL,false));
         binding.recViewTopService.setAdapter(topServiceAdapter);
         departmentAdapter = new DepartmentAdapter(categoryModelList, activity, this);
         binding.recViewDepartments.setLayoutManager(new GridLayoutManager(activity, 2));
@@ -98,6 +99,13 @@ public class Fragment_Home extends Fragment {
         getTopServices();
         getDepartments();
         get_slider();
+        binding.tvShowAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(activity, AllServiceActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void getTopServices() {

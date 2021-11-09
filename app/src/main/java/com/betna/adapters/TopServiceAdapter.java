@@ -17,6 +17,7 @@ import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.Fragment_Home;
 import com.betna.databinding.TopServiceRowBinding;
 import com.betna.models.ServiceModel;
+import com.betna.tags.Tags;
 
 import java.util.List;
 
@@ -51,18 +52,23 @@ public class TopServiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         MyHolder myHolder = (MyHolder) holder;
-        Log.e("dldkkd",list.get(position).getColor());
-        if(list.get(position).getColor().startsWith("#")){
-myHolder.binding.card.setCardBackgroundColor(Color.parseColor(list.get(position).getColor()));}
+        Log.e("ssss", Tags.IMAGE_URL + list.get(position).getPhoto());
+        if (list.get(position).getColor().startsWith("#")) {
+            myHolder.binding.card.setCardBackgroundColor(Color.parseColor(list.get(position).getColor()));
+            myHolder.binding.card2.setCardBackgroundColor(Color.parseColor(list.get(position).getColor()));
+
+        }
+
+
         myHolder.binding.setModel(list.get(position));
 
         myHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-if(fragment instanceof Fragment_Home){
-    Fragment_Home fragment_home=(Fragment_Home) fragment;
-    fragment_home.showService(list.get(holder.getLayoutPosition()));
-}
+                if (fragment instanceof Fragment_Home) {
+                    Fragment_Home fragment_home = (Fragment_Home) fragment;
+                    fragment_home.showService(list.get(holder.getLayoutPosition()));
+                }
             }
         });
 

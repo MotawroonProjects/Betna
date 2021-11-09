@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.Fragment_Home;
+import com.betna.activities_fragments.activity_service_detials.ServiceDetialsActivity;
 import com.betna.databinding.DepartmentRowBinding;
 import com.betna.databinding.PreworkRowBinding;
 import com.betna.models.CategoryModel;
@@ -50,7 +51,15 @@ public class PreWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         MyHolder myHolder = (MyHolder) holder;
 
         myHolder.binding.setModel(list.get(position));
-
+//myHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//    @Override
+//    public void onClick(View view) {
+//        if(context instanceof ServiceDetialsActivity){
+//            ServiceDetialsActivity serviceDetialsActivity=(ServiceDetialsActivity) context;
+//            serviceDetialsActivity.showimage(list.get(holder.getLayoutPosition()).getPhoto());
+//        }
+//    }
+//});
 
 
 

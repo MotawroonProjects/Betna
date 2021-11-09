@@ -72,7 +72,15 @@ if(fragment instanceof FragmentOrders){
                 }
             }
         });
-
+        myHolder.binding.llDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(fragment instanceof FragmentOrders){
+                    FragmentOrders fragmentOrders=(FragmentOrders) fragment;
+                    fragmentOrders.delete(list.get(holder.getLayoutPosition()));
+                }
+            }
+        });
 
     }
 

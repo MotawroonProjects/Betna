@@ -18,10 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
-import com.betna.activities_fragments.activity_doctor_detials.ServiceDetialsActivity;
+import com.betna.activities_fragments.activity_service_detials.ServiceDetialsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 
-import com.betna.activities_fragments.activity_order_steps.OrderStepsActivity;
 import com.betna.adapters.CategoryAdapter;
 import com.betna.adapters.ServiceAdapter;
 import com.betna.databinding.FragmentCategoriesBinding;

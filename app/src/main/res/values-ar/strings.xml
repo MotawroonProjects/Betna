@@ -15,12 +15,12 @@
     <string name="camera">الكاميرا</string>
     <string name="cancel">الغاء</string>
     <string name="perm_image_denied">اذن الصورة مرفوض</string>
-    <string name="top_services">أعلى الخدمات</string>
-    <string name="show_all">اظهار الكل</string>
+    <string name="top_services">ابرز الخدمات</string>
+    <string name="show_all">عرض الكل</string>
     <string name="no_data_to_show">لا توجد بيانات لعرضها</string>
     <string name="departments">الاقسام</string>
     <string name="search_for_service">بحث عن الخدمات</string>
-    <string name="there_are_no_current_requests_please_request_the_right_services_for_you">لا توجد طلبات حالية   الرجاء طلب الخدمات المناسبة لك.</string>
+    <string name="there_are_no_current_requests_please_request_the_right_services_for_you">لا توجد طلبات حالية  \n  من فضلك قم بطلب الخدمات المناسبة لك.</string>
     <string name="there_are_no_pre_requests_please_request_the_right_services_for_you">لا توجد طلبات سابقة</string>
 
     <string name="services">خدمات</string>
@@ -28,13 +28,13 @@
     <string name="status">الحالة</string>
     <string name="egp">جنيه مصري</string>
     <string name="edit">تعديل</string>
-    <string name="welcome">مرحبا</string>
+    <string name="welcome">اهلا</string>
     <string name="my_profile">ملفي</string>
     <string name="my_previous_orders">طلباتي السابقة</string>
     <string name="my_rates">تقييماتي</string>
     <string name="more">المزيد</string>
     <string name="language">اللغة</string>
-    <string name="about_app">حول التطبيق</string>
+    <string name="about_app">عن التطبيق</string>
     <string name="contact_us">تواصل معنا</string>
     <string name="rate_app">قيم التطبيق</string>
     <string name="deleget_app">مندوب التطبيق</string>
@@ -50,7 +50,7 @@
     <string name="rate">تقييم</string>
     <string name="write_comment">اكتب تعليق</string>
     <string name="service_detials">تفاصيل الخدمة</string>
-    <string name="previous_work">العمل السابق</string>
+    <string name="previous_work"> معرض الصور</string>
     <string name="customer_rates">تقييمات العميل</string>
     <string name="order_now">اطلب الان</string>
     <string name="service_request">طلب الخدمة</string>
@@ -80,5 +80,6 @@
     <string name="your_request_has_been_started">تم البدء في تنفيذ طلبك</string>
     <string name="we_thank_you_for_choosing_us_to_implement_your_request_and_we_hope_you_liked_it">نشكرك علي اختيارنا لتنفيذ طلبك ونرجو ان يكون قد نال اعجابك</string>
     <string name="order_detials">تفاصيل الطلب</string>
+    <string name="notifications">الاشعارات</string>
 
 </resources>

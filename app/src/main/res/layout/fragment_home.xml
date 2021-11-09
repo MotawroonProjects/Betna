@@ -85,6 +85,7 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/tvShowAll"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_margin="5dp"
@@ -92,8 +93,9 @@
                 android:layout_marginEnd="8dp"
                 android:gravity="center"
                 android:text="@string/show_all"
+
                 android:textColor="@color/colorAccent"
-                android:textSize="16sp"
+                android:textSize="14sp"
                />
         </LinearLayout>
         <FrameLayout

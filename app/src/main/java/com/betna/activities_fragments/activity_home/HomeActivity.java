@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +19,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.betna.activities_fragments.activity_notification.NotificationActivity;
 import com.betna.models.AddServiceModel;
+import com.betna.models.NotFireModel;
+import com.betna.remote.Api;
+import com.betna.tags.Tags;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.FragmentDepartments;
@@ -28,12 +35,20 @@ import com.betna.databinding.ActivityHomeBinding;
 import com.betna.language.Language;
 import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.paperdb.Paper;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
@@ -81,20 +96,91 @@ public class HomeActivity extends AppCompatActivity {
         userModel = preferences.getUserData(this);
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
-
-
-
         if (userModel != null) {
-            //   updateFirebaseToken();
+            EventBus.getDefault().register(this);
+
+        }
+
+        binding.imageNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (userModel != null) {
+                    Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
+                    startActivity(intent);
+                } else {
+                    navigateToSignInActivity();
+                }
+            }
+        });
+        if (userModel != null) {
+               updateTokenFireBase();
         }
         setUpBottomNavigation();
-        if (type!=null&&type.equals("order")) {
+        if (type != null && type.equals("order")) {
             displayFragmentOrders();
-        }
-        else{
+        } else {
             displayFragmentMain();
 
         }
+    }
+
+    private void updateTokenFireBase() {
+
+
+        FirebaseInstanceId.getInstance()
+                .getInstanceId().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String token = task.getResult().getToken();
+Log.e("dkdkkd",token);
+                try {
+
+                    try {
+
+                        Api.getService(Tags.base_url)
+                                .updatePhoneToken( token,0, userModel.getUser().getId(), "android")
+                                .enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        if (response.isSuccessful() && response.body() != null) {
+                                            Log.e("token", "updated successfully");
+                                        } else {
+                                            try {
+
+                                                Log.e("error", response.code() + "_" + response.errorBody().string());
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        try {
+
+                                            if (t.getMessage() != null) {
+                                                Log.e("error", t.getMessage());
+                                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                                    //Toast.makeText(HomeActivity.this, R.string.something, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                });
+                    } catch (Exception e) {
+
+
+                    }
+                } catch (Exception e) {
+
+
+                }
+
+            }
+        });
     }
 
     private void setUpBottomNavigation() {
@@ -420,5 +506,12 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenToNewMessage(NotFireModel notFireModel) {
+        if(fragmentOrders!=null&&fragmentOrders.isVisible()){
+            fragmentOrders.getData();
+        }
+    }
 
 }

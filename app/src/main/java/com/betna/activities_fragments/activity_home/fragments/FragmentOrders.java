@@ -1,5 +1,6 @@
 package com.betna.activities_fragments.activity_home.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,17 +19,26 @@ import com.betna.R;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 
 import com.betna.activities_fragments.activity_order_steps.OrderStepsActivity;
+import com.betna.activities_fragments.activity_previousorder.PreviousOrderActivity;
 import com.betna.activities_fragments.activity_update_order.UpdateOrderActivity;
 import com.betna.adapters.OrderAdapter;
 import com.betna.databinding.FragmentOrdersBinding;
 
+import com.betna.models.NotFireModel;
 import com.betna.models.OrderDataModel;
 import com.betna.models.OrderModel;
+import com.betna.models.StatusResponse;
 import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
 import com.betna.remote.Api;
+import com.betna.share.Common;
 import com.betna.tags.Tags;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,6 +122,7 @@ public class FragmentOrders extends Fragment {
                             if (response.body() != null && response.body().getCurrent() != null && response.body().getStatus() == 200) {
                                 if (response.body().getCurrent().size() > 0) {
                                     binding.llNoData.setVisibility(View.GONE);
+                                    list.clear();
                                     list.addAll(response.body().getCurrent());
                                     adapter.notifyDataSetChanged();
                                 } else {
@@ -173,5 +184,62 @@ public class FragmentOrders extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getData();
     }
+
+    public void delete(OrderModel orderModel) {
+        ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .deleteOrder(orderModel.getId() + "")
+                .enqueue(new Callback<StatusResponse>() {
+                    @Override
+                    public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                        dialog.dismiss();
+                        // Log.e("ldkkf", response.body().getStatus() + " " + response.code());
+                        if (response.isSuccessful()) {
+                            if (response.body().getStatus() == 200) {
+                                getData();
+
+
+                            }
+                        } else {
+                            try {
+                                Log.e("mmmmmmmmmm", response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            if (response.code() == 500) {
+                                //    Toast.makeText(VerificationCodeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("mmmmmmmmmm", response.code() + "");
+
+                                //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<StatusResponse> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            if (t.getMessage() != null) {
+                                Log.e("msg_category_error", t.toString() + "__");
+
+                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                    // Toast.makeText(VerificationCodeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("Error", e.getMessage() + "__");
+                        }
+                    }
+                });
+    }
+
 }

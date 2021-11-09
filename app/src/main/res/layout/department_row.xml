@@ -25,7 +25,7 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="100dp"
                 app:riv_border_width="0dp"
                 app:riv_corner_radius="10dp"
                 image="@{model.photo}"
@@ -36,8 +36,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:text="@{model.title}"
                 android:lines="2"
                 android:ellipsize="end"

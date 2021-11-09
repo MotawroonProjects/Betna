@@ -1,7 +1,6 @@
-package com.betna.activities_fragments.activity_doctor_detials;
+package com.betna.activities_fragments.activity_service_detials;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,15 +30,7 @@ import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
 import com.betna.remote.Api;
 import com.betna.tags.Tags;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +109,8 @@ public class ServiceDetialsActivity extends AppCompatActivity implements Listene
 
 
     private void getservicebyId() {
+        binding.progBar.setVisibility(View.VISIBLE);
+
         Api.getService(Tags.base_url)
                 .getServiceById(serviceModel.getId())
                 .enqueue(new Callback<SingleServiceDataModel>() {

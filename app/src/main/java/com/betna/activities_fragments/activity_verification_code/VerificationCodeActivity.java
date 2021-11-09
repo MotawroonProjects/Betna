@@ -101,7 +101,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 //            Intent intent=getIntent();
 //            setResult(RESULT_OK,intent);
 //            finish();
-           login();
+          // login();
             if (!code.isEmpty()) {
                 binding.edtCode.setError(null);
                 Common.CloseKeyBoard(this, binding.edtCode);
