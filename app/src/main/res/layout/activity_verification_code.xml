@@ -92,7 +92,7 @@
                     android:cursorVisible="true"
                     android:inputType="number"
                     android:itemBackground="@drawable/pin_view_item"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     app:cursorColor="@color/colorPrimaryDark"
                     app:cursorWidth="2dp"
