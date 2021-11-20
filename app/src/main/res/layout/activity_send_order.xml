@@ -216,9 +216,9 @@
                             android:id="@+id/progressBar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:secondaryProgress="0"
+                            android:max="10000"
 
-                            />
+                            android:secondaryProgress="0" />
 
                         <TextView
                             android:id="@+id/progressBarinsideText"
@@ -233,13 +233,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/write_a_note"
-                        android:textColor="@color/black"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:clickable="false"
                         android:gravity="center"
                         android:longClickable="false"
+                        android:text="@string/write_a_note"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
                     <EditText
@@ -250,10 +250,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:background="@drawable/rounded_strock_gray7"
+                        android:gravity="start"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:singleLine="true"
-                        android:gravity="start"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 

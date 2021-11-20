@@ -234,6 +234,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setModel(serviceModel);
+        binding.progressBar.incrementProgressBy(10);
         typeAdapter = new TypeAdapter(typeModelList, this);
         binding.recviewtype.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false));
         binding.recviewtype.setAdapter(typeAdapter);
