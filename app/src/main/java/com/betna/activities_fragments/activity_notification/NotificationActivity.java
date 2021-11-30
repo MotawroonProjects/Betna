@@ -15,11 +15,16 @@ import com.betna.R;
 import com.betna.adapters.NotificationAdapter;
 import com.betna.databinding.ActivityNotificationBinding;
 import com.betna.language.Language;
+import com.betna.models.NotFireModel;
 import com.betna.models.NotificationDataModel;
 import com.betna.models.UserModel;
 import com.betna.preferences.Preferences;
 import com.betna.remote.Api;
 import com.betna.tags.Tags;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,6 +67,10 @@ public class NotificationActivity extends AppCompatActivity {
 
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
+        if (userModel != null) {
+            EventBus.getDefault().register(this);
+
+        }
         Paper.init(this);
         lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         binding.setLang(lang);
@@ -151,6 +160,11 @@ public class NotificationActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void listenToNewMessage(NotFireModel notFireModel) {
+        getNotifications();
+
     }
 
 //    public void setItemData(NotificationModel model) {
