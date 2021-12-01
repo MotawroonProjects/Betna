@@ -2,6 +2,8 @@ package com.betna.services;
 
 
 import com.betna.models.CategoryDataModel;
+import com.betna.models.Cities_Model;
+import com.betna.models.Governate_Model;
 import com.betna.models.NotificationDataModel;
 import com.betna.models.OrderDataModel;
 import com.betna.models.RateDataModel;
@@ -11,6 +13,7 @@ import com.betna.models.SingleOrderModel;
 import com.betna.models.SingleServiceDataModel;
 import com.betna.models.SliderDataModel;
 import com.betna.models.StatusResponse;
+import com.betna.models.SubTypeDataModel;
 import com.betna.models.TypeDataModel;
 import com.betna.models.UserModel;
 
@@ -103,6 +106,8 @@ public interface Service {
     Call<StatusResponse> addRate(
             @Field("user_id") String user_id,
             @Field("service_id") String service_id,
+            @Field("rev_id") String rev_id,
+            @Field("order_id") String order_id,
             @Field("desc") String desc,
             @Field("rate") int rate
 
@@ -127,7 +132,10 @@ public interface Service {
                                     @Field("latitude") String latitude,
                                     @Field("notes") String notes,
                                     @Field("total") String total,
-                                    @Field("date") String date
+                                    @Field("date") String date,
+                                    @Field("location") String location,
+                                    @Field("governorate_id") String governorate_id,
+                                    @Field("city_id") String city_id
 
     );
 
@@ -158,7 +166,10 @@ public interface Service {
             @Field("latitude") String latitude,
             @Field("notes") String notes,
             @Field("total") String total,
-            @Field("date") String date
+            @Field("date") String date,
+            @Field("location") String location,
+            @Field("governorate_id") String governorate_id,
+            @Field("city_id") String city_id
 
     );
 
@@ -176,12 +187,12 @@ public interface Service {
             @Field("service_id") String service_id,
             @Field("desc") String desc,
             @Field("rate") int rate
-
     );
 
     @GET("api/notifications")
     Call<NotificationDataModel> getNotifications(@Query("user_id") int user_id,
                                                  @Query("rev_id") int rev_id);
+
     @FormUrlEncoded
     @POST("api/storeToken")
     Call<ResponseBody> updatePhoneToken(
@@ -189,5 +200,17 @@ public interface Service {
             @Field("rev_id") int rev_id,
             @Field("user_id") int user_id,
             @Field("type") String type
+    );
+
+    @GET("api/getGovernorates")
+    Call<Governate_Model> getGovernates();
+
+    @GET("api/getCity")
+    Call<Cities_Model> getCities(
+            @Query("governorate_id") int governorate_id);
+
+    @GET("api/getSubPlaces")
+    Call<SubTypeDataModel> getSubTYpe(
+            @Query("place_id") int place_id
     );
 }

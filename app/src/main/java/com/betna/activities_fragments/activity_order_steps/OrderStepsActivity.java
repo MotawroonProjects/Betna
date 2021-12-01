@@ -541,12 +541,13 @@ public class OrderStepsActivity extends AppCompatActivity implements Listeners.B
         dialog.show();
 
         Api.getService(Tags.base_url)
-                .addRate(userModel.getUser().getId() + "", orderModel.getData().getService().getId() + "", comment, rate)
+                .addRate(userModel.getUser().getId() + "", orderModel.getData().getService().getId()+"",orderModel.getData().getRev_id()+"",orderModel.getData().getId() + "", comment, rate)
                 .enqueue(new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
                         dialog.dismiss();
                         if (response.isSuccessful() && response.body() != null) {
+                            Log.e("llll",response.body().getStatus()+"");
                             if (response.body().getStatus() == 200) {
                                 //getOrderById();
                                 closeSheet();

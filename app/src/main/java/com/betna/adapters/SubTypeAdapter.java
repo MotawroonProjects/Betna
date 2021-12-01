@@ -11,25 +11,24 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
-import com.betna.activities_fragments.activity_my_rates.MyRatesActivity;
 import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
 import com.betna.activities_fragments.activity_update_order.UpdateOrderActivity;
-import com.betna.databinding.RateRowBinding;
+import com.betna.databinding.SubTypeRowBinding;
 import com.betna.databinding.TypeRowBinding;
-import com.betna.models.RateModel;
+import com.betna.models.SubTypeModel;
 import com.betna.models.TypeModel;
 
 import java.util.List;
 
-public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SubTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<TypeModel> list;
+    private List<SubTypeModel> list;
     private Context context;
     private LayoutInflater inflater;
-    private int oldPos = -1, selectedPos = 0;
+    private int  selectedPos = 0;
 
     //private Fragment_Main fragment_main;
-    public TypeAdapter(List<TypeModel> list, Context context) {
+    public SubTypeAdapter(List<SubTypeModel> list, Context context) {
         this.list = list;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -43,7 +42,7 @@ public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 
-        TypeRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.type_row, parent, false);
+        SubTypeRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.sub_type_row, parent, false);
         return new MyHolder(binding);
 
 
@@ -56,19 +55,7 @@ public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         myHolder.binding.setModel(list.get(position));
       //  updateSelection(selectedPos);
         if(list.get(position).isSelected()){
-            oldPos = position;
-            TypeModel specialModel = list.get(oldPos);
-
-            if (context instanceof SendOrderActivity) {
-                SendOrderActivity activity = (SendOrderActivity) context;
-                activity.setselection(specialModel);
-
-            }
-            else   if (context instanceof UpdateOrderActivity) {
-                UpdateOrderActivity activity = (UpdateOrderActivity) context;
-                activity.setselection(specialModel);
-
-            }
+            selectedPos = position;
         }
         myHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,38 +73,30 @@ public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void updateSelection(int adapterPosition) {
         selectedPos = adapterPosition;
 
-        if (oldPos != -1) {
-            TypeModel oldModel = list.get(oldPos);
-            oldModel.setSelected(false);
-            list.set(oldPos, oldModel);
-            //notifyItemChanged(oldPos);
 
-        }
         if (adapterPosition != -1) {
-            TypeModel specialModel = list.get(selectedPos);
-            specialModel.setSelected(true);
+            SubTypeModel specialModel = list.get(selectedPos);
+            if(specialModel.isSelected()){
+                specialModel.setSelected(false);
+            }
+            else{
+            specialModel.setSelected(true);}
             list.set(selectedPos, specialModel);
             if (context instanceof SendOrderActivity) {
                 SendOrderActivity activity = (SendOrderActivity) context;
-                activity.setselection(specialModel);
+                activity.setsubselection(specialModel);
 
             }
             else   if (context instanceof UpdateOrderActivity) {
                 UpdateOrderActivity activity = (UpdateOrderActivity) context;
-                activity.setselection(specialModel);
+                activity.setsubselection(specialModel);
 
             }
             //notifyItemChanged(selectedPos);
 
-        } else {
-            TypeModel oldModel = list.get(oldPos);
-            oldModel.setSelected(false);
-            list.set(oldPos, oldModel);
-            //notifyItemChanged(oldPos);
-
         }
         notifyDataSetChanged();
-        oldPos = selectedPos;
+
     }
 
     @Override
@@ -126,9 +105,9 @@ public class TypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
-        public TypeRowBinding binding;
+        public SubTypeRowBinding binding;
 
-        public MyHolder(@NonNull TypeRowBinding binding) {
+        public MyHolder(@NonNull SubTypeRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 

@@ -80,5 +80,8 @@
     <string name="we_thank_you_for_choosing_us_to_implement_your_request_and_we_hope_you_liked_it">We thank you for choosing us to implement your request, and we hope you liked it</string>
     <string name="order_detials">Order Detials</string>
     <string name="notifications">Notifications</string>
+    <string name="write_address">Write Address</string>
+    <string name="ch_gover">Choose Governate</string>
+    <string name="ch_city">Choose City</string>
 
 </resources>

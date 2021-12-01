@@ -16,6 +16,9 @@ public class AddServiceModel implements Serializable {
     private String date;
     private String type;
     private int orderid;
+    private int governorate_id;
+    private int city_id;
+    private String address;
 
     public int getService_id() {
         return service_id;
@@ -103,6 +106,30 @@ public class AddServiceModel implements Serializable {
 
     public void setOrderid(int orderid) {
         this.orderid = orderid;
+    }
+
+    public int getGovernorate_id() {
+        return governorate_id;
+    }
+
+    public void setGovernorate_id(int governorate_id) {
+        this.governorate_id = governorate_id;
+    }
+
+    public int getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(int city_id) {
+        this.city_id = city_id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
 

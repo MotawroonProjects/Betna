@@ -108,8 +108,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="vertical">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -160,28 +159,84 @@
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/tvDay"
+                    <devs.mulham.horizontalcalendar.HorizontalCalendarView
+
+                        android:id="@+id/calendarView"
+
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        app:textColorNormal="@color/black"
+                        app:textColorSelected="@color/colorAccent" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="7dp"
-                        android:layout_marginEnd="18dp"
-                        android:clickable="false"
-                        android:gravity="start"
-                        android:longClickable="false"
-                        android:padding="8dp"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="15sp" />
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/rounded_white"
+                            android:minWidth="150dp"
+                            android:padding="5dp">
+
+
+                            <Spinner
+                                android:id="@+id/spGover"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/custom_spinner_icon"
+                                android:gravity="center"
+
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp" />
+
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/flCity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:visibility="gone"
+                            android:background="@drawable/rounded_white"
+                            android:minWidth="150dp"
+                            android:padding="5dp">
+
+
+                            <Spinner
+                                android:id="@+id/spCity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:background="@drawable/custom_spinner_icon"
+                                android:gravity="center"
+
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp" />
+
+                        </FrameLayout>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="7dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="8dp"
                         android:clickable="false"
                         android:gravity="start"
+
                         android:longClickable="false"
                         android:text="@string/location_type"
                         android:textColor="@color/black"
@@ -190,7 +245,20 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recviewtype"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:paddingRight="16dp"
+                        android:paddingLeft="16dp">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recviewsubtype"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:paddingRight="16dp"
+                        android:paddingLeft="16dp"
+                      >
 
                     </androidx.recyclerview.widget.RecyclerView>
 
@@ -202,6 +270,7 @@
                         android:layout_marginEnd="8dp"
                         android:clickable="false"
                         android:gravity="start"
+                        android:visibility="gone"
                         android:longClickable="false"
                         android:text="@string/site_area_m"
                         android:textColor="@color/black"
@@ -210,6 +279,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="20dp">
 
                         <SeekBar
@@ -229,6 +299,33 @@
                             android:layout_centerVertical="true"
                             android:gravity="center" />
                     </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="false"
+                        android:gravity="center"
+                        android:longClickable="false"
+                        android:text="@string/write_address"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/edtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/rounded_strock_gray7"
+                        android:gravity="start"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -264,10 +361,10 @@
                 android:id="@+id/fltotal"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/small_rounded_white_stroke"
+                android:layout_gravity="bottom">
+<!--                android:background="@drawable/small_rounded_white_stroke"-->
 
-                >
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -279,6 +376,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <TextView
@@ -298,6 +396,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
                             android:orientation="horizontal">
 
                             <TextView
@@ -335,7 +434,7 @@
 
                     <Button
                         android:id="@+id/btBuy"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="5dp"

@@ -3,21 +3,24 @@ package com.betna.models;
 import java.io.Serializable;
 
 public class OrderModel implements Serializable {
-   private int id;
-   private int user_id;
-   private int service_id;
-   private String date;
-   private int rev_id;
-   private int type_id;
-   private int area;
-   private double longitude;
-   private double latitude;
-   private String notes;
-   private String status;
-   private double total;
-   private String  created_at;
-   private String  updated_at;
-   private ServiceModel service;
+    private int id;
+    private int user_id;
+    private int service_id;
+    private String date;
+    private int rev_id;
+    private int type_id;
+    private int area;
+    private double longitude;
+    private double latitude;
+    private String notes;
+    private String status;
+    private double total;
+    private int governorate_id;
+    private int city_id;
+    private String created_at;
+    private String updated_at;
+    private String location;
+    private ServiceModel service;
 
     public int getId() {
         return id;
@@ -77,6 +80,18 @@ public class OrderModel implements Serializable {
 
     public ServiceModel getService() {
         return service;
+    }
+
+    public int getGovernorate_id() {
+        return governorate_id;
+    }
+
+    public int getCity_id() {
+        return city_id;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }
 

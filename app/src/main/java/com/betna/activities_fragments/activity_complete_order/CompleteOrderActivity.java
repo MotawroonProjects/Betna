@@ -115,7 +115,7 @@ public class CompleteOrderActivity extends AppCompatActivity implements Listener
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .storeOrder(userModel.getUser().getId() + " ", serviceModel.getService_id() + " ", serviceModel.getType_id() + " ", serviceModel.getArea(), serviceModel.getLongitude(), serviceModel.getLatitude(), serviceModel.getNotes(), serviceModel.getTotal(), serviceModel.getDate())
+                .storeOrder(userModel.getUser().getId() + " ", serviceModel.getService_id() + " ", serviceModel.getType_id() + " ", serviceModel.getArea(), serviceModel.getLongitude(), serviceModel.getLatitude(), serviceModel.getNotes(), serviceModel.getTotal(), serviceModel.getDate(),serviceModel.getAddress(),serviceModel.getGovernorate_id()+"",serviceModel.getCity_id()+"")
                 .enqueue(new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
@@ -174,7 +174,7 @@ public class CompleteOrderActivity extends AppCompatActivity implements Listener
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .updateOrder(serviceModel.getOrderid()+"",userModel.getUser().getId() + " ", serviceModel.getService_id() + " ", serviceModel.getType_id() + " ", serviceModel.getArea(), serviceModel.getLongitude(), serviceModel.getLatitude(), serviceModel.getNotes(), serviceModel.getTotal(), serviceModel.getDate())
+                .updateOrder(serviceModel.getOrderid()+"",userModel.getUser().getId() + " ", serviceModel.getService_id() + " ", serviceModel.getType_id() + " ", serviceModel.getArea(), serviceModel.getLongitude(), serviceModel.getLatitude(), serviceModel.getNotes(), serviceModel.getTotal(), serviceModel.getDate(),serviceModel.getAddress(),serviceModel.getGovernorate_id()+"",serviceModel.getCity_id()+"")
                 .enqueue(new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
