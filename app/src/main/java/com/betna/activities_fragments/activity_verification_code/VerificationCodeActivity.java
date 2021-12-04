@@ -101,7 +101,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 //            Intent intent=getIntent();
 //            setResult(RESULT_OK,intent);
 //            finish();
-          // login();
+           login();
             if (!code.isEmpty()) {
                 binding.edtCode.setError(null);
                 Common.CloseKeyBoard(this, binding.edtCode);
@@ -196,11 +196,11 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 if (e.getMessage() != null) {
                     // Common.CreateDialogAlert(this, e.getMessage());
                 } else {
-                    Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+             //       Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            Toast.makeText(this, "wait sms", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "wait sms", Toast.LENGTH_SHORT).show();
         }
 
     }

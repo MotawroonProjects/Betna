@@ -115,6 +115,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
+                        android:visibility="gone"
                         android:text='@{model.service.price+""}'
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -126,6 +127,7 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="@string/egp"
+                        android:visibility="gone"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </LinearLayout>

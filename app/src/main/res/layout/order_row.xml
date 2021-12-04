@@ -9,6 +9,7 @@
             type="com.betna.models.OrderModel" />
 
         <import type="android.graphics.Color" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,6 +117,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
+                        android:visibility="gone"
                         android:text='@{model.service.price+""}'
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -126,6 +128,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
+                        android:visibility="gone"
                         android:text="@string/egp"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -134,11 +137,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/color1" />
+                    android:background="@color/color1"
+                    android:visibility='@{model.status.equals("sent")?View.VISIBLE:View.GONE,default=gone}'
+
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility='@{model.status.equals("sent")?View.VISIBLE:View.GONE,default=gone}'
                     android:orientation="horizontal">
 
                     <LinearLayout
