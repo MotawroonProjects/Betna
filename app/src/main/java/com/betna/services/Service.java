@@ -17,6 +17,8 @@ import com.betna.models.SubTypeDataModel;
 import com.betna.models.TypeDataModel;
 import com.betna.models.UserModel;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -135,7 +137,9 @@ public interface Service {
                                     @Field("date") String date,
                                     @Field("location") String location,
                                     @Field("governorate_id") String governorate_id,
-                                    @Field("city_id") String city_id
+                                    @Field("city_id") String city_id,
+                                    @Field("sub_places[]") List<Integer> sub_places
+
 
     );
 
@@ -169,7 +173,8 @@ public interface Service {
             @Field("date") String date,
             @Field("location") String location,
             @Field("governorate_id") String governorate_id,
-            @Field("city_id") String city_id
+            @Field("city_id") String city_id,
+            @Field("sub_places[]") List<Integer> sub_places
 
     );
 

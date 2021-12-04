@@ -1,6 +1,7 @@
 package com.betna.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class OrderModel implements Serializable {
     private int id;
@@ -21,6 +22,7 @@ public class OrderModel implements Serializable {
     private String updated_at;
     private String location;
     private ServiceModel service;
+    private List<SubPlaces> sub_places;
 
     public int getId() {
         return id;
@@ -92,6 +94,28 @@ public class OrderModel implements Serializable {
 
     public String getLocation() {
         return location;
+    }
+
+    public List<SubPlaces> getSub_places() {
+        return sub_places;
+    }
+
+    public class SubPlaces implements Serializable{
+        private int id;
+        private int order_id;
+        private int sub_place_id;
+
+        public int getId() {
+            return id;
+        }
+
+        public int getOrder_id() {
+            return order_id;
+        }
+
+        public int getSub_place_id() {
+            return sub_place_id;
+        }
     }
 }
 

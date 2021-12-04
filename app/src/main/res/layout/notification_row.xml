@@ -26,7 +26,7 @@
             android:layout_marginEnd="5dp"
             android:ellipsize="end"
             android:lineSpacingExtra="5dp"
-            android:text="@{model.title}"
+            android:text="@{model.message}"
             android:textColor="@color/gray1"
             android:textSize="15sp" />
 

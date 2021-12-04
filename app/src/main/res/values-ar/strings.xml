@@ -82,7 +82,9 @@
     <string name="order_detials">تفاصيل الطلب</string>
     <string name="notifications">الاشعارات</string>
     <string name="write_address">اكتب العنوان</string>
-    <string name="ch_gover">Choose Governate</string>
-    <string name="ch_city">Choose City</string>
+    <string name="ch_gover">اختر المحافظه </string>
+    <string name="ch_city">اختر المدينه</string>
+    <string name="ch_sub">اختر الاماكن الفرعيه</string>
+    <string name="fees">سيتم اضافة رسوم </string>
 
 </resources>

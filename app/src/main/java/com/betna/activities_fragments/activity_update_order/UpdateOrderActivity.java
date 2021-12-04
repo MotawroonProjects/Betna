@@ -31,6 +31,7 @@ import com.betna.R;
 import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_login.LoginActivity;
+import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
 import com.betna.adapters.SpinnerCityAdapter;
 import com.betna.adapters.SpinnerGoveAdapter;
 import com.betna.adapters.SubTypeAdapter;
@@ -109,6 +110,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
     private LocationCallback locationCallback;
     private final String fineLocPerm = Manifest.permission.ACCESS_FINE_LOCATION;
     private final int loc_req = 1225;
+    private List<Integer> ids;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -239,9 +241,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
                             if (response.body() != null && response.body().getStatus() == 200) {
                                 if (response.body().getData() != null) {
-                                    subTypeModelList.clear();
-                                    subTypeModelList.addAll(response.body().getData());
-                                    subTypeAdapter.notifyDataSetChanged();
+                                    update(response.body());
                                 }
                             } else {
 
@@ -296,6 +296,24 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
     }
 
+    private void update(SubTypeDataModel body) {
+        subTypeModelList.clear();
+        subTypeModelList.addAll(body.getData());
+        subTypeAdapter.notifyDataSetChanged();
+     for(int i=0;i<subTypeModelList.size();i++){
+         for(int j=0;j<orderModel.getSub_places().size();j++){
+             if(orderModel.getSub_places().get(j).getSub_place_id()==subTypeModelList.get(i).getId()){
+                 SubTypeModel subTypeModel=subTypeModelList.get(i);
+                 subTypeModel.setSelected(true);
+                 subTypeModelList.set(i,subTypeModel);
+                 subTypeAdapter.notifyItemChanged(i);
+                 ids.add(subTypeModel.getId());
+                 break;
+             }
+         }
+     }
+    }
+
     private void updateData(TypeDataModel body) {
 
         typeModelList.clear();
@@ -345,6 +363,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         subTypeModelList = new ArrayList<>();
         dataList = new ArrayList<>();
         cityList = new ArrayList<>();
+        ids = new ArrayList<>();
 
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
@@ -412,7 +431,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                 addServiceModel.setNotes(binding.edtNote.getText().toString());
                 addServiceModel.setAddress(binding.edtAddress.getText().toString());
 
-                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0) {
+                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0&&ids.size()>0) {
                     if (userModel != null) {
                         updateorder();
 //                        Intent intent = new Intent(UpdateOrderActivity.this, CompleteOrderActivity.class);
@@ -438,6 +457,9 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                         Toast.makeText(UpdateOrderActivity.this, getResources().getString(R.string.ch_city), Toast.LENGTH_LONG).show();
 
                     }
+                    if(ids.size()==0){
+                        Toast.makeText(UpdateOrderActivity.this,getResources().getString(R.string.ch_sub),Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
@@ -447,10 +469,13 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
+                    binding.tvtitle.setText(getResources().getString(R.string.fees));
 
                     addServiceModel.setGovernorate_id(0);
                 } else {
                     addServiceModel.setGovernorate_id(dataList.get(i).getId());
+                    binding.tvtitle.setText(getResources().getString(R.string.fees)+dataList.get(i).getPrice());
+
                     getCities(dataList.get(i).getId());
 
                 }
@@ -468,7 +493,13 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                     addServiceModel.setCity_id(0);
                 } else {
                     addServiceModel.setCity_id(cityList.get(i).getId());
+                    if(cityList.get(i).getPrice()>0){
+                        binding.tvtitle.setText(getResources().getString(R.string.fees)+cityList.get(i).getPrice());
+                    }
+                    else{
+                        binding.tvtitle.setText(getResources().getString(R.string.fees)+dataList.get(binding.spGover.getSelectedItemPosition()).getPrice());
 
+                    }
                 }
             }
 
@@ -692,6 +723,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
     }
 
     public void setselection(TypeModel specialModel) {
+        ids.clear();
         addServiceModel.setType_id(specialModel.getId());
         getType(specialModel.getId());
     }
@@ -830,6 +862,15 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
     public void setsubselection(SubTypeModel specialModel) {
         //   type = specialModel.getId() + "";
         //addServiceModel.setType_id(specialModel.getId());
+      //  Log.e("sslls",ids.size()+"");
+        if (!ids.contains(specialModel.getId())) {
+            ids.add(specialModel.getId());
+        } else {
+            if (!specialModel.isSelected()) {
+                ids.remove(ids.indexOf(specialModel.getId()));
+            }
+        }
+        //Log.e("sslls",ids.size()+"");
 
     }
     private void updateorder() {
@@ -837,7 +878,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .updateOrder(addServiceModel.getOrderid()+"",userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(),addServiceModel.getAddress(),addServiceModel.getGovernorate_id()+"",addServiceModel.getCity_id()+"")
+                .updateOrder(addServiceModel.getOrderid()+"",userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(),addServiceModel.getAddress(),addServiceModel.getGovernorate_id()+"",addServiceModel.getCity_id()+"",ids)
                 .enqueue(new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {

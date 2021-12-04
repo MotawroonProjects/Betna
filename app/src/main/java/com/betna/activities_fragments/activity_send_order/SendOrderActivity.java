@@ -122,6 +122,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private LocationCallback locationCallback;
     private final String fineLocPerm = Manifest.permission.ACCESS_FINE_LOCATION;
     private final int loc_req = 1225;
+    private List<Integer> ids;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -350,6 +351,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         subTypeModelList = new ArrayList<>();
         dataList = new ArrayList<>();
         cityList = new ArrayList<>();
+        ids = new ArrayList<>();
         preferences = Preferences.getInstance();
         userModel = preferences.getUserData(this);
         Paper.init(this);
@@ -406,8 +408,11 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 if (i == 0) {
 
                     addServiceModel.setGovernorate_id(0);
+                    binding.tvtitle.setText(getResources().getString(R.string.fees));
+
                 } else {
                     addServiceModel.setGovernorate_id(dataList.get(i).getId());
+                    binding.tvtitle.setText(getResources().getString(R.string.fees)+dataList.get(i).getPrice());
                     getCities(dataList.get(i).getId());
 
                 }
@@ -419,12 +424,20 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
             }
         });
         binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
                     addServiceModel.setCity_id(0);
                 } else {
                     addServiceModel.setCity_id(cityList.get(i).getId());
+                    if(cityList.get(i).getPrice()>0){
+                        binding.tvtitle.setText(getResources().getString(R.string.fees)+cityList.get(i).getPrice());
+                    }
+                    else{
+                        binding.tvtitle.setText(getResources().getString(R.string.fees)+dataList.get(binding.spGover.getSelectedItemPosition()).getPrice());
+
+                    }
 
                 }
             }
@@ -443,7 +456,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 addServiceModel.setNotes(binding.edtNote.getText().toString());
                 addServiceModel.setAddress(binding.edtAddress.getText().toString());
 
-                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0) {
+                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0&&ids.size()>0) {
                     if (userModel != null) {
                         sendorder();
 //                        Intent intent = new Intent(SendOrderActivity.this, CompleteOrderActivity.class);
@@ -468,6 +481,9 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     if (addServiceModel.getCity_id() == 0) {
                         Toast.makeText(SendOrderActivity.this, getResources().getString(R.string.ch_city), Toast.LENGTH_LONG).show();
 
+                    }
+                    if(ids.size()==0){
+                        Toast.makeText(SendOrderActivity.this,getResources().getString(R.string.ch_sub),Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -664,6 +680,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     }
 
     public void setselection(TypeModel specialModel) {
+        ids.clear();
         type = specialModel.getId() + "";
         addServiceModel.setType_id(specialModel.getId());
         getType(specialModel.getId());
@@ -673,6 +690,13 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     public void setsubselection(SubTypeModel specialModel) {
         //  type = specialModel.getId() + "";
         // addServiceModel.setType_id(specialModel.getId());
+        if (!ids.contains(specialModel.getId())) {
+            ids.add(specialModel.getId());
+        } else {
+            if (!specialModel.isSelected()) {
+                ids.remove(ids.indexOf(specialModel.getId()));
+            }
+        }
 
     }
 
@@ -808,12 +832,13 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     }
 
     private void sendorder() {
+        Log.e("lllll",ids.toString());
         //Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .storeOrder(userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "")
+                .storeOrder(userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "",ids)
                 .enqueue(new Callback<StatusResponse>() {
                     @Override
                     public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
