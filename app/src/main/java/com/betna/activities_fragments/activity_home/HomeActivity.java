@@ -113,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         if (userModel != null) {
-               updateTokenFireBase();
+            updateTokenFireBase();
         }
         setUpBottomNavigation();
         if (type != null && type.equals("order")) {
@@ -131,13 +131,13 @@ public class HomeActivity extends AppCompatActivity {
                 .getInstanceId().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String token = task.getResult().getToken();
-Log.e("dkdkkd",token);
+                Log.e("dkdkkd", token);
                 try {
 
                     try {
 
                         Api.getService(Tags.base_url)
-                                .updatePhoneToken( token,0, userModel.getUser().getId(), "android")
+                                .updatePhoneToken(token, 0, userModel.getUser().getId(), "android")
                                 .enqueue(new Callback<ResponseBody>() {
                                     @Override
                                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -509,7 +509,7 @@ Log.e("dkdkkd",token);
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void listenToNewMessage(NotFireModel notFireModel) {
-        if(fragmentOrders!=null&&fragmentOrders.isVisible()){
+        if (fragmentOrders != null && fragmentOrders.isVisible()) {
             fragmentOrders.getData();
         }
     }
