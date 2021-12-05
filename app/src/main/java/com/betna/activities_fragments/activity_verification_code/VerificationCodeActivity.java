@@ -17,6 +17,7 @@ import com.betna.R;
 
 import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
+import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
 import com.betna.activities_fragments.activity_sign_up.SignUpActivity;
 import com.betna.databinding.ActivityVerificationCodeBinding;
 import com.betna.language.Language;
@@ -84,7 +85,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private void initView() {
         preferences = Preferences.getInstance();
 
-            mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
@@ -101,7 +102,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 //            Intent intent=getIntent();
 //            setResult(RESULT_OK,intent);
 //            finish();
-           login();
+            login();
             if (!code.isEmpty()) {
                 binding.edtCode.setError(null);
                 Common.CloseKeyBoard(this, binding.edtCode);
@@ -111,7 +112,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             }
 
         });
-         sendSmsCode();
+        sendSmsCode();
 
     }
 
@@ -196,11 +197,11 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 if (e.getMessage() != null) {
                     // Common.CreateDialogAlert(this, e.getMessage());
                 } else {
-             //       Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                    //       Toast.makeText(this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-           // Toast.makeText(this, "wait sms", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "wait sms", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -267,17 +268,16 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
 
     private void navigateToHomeActivity() {
-        Intent intent;
+        Intent intent = null;
         if (addServiceModel == null) {
             intent = new Intent(this, HomeActivity.class);
 
-        } else {
-            intent = new Intent(this, CompleteOrderActivity.class);
-
+        }
+        if (intent != null) {
+            // intent.putExtra("data", addServiceModel);
+            startActivity(intent);
         }
 
-        intent.putExtra("data", addServiceModel);
-        startActivity(intent);
         finish();
 
     }

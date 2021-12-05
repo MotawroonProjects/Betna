@@ -381,16 +381,17 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void navigateToHomeActivity() {
-        Intent intent;
+        Intent intent = null;
         if (addServiceModel == null) {
             intent = new Intent(this, HomeActivity.class);
-
-        } else {
-            intent = new Intent(this, CompleteOrderActivity.class);
-
         }
+//        } else {
+//            intent = new Intent(this, CompleteOrderActivity.class);
+//
+//        }
+        if(intent!=null){
         intent.putExtra("data", addServiceModel);
-        startActivity(intent);
+        startActivity(intent);}
         finish();
     }
 

@@ -174,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
         intent.putExtra("data", addServiceModel);
         startActivity(intent);
+        finish();
     }
 
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -76,8 +79,10 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,6 +115,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private SpinnerGoveAdapter adapter;
     private SpinnerCityAdapter spinnerCityAdapter;
     private List<Cities_Model.Data> cityList;
+    private ActivityResultLauncher<Intent> launcher;
 
     private int progress;
     private DatePickerDialog datePickerDialog;
@@ -346,6 +352,12 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
             }
         });
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            userModel=preferences.getUserData(this);
+              sendorder();
+
+        });
+
         addServiceModel = new AddServiceModel();
         typeModelList = new ArrayList<>();
         subTypeModelList = new ArrayList<>();
@@ -465,7 +477,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     } else {
                         Intent intent = new Intent(SendOrderActivity.this, LoginActivity.class);
                         intent.putExtra("data", addServiceModel);
-                        startActivity(intent);
+                       launcher.launch(intent);
                     }
 
                 } else {
