@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -25,7 +24,6 @@ import androidx.databinding.DataBindingUtil;
 
 import com.betna.R;
 
-import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.databinding.ActivitySignupBinding;
 import com.betna.language.Language;
@@ -41,8 +39,6 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import io.paperdb.Paper;
 import okhttp3.MultipartBody;
@@ -258,9 +254,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             // Log.e("flkfkfk", response.body().getStatus() + "");
                             if (response.body().getStatus() == 200) {
-                                preferences.create_update_userdata(SignUpActivity.this, response.body());
-                                preferences.create_update_session(SignUpActivity.this, Tags.session_login);
-                                navigateToHomeActivity();
+
+                                navigateToHomeActivity(response.body());
                             } else if (response.body().getStatus() == 409) {
                                 Toast.makeText(SignUpActivity.this, R.string.phone_found, Toast.LENGTH_SHORT).show();
                             }
@@ -323,9 +318,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             if (response.body().getStatus() == 200) {
 
-                                preferences.create_update_userdata(SignUpActivity.this, response.body());
-                                preferences.create_update_session(SignUpActivity.this, Tags.session_login);
-                                navigateToHomeActivity();
+
+                                navigateToHomeActivity(response.body());
                             } else {
                                 if (response.body().getStatus() == 409) {
                                     Toast.makeText(SignUpActivity.this, getResources().getString(R.string.phone_found), Toast.LENGTH_LONG).show();
@@ -380,7 +374,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    private void navigateToHomeActivity() {
+    private void navigateToHomeActivity(UserModel body) {
+        preferences.create_update_userdata(SignUpActivity.this, body);
+        preferences.create_update_session(SignUpActivity.this, Tags.session_login);
         Intent intent = null;
         if (addServiceModel == null) {
             intent = new Intent(this, HomeActivity.class);
@@ -392,6 +388,11 @@ public class SignUpActivity extends AppCompatActivity {
         if(intent!=null){
         intent.putExtra("data", addServiceModel);
         startActivity(intent);}
+        else{
+            intent = getIntent();
+            setResult(RESULT_OK, intent);
+            //  finish();
+        }
         finish();
     }
 

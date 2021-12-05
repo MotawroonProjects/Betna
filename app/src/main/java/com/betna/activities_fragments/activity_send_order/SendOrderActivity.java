@@ -354,7 +354,8 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         });
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             userModel=preferences.getUserData(this);
-              sendorder();
+            if(userModel!=null){
+              sendorder();}
 
         });
 
@@ -844,7 +845,8 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     }
 
     private void sendorder() {
-        Log.e("lllll",ids.toString());
+        userModel=preferences.getUserData(this);
+
         //Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);

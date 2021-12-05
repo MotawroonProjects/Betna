@@ -48,7 +48,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
             Log.e("keys", key + "    value " + map.get(key));
         }
 
-        if (getSession().equals(Tags.session_login)) {
+        if (getSession().equals(Tags.session_login)&&getUserData()!=null) {
             Log.e("sllslslls", "lslslsls");
             //     Log.e("sllslslls", "lslslsls");
 

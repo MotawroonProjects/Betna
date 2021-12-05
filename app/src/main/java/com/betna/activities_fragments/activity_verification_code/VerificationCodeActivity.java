@@ -189,9 +189,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             mAuth.signInWithCredential(credential)
                     .addOnSuccessListener(authResult -> {
-                        Intent intent = getIntent();
-                        setResult(RESULT_OK, intent);
-                        finish();
+
                         login();
                     }).addOnFailureListener(e -> {
                 if (e.getMessage() != null) {
@@ -220,9 +218,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             if (response.body().getStatus() == 200) {
 
-                                preferences.create_update_userdata(VerificationCodeActivity.this, response.body());
-                                preferences.create_update_session(VerificationCodeActivity.this, Tags.session_login);
-                                navigateToHomeActivity();
+
+                                navigateToHomeActivity(response.body());
 
                             } else if (response.body().getStatus() == 404) {
                                 navigateToSignUpActivity();
@@ -267,15 +264,22 @@ public class VerificationCodeActivity extends AppCompatActivity {
     }
 
 
-    private void navigateToHomeActivity() {
+    private void navigateToHomeActivity(UserModel body) {
+        preferences.create_update_userdata(VerificationCodeActivity.this, body);
+        preferences.create_update_session(VerificationCodeActivity.this, Tags.session_login);
         Intent intent = null;
         if (addServiceModel == null) {
             intent = new Intent(this, HomeActivity.class);
 
         }
+
         if (intent != null) {
             // intent.putExtra("data", addServiceModel);
             startActivity(intent);
+        }else{
+            intent = getIntent();
+            setResult(RESULT_OK, intent);
+          //  finish();
         }
 
         finish();
