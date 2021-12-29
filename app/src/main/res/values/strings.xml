@@ -85,5 +85,10 @@
     <string name="ch_city">Choose City</string>
     <string name="ch_sub">Choose Sub Location</string>
     <string name="fees">Fees will be added </string>
+    <string name="meters">Meters</string>
+    <string name="price">price</string>
+    <string name="cost">Cost</string>
+    <string name="shipping">Fees</string>
+    <string name="total3">Total</string>
 
 </resources>

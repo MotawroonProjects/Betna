@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class SubTypeModel implements Serializable {
    private int id;
    private String name;
+   private String price;
    private int place_type;
     private boolean selected;
 
@@ -22,6 +23,10 @@ public class SubTypeModel implements Serializable {
 
     public boolean isSelected() {
         return selected;
+    }
+
+    public String getPrice() {
+        return price;
     }
 
     public void setSelected(boolean selected) {

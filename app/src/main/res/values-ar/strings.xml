@@ -26,7 +26,7 @@
     <string name="services">خدمات</string>
     <string name="phone_found">الرقم موجود</string>
     <string name="status">الحالة</string>
-    <string name="egp">جنيه مصري</string>
+    <string name="egp">ج.م</string>
     <string name="edit">تعديل</string>
     <string name="welcome">اهلا</string>
     <string name="my_profile">ملفي</string>
@@ -86,5 +86,10 @@
     <string name="ch_city">اختر المدينه</string>
     <string name="ch_sub">اختر الاماكن الفرعيه</string>
     <string name="fees">سيتم اضافة رسوم </string>
+    <string name="meters">عدد الامتار</string>
+    <string name="price">السعر</string>
+    <string name="cost">المبلغ</string>
+    <string name="shipping">الرسوم</string>
+    <string name="total3">الإجمالي</string>
 
 </resources>

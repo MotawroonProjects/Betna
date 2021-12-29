@@ -84,14 +84,15 @@ public class SubTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             list.set(selectedPos, specialModel);
             if (context instanceof SendOrderActivity) {
                 SendOrderActivity activity = (SendOrderActivity) context;
-                activity.setsubselection(specialModel);
+                activity.setsubselection(specialModel,adapterPosition);
 
             }
             else   if (context instanceof UpdateOrderActivity) {
                 UpdateOrderActivity activity = (UpdateOrderActivity) context;
-                activity.setsubselection(specialModel);
+                activity.setsubselection(specialModel,adapterPosition);
 
             }
+
             //notifyItemChanged(selectedPos);
 
         }

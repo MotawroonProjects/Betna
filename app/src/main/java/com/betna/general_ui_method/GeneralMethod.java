@@ -15,6 +15,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.betna.tags.Tags;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -141,6 +142,14 @@ public class GeneralMethod {
 
         }
     }
+
+    @BindingAdapter("format")
+    public static void format(TextView textView, String amount) {
+        String s = new BigDecimal(amount).toPlainString();
+        textView.setText(s);
+    }
+
+
 
 }
 

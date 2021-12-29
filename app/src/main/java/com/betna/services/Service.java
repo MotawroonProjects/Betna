@@ -160,21 +160,20 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/updateOrder")
-    Call<StatusResponse> updateOrder(
-            @Field("order_id") String order_id,
-            @Field("user_id") String user_id,
-            @Field("service_id") String service_id,
-            @Field("type_id") String type_id,
-            @Field("area") String area,
-            @Field("longitude") String longitude,
-            @Field("latitude") String latitude,
-            @Field("notes") String notes,
-            @Field("total") String total,
-            @Field("date") String date,
-            @Field("location") String location,
-            @Field("governorate_id") String governorate_id,
-            @Field("city_id") String city_id,
-            @Field("sub_places[]") List<Integer> sub_places
+    Call<StatusResponse> updateOrder(@Field("order_id") String order_id,
+                                     @Field("user_id") String user_id,
+                                     @Field("service_id") String service_id,
+                                     @Field("type_id") String type_id,
+                                     @Field("area") String area,
+                                     @Field("longitude") String longitude,
+                                     @Field("latitude") String latitude,
+                                     @Field("notes") String notes,
+                                     @Field("total") String total,
+                                     @Field("date") String date,
+                                     @Field("location") String location,
+                                     @Field("governorate_id") String governorate_id,
+                                     @Field("city_id") String city_id,
+                                     @Field("sub_places[]") List<Integer> sub_places
 
     );
 

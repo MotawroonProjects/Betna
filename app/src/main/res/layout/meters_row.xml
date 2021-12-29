@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.betna.models.MetersModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.title}"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/small_stroke_gray"
+                android:hint="@string/meters"
+                android:inputType="number"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
+                android:text="@={model.meter_number}"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <androidx.legacy.widget.Space
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <TextView
+                format='@{model.total_meter_price+""}'
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/small_stroke_gray"
+                android:gravity="center"
+                android:hint="@string/price"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

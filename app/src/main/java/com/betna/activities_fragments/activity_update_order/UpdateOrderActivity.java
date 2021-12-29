@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SeekBar;
@@ -37,11 +38,13 @@ import com.betna.adapters.SpinnerGoveAdapter;
 import com.betna.adapters.SubTypeAdapter;
 import com.betna.adapters.TypeAdapter;
 import com.betna.databinding.ActivitySendOrderBinding;
+import com.betna.databinding.MetersRowBinding;
 import com.betna.interfaces.Listeners;
 import com.betna.language.Language;
 import com.betna.models.AddServiceModel;
 import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
+import com.betna.models.MetersModel;
 import com.betna.models.OrderModel;
 import com.betna.models.ServiceModel;
 import com.betna.models.StatusResponse;
@@ -111,7 +114,10 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
     private final String fineLocPerm = Manifest.permission.ACCESS_FINE_LOCATION;
     private final int loc_req = 1225;
     private List<Integer> ids;
-
+    private List<MetersRowBinding> meterList;
+    private double shippingCost;
+    private double totalItemCost = 0.0;
+    private double total = 0.0;
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -308,6 +314,11 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                  subTypeModelList.set(i,subTypeModel);
                  subTypeAdapter.notifyItemChanged(i);
                  ids.add(subTypeModel.getId());
+
+
+
+
+
                  break;
              }
          }
@@ -334,6 +345,8 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
 
     private void initView() {
+        meterList = new ArrayList<>();
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
         Calendar endDate = Calendar.getInstance(TimeZone.getDefault());
@@ -465,17 +478,20 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
         });
 
+
         binding.spGover.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    binding.tvtitle.setText(getResources().getString(R.string.fees));
 
                     addServiceModel.setGovernorate_id(0);
+                    //binding.tvtitle.setText(getResources().getString(R.string.fees));
+                    shippingCost = 0.0;
+                    binding.setShipping(shippingCost + "");
+
                 } else {
                     addServiceModel.setGovernorate_id(dataList.get(i).getId());
-                    binding.tvtitle.setText(getResources().getString(R.string.fees)+dataList.get(i).getPrice());
-
+                    // binding.tvtitle.setText(getResources().getString(R.string.fees) + dataList.get(i).getPrice());
                     getCities(dataList.get(i).getId());
 
                 }
@@ -487,20 +503,26 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
             }
         });
         binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
+                    shippingCost = 0.0;
                     addServiceModel.setCity_id(0);
                 } else {
                     addServiceModel.setCity_id(cityList.get(i).getId());
-                    if(cityList.get(i).getPrice()>0){
-                        binding.tvtitle.setText(getResources().getString(R.string.fees)+cityList.get(i).getPrice());
-                    }
-                    else{
-                        binding.tvtitle.setText(getResources().getString(R.string.fees)+dataList.get(binding.spGover.getSelectedItemPosition()).getPrice());
+                    if (cityList.get(i).getPrice() > 0) {
+                        shippingCost = cityList.get(i).getPrice();
+                        binding.setShipping(shippingCost + "");
+
+                    } else {
+                        shippingCost = dataList.get(binding.spGover.getSelectedItemPosition()).getPrice();
+                        binding.setShipping(dataList.get(binding.spGover.getSelectedItemPosition()).getPrice() + "");
 
                     }
+
                 }
+                calculateTotal();
             }
 
             @Override
@@ -514,6 +536,26 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
         //    CheckPermission();
 
+    }
+
+    public void calculateTotal() {
+        total = 0.0;
+        totalItemCost = 0.0;
+
+        totalItemCost = getTotalOfMeters();
+        total = totalItemCost + shippingCost;
+        binding.setItemTotal(totalItemCost + "");
+
+        binding.setTotal(total + "");
+    }
+
+    private double getTotalOfMeters() {
+        double total = 0.0;
+        for (MetersRowBinding rowBinding : meterList) {
+            total += rowBinding.getModel().getTotal_meter_price();
+        }
+
+        return total;
     }
 
     private void getGovernates() {
@@ -859,10 +901,18 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
     }
 
-    public void setsubselection(SubTypeModel specialModel) {
+    public void setsubselection(SubTypeModel specialModel,int adapterPosition) {
         //   type = specialModel.getId() + "";
         //addServiceModel.setType_id(specialModel.getId());
       //  Log.e("sslls",ids.size()+"");
+
+        if (specialModel.isSelected()) {
+            addMeterView(specialModel, adapterPosition);
+
+        } else {
+            removeMeterView(specialModel, adapterPosition);
+
+        }
         if (!ids.contains(specialModel.getId())) {
             ids.add(specialModel.getId());
         } else {
@@ -873,6 +923,43 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         //Log.e("sslls",ids.size()+"");
 
     }
+
+    private void addMeterView(SubTypeModel specialModel, int adapterPosition) {
+        MetersRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.meters_row, null, false);
+        MetersModel metersModel = new MetersModel(this);
+        metersModel.setTitle(specialModel.getName());
+        metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
+        rowBinding.getRoot().setTag(adapterPosition);
+        rowBinding.setModel(metersModel);
+        meterList.add(rowBinding);
+        binding.llMeters.addView(rowBinding.getRoot());
+        binding.setItemTotal(getTotalOfMeters() + "");
+        calculateTotal();
+    }
+
+    private void removeMeterView(SubTypeModel specialModel, int adapterPosition) {
+        int childPos = getItemPos(adapterPosition);
+        if (childPos != -1) {
+            binding.llMeters.removeViewAt(childPos);
+            meterList.remove(childPos);
+            binding.setItemTotal(getTotalOfMeters() + "");
+            calculateTotal();
+
+        }
+    }
+
+    private int getItemPos(int id) {
+        int pos = -1;
+        for (int index = 0; index < meterList.size(); index++) {
+            int tag = (int) binding.llMeters.getChildAt(index).getTag();
+            if (tag == id) {
+                pos = index;
+                return pos;
+            }
+        }
+        return pos;
+    }
+
     private void updateorder() {
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
