@@ -25,6 +25,7 @@ import androidx.databinding.DataBindingUtil;
 import com.betna.R;
 
 import com.betna.activities_fragments.activity_home.HomeActivity;
+import com.betna.activities_fragments.activity_verification_code.VerificationCodeActivity;
 import com.betna.databinding.ActivitySignupBinding;
 import com.betna.language.Language;
 import com.betna.models.AddServiceModel;
@@ -385,10 +386,10 @@ public class SignUpActivity extends AppCompatActivity {
 //            intent = new Intent(this, CompleteOrderActivity.class);
 //
 //        }
-        if(intent!=null){
-        intent.putExtra("data", addServiceModel);
-        startActivity(intent);}
-        else{
+        if (intent != null) {
+            intent.putExtra("data", addServiceModel);
+            startActivity(intent);
+        } else {
             intent = getIntent();
             setResult(RESULT_OK, intent);
             //  finish();
@@ -396,4 +397,13 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, VerificationCodeActivity.class);
+        intent.putExtra("phone_code", phone_code);
+        intent.putExtra("phone", phone);
+        intent.putExtra("data", addServiceModel);
+        startActivity(intent);
+        finish();
+    }
 }

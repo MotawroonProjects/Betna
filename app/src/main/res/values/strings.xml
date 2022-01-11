@@ -90,5 +90,6 @@
     <string name="cost">Cost</string>
     <string name="shipping">Fees</string>
     <string name="total3">Total</string>
+    <string name="number_blocked">Your number is blocked please, try again after 24 hour</string>
 
 </resources>

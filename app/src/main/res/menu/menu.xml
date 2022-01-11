@@ -17,6 +17,11 @@
         android:icon="@drawable/ic_order"
         />
 
+    <item android:id="@+id/partner"
+        android:title=""
+        android:icon="@drawable/ic_partener"
+        />
+
     <item android:id="@+id/profile"
         android:title=""
         android:icon="@drawable/ic_user"

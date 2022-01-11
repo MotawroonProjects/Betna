@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.betna.models.PartnerModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="3dp"
+        app:contentPadding="5dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                user_image="@{model.photo}"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="2"
+                android:text="@{model.name}"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

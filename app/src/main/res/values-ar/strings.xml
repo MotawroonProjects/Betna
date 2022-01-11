@@ -91,5 +91,6 @@
     <string name="cost">المبلغ</string>
     <string name="shipping">الرسوم</string>
     <string name="total3">الإجمالي</string>
+    <string name="number_blocked">لقد تم حظر رقم الجوال الخاص بك من فضلك يرجى المحاولة بعد 24 ساعة</string>
 
 </resources>

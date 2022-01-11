@@ -73,27 +73,27 @@ public class GeneralMethod {
 
     }
 
-//    @BindingAdapter("user_image")
-//    public static void user_image(View view, String endPoint) {
-//        if (view instanceof CircleImageView) {
-//            CircleImageView imageView = (CircleImageView) view;
-//
-//            if (endPoint != null) {
-//                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.ic_avatar).into(imageView);
-//            }
-//        } else if (view instanceof RoundedImageView) {
-//            RoundedImageView imageView = (RoundedImageView) view;
-//            if (endPoint != null) {
-//                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).fit().placeholder(R.drawable.ic_avatar).into(imageView);
-//            }
-//        } else if (view instanceof ImageView) {
-//            ImageView imageView = (ImageView) view;
-//            if (endPoint != null) {
-//                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.ic_avatar).fit().into(imageView);
-//            }
-//        }
-//
-//    }
+    @BindingAdapter("user_image")
+    public static void user_image(View view, String endPoint) {
+        if (view instanceof CircleImageView) {
+            CircleImageView imageView = (CircleImageView) view;
+
+            if (endPoint != null) {
+                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.ic_avatar).into(imageView);
+            }
+        } else if (view instanceof RoundedImageView) {
+            RoundedImageView imageView = (RoundedImageView) view;
+            if (endPoint != null) {
+                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).fit().placeholder(R.drawable.ic_avatar).into(imageView);
+            }
+        } else if (view instanceof ImageView) {
+            ImageView imageView = (ImageView) view;
+            if (endPoint != null) {
+                Picasso.get().load(Uri.parse(Tags.IMAGE_URL + endPoint)).placeholder(R.drawable.ic_avatar).into(imageView);
+            }
+        }
+
+    }
 
     @BindingAdapter("date")
     public static void date(TextView view, String date) {

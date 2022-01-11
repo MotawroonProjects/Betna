@@ -71,10 +71,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-//        countries = new CountryModel[]{new CountryModel("EG", getResources().getString(R.string.egypt), "
-//        +20", R.drawable.flag_eg, "EGP"),
-//                new CountryModel("SA", getResources().getString(R.string.saudi_arabia), "+966", R.drawable.flag_sa, "SAR")};
-//        countryModelList = new ArrayList<>(Arrays.asList(countries));
 
         preferences = Preferences.getInstance();
         Paper.init(this);
@@ -109,49 +105,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        binding.llBack.setOnClickListener(v -> {
+          navigateToHomeActivity();
+        });
 
-//        binding.arrow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.show();
-//            }
-//        });
-//        //    countryDialog();
-//        sortCountries();
-//        createCountriesDialog();
     }
 
 
-//    private void createCountriesDialog() {
-//
-//        dialog = new AlertDialog.Builder(this)
-//                .create();
-//        countriesAdapter = new CountriesAdapter(countryModelList, this);
-//
-//        DialogCountriesBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_countries, null, false);
-//        binding.recView.setLayoutManager(new LinearLayoutManager(this));
-//        binding.recView.setAdapter(countriesAdapter);
-//
-//        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
-//        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
-//        dialog.setCanceledOnTouchOutside(false);
-//        dialog.setView(binding.getRoot());
-//    }
-//
-//    private void sortCountries() {
-//        Collections.sort(countryModelList, (country1, country2) -> {
-//            return country1.getName().trim().compareToIgnoreCase(country2.getName().trim());
-//        });
-//    }
-
-//    public void setItemData(CountryModel countryModel) {
-//        dialog.dismiss();
-//        phone_code = countryModel.getDialCode();
-//        binding.tvCode.setText(countryModel.getDialCode());
-//        binding.image.setImageResource(countryModel.getFlag());
-//        loginModel.setPhone_code(phone_code);
-
-//    }
 
 
     private void navigateToHomeActivity() {
@@ -171,11 +131,13 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, VerificationCodeActivity.class);
         intent.putExtra("phone_code", loginModel.getPhone_code());
         intent.putExtra("phone", loginModel.getPhone());
-
         intent.putExtra("data", addServiceModel);
         startActivity(intent);
         finish();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        navigateToHomeActivity();
+    }
 }

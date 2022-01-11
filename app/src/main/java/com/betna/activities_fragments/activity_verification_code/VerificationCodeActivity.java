@@ -17,6 +17,7 @@ import com.betna.R;
 
 import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
+import com.betna.activities_fragments.activity_login.LoginActivity;
 import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
 import com.betna.activities_fragments.activity_sign_up.SignUpActivity;
 import com.betna.databinding.ActivityVerificationCodeBinding;
@@ -30,6 +31,7 @@ import com.betna.tags.Tags;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.io.IOException;
@@ -55,6 +57,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private Preferences preferences;
     private boolean canSend = false;
     private AddServiceModel addServiceModel;
+    private PhoneAuthProvider.ForceResendingToken forceResendingToken;
 
 
     @Override
@@ -99,10 +102,6 @@ public class VerificationCodeActivity extends AppCompatActivity {
         });
         binding.btnConfirm.setOnClickListener(view -> {
             String code = binding.edtCode.getText().toString().trim();
-//            Intent intent=getIntent();
-//            setResult(RESULT_OK,intent);
-//            finish();
-          //  login();
             if (!code.isEmpty()) {
                 binding.edtCode.setError(null);
                 Common.CloseKeyBoard(this, binding.edtCode);
@@ -128,40 +127,63 @@ public class VerificationCodeActivity extends AppCompatActivity {
                 smsCode = phoneAuthCredential.getSmsCode();
                 binding.edtCode.setText(smsCode);
                 checkValidCode(smsCode);
+                Log.e("checkCode", "true");
             }
 
             @Override
             public void onCodeSent(@NonNull String verification_id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(verification_id, forceResendingToken);
                 VerificationCodeActivity.this.verificationId = verification_id;
+                VerificationCodeActivity.this.forceResendingToken = forceResendingToken;
+                Log.e("sent", verification_id);
+
             }
 
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Log.e("dkdkdk", e.toString());
-                if (e.getMessage() != null) {
-                    //   Common.CreateDialogAlert(VerificationCodeActivity.this, e.getMessage());
-                } else {
-                    // Common.CreateDialogAlert(VerificationCodeActivity.this, getString(R.string.failed));
-
+                String msg = e.toString();
+                if (msg.contains("We have blocked all requests")) {
+                    Toast.makeText(VerificationCodeActivity.this, R.string.number_blocked, Toast.LENGTH_LONG).show();
+                    if (timer != null) {
+                        timer.onFinish();
+                        timer.cancel();
+                    }
                 }
+                Log.e("errorCodeVerification", e.toString());
+
             }
         };
-        PhoneAuthProvider.getInstance()
-                .verifyPhoneNumber(
-                        phone_code + phone,
-                        120,
-                        TimeUnit.SECONDS,
-                        this,
-                        mCallBack
 
-                );
+
+        PhoneAuthOptions options;
+        if (forceResendingToken != null) {
+            options = new PhoneAuthOptions.Builder(mAuth)
+                    .setCallbacks(mCallBack)
+                    .setForceResendingToken(forceResendingToken)
+                    .setActivity(this)
+                    .setTimeout(120L, TimeUnit.SECONDS)
+                    .setPhoneNumber(phone_code + phone)
+                    .build();
+
+
+        } else {
+            options = new PhoneAuthOptions.Builder(mAuth)
+                    .setCallbacks(mCallBack)
+                    .setActivity(this)
+                    .setTimeout(120L, TimeUnit.SECONDS)
+                    .setPhoneNumber(phone_code + phone)
+                    .build();
+
+        }
+        PhoneAuthProvider.verifyPhoneNumber(options);
 
 
     }
 
     private void startTimer() {
+        binding.tvCounter.setVisibility(View.VISIBLE);
+        binding.tvResend.setVisibility(View.INVISIBLE);
         canSend = false;
         binding.tvResend.setEnabled(false);
         timer = new CountDownTimer(120 * 1000, 1000) {
@@ -176,12 +198,13 @@ public class VerificationCodeActivity extends AppCompatActivity {
             public void onFinish() {
                 canSend = true;
                 binding.tvCounter.setText("00:00");
+                binding.tvCounter.setVisibility(View.INVISIBLE);
                 binding.tvResend.setEnabled(true);
+                binding.tvResend.setVisibility(View.VISIBLE);
             }
         };
         timer.start();
     }
-
 
     private void checkValidCode(String code) {
 
@@ -276,10 +299,10 @@ public class VerificationCodeActivity extends AppCompatActivity {
         if (intent != null) {
             // intent.putExtra("data", addServiceModel);
             startActivity(intent);
-        }else{
+        } else {
             intent = getIntent();
             setResult(RESULT_OK, intent);
-          //  finish();
+            //  finish();
         }
 
         finish();
@@ -302,5 +325,12 @@ public class VerificationCodeActivity extends AppCompatActivity {
         if (timer != null) {
             timer.cancel();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

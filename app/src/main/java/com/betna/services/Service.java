@@ -6,6 +6,7 @@ import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
 import com.betna.models.NotificationDataModel;
 import com.betna.models.OrderDataModel;
+import com.betna.models.PartnerDataModel;
 import com.betna.models.RateDataModel;
 import com.betna.models.ServiceDataModel;
 import com.betna.models.SettingDataModel;
@@ -210,11 +211,11 @@ public interface Service {
     Call<Governate_Model> getGovernates();
 
     @GET("api/getCity")
-    Call<Cities_Model> getCities(
-            @Query("governorate_id") int governorate_id);
+    Call<Cities_Model> getCities(@Query("governorate_id") int governorate_id);
 
     @GET("api/getSubPlaces")
-    Call<SubTypeDataModel> getSubTYpe(
-            @Query("place_id") int place_id
-    );
+    Call<SubTypeDataModel> getSubTYpe(@Query("place_id") int place_id);
+
+    @GET("api/successPartners")
+    Call<PartnerDataModel> getPartner();
 }

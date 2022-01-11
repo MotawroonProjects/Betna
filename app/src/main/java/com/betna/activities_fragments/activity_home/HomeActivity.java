@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,12 +18,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.betna.activities_fragments.activity_home.fragments.FragmentPartner;
 import com.betna.activities_fragments.activity_notification.NotificationActivity;
-import com.betna.models.AddServiceModel;
 import com.betna.models.NotFireModel;
 import com.betna.remote.Api;
 import com.betna.tags.Tags;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.FragmentDepartments;
 import com.betna.activities_fragments.activity_home.fragments.FragmentOrders;
@@ -57,12 +55,14 @@ public class HomeActivity extends AppCompatActivity {
     private Fragment_Home fragment_home;
     private FragmentDepartments fragmentDepartments;
     private FragmentOrders fragmentOrders;
+    private FragmentPartner fragmentPartner;
 
     private Fragment_Profile fragment_profile;
     private UserModel userModel;
     private String lang;
     private boolean backPressed = false;
     private String type;
+    private Fragment currentFragment;
 
 
     protected void attachBaseContext(Context newBase) {
@@ -188,7 +188,9 @@ public class HomeActivity extends AppCompatActivity {
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("", R.drawable.ic_home);
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("", R.drawable.ic_category);
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("", R.drawable.ic_order);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_user);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem("", R.drawable.ic_partener);
+
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem("", R.drawable.ic_user);
 
         binding.ahBottomNav.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
         binding.ahBottomNav.setDefaultBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -201,6 +203,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.ahBottomNav.addItem(item2);
         binding.ahBottomNav.addItem(item3);
         binding.ahBottomNav.addItem(item4);
+        binding.ahBottomNav.addItem(item5);
 
         updateBottomNavigationPosition(0);
 
@@ -224,6 +227,9 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     break;
                 case 3:
+                    displayFragmentPartner();
+                    break;
+                case 4:
                     displayFragmentProfile();
                     break;
 
@@ -245,17 +251,11 @@ public class HomeActivity extends AppCompatActivity {
             if (fragment_home == null) {
                 fragment_home = Fragment_Home.newInstance();
             }
+            if (currentFragment != null) {
+                fragmentManager.beginTransaction().hide(currentFragment).commit();
 
-
-            if (fragmentOrders != null && fragmentOrders.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragmentOrders).commit();
             }
-            if (fragment_profile != null && fragment_profile.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_profile).commit();
-            }
-            if (fragmentDepartments != null && fragmentDepartments.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragmentDepartments).commit();
-            }
+            currentFragment = fragment_home;
 
 
             if (fragment_home.isAdded()) {
@@ -266,6 +266,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             updateBottomNavigationPosition(0);
+
             //   binding.setTitle(getString(R.string.home));
 
         } catch (Exception e) {
@@ -282,18 +283,11 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentOrders = FragmentOrders.newInstance();
             }
 
+            if (currentFragment != null) {
+                fragmentManager.beginTransaction().hide(currentFragment).commit();
 
-            if (fragment_home != null && fragment_home.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_home).commit();
             }
-            if (fragmentDepartments != null && fragmentDepartments.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragmentDepartments).commit();
-            }
-
-
-            if (fragment_profile != null && fragment_profile.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_profile).commit();
-            }
+            currentFragment = fragmentOrders;
 
 
             if (fragmentOrders.isAdded()) {
@@ -317,17 +311,11 @@ public class HomeActivity extends AppCompatActivity {
             }
 
 
-            if (fragment_home != null && fragment_home.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_home).commit();
-            }
-            if (fragmentOrders != null && fragmentOrders.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragmentOrders).commit();
-            }
+            if (currentFragment != null) {
+                fragmentManager.beginTransaction().hide(currentFragment).commit();
 
-            if (fragment_profile != null && fragment_profile.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_profile).commit();
             }
-
+            currentFragment = fragmentDepartments;
 
             if (fragmentDepartments.isAdded()) {
                 fragmentManager.beginTransaction().show(fragmentDepartments).commit();
@@ -343,6 +331,33 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void displayFragmentPartner() {
+        try {
+            if (fragmentPartner == null) {
+                fragmentPartner = FragmentPartner.newInstance();
+            }
+
+
+            if (currentFragment != null) {
+                fragmentManager.beginTransaction().hide(currentFragment).commit();
+
+            }
+            currentFragment = fragmentPartner;
+
+            if (fragmentPartner.isAdded()) {
+                fragmentManager.beginTransaction().show(fragmentPartner).commit();
+
+            } else {
+                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragmentPartner, "fragmentCart").commit();
+
+            }
+            updateBottomNavigationPosition(3);
+
+            //  binding.setTitle(getString(R.string.cart));
+        } catch (Exception e) {
+        }
+    }
+
 
     public void displayFragmentProfile() {
         try {
@@ -352,16 +367,11 @@ public class HomeActivity extends AppCompatActivity {
             }
 
 
-            if (fragment_home != null && fragment_home.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragment_home).commit();
-            }
-            if (fragmentDepartments != null && fragmentDepartments.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragmentDepartments).commit();
-            }
-            if (fragmentOrders != null && fragmentOrders.isAdded()) {
-                fragmentManager.beginTransaction().hide(fragmentOrders).commit();
-            }
+            if (currentFragment != null) {
+                fragmentManager.beginTransaction().hide(currentFragment).commit();
 
+            }
+            currentFragment = fragment_profile;
 
             if (fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_profile).commit();
@@ -370,7 +380,7 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_profile, "fragment_profile").commit();
 
             }
-            updateBottomNavigationPosition(3);
+            updateBottomNavigationPosition(4);
 
             //binding.setTitle(getString(R.string.profile));
         } catch (Exception e) {
@@ -403,11 +413,8 @@ public class HomeActivity extends AppCompatActivity {
         backPressed = false;
 
         if (fragment_home != null && fragment_home.isAdded() && fragment_home.isVisible()) {
-            if (userModel != null) {
-                finish();
-            } else {
-                navigateToSignInActivity();
-            }
+            finish();
+
         } else {
             displayFragmentMain();
         }

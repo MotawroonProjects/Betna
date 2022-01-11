@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="lang"
+            type="String" />
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+            <LinearLayout
+                android:id="@+id/llNoData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:id="@+id/tvNoDataService"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:lineSpacingExtra="15dp"
+                    android:text="@string/no_data_to_show"
+                    android:textColor="@color/gray32"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+
+                    />
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</layout>
