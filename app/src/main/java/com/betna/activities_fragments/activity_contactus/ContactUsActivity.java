@@ -2,6 +2,9 @@ package com.betna.activities_fragments.activity_contactus;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -68,6 +71,20 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
             }
         });
         binding.llBack.setOnClickListener(view -> finish());
+        binding.whatsapp.setOnClickListener(v -> {
+            String phone ="";
+            String url = "https://api.whatsapp.com/send?phone=" + phone;
+            try {
+                PackageManager pm = getPackageManager();
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            } catch (PackageManager.NameNotFoundException e) {
+                Toast.makeText(this, "Whatsapp app not installed in your phone", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        });
     }
 
     private void contactUs() {

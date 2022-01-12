@@ -6,6 +6,7 @@ import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
 import com.betna.models.NotificationDataModel;
 import com.betna.models.OrderDataModel;
+import com.betna.models.OrderResponseModel;
 import com.betna.models.PartnerDataModel;
 import com.betna.models.RateDataModel;
 import com.betna.models.ServiceDataModel;
@@ -117,29 +118,27 @@ public interface Service {
     );
 
     @GET("api/servicesByDepartment")
-    Call<ServiceDataModel> getservice(
-            @Query("department_id") String department_id
+    Call<ServiceDataModel> getservice(@Query("department_id") String department_id
     );
 
     @GET("api/oneServices")
-    Call<SingleServiceDataModel> getServiceById(@Query("service_id") int service_id
-    );
+    Call<SingleServiceDataModel> getServiceById(@Query("service_id") int service_id);
 
     @FormUrlEncoded
     @POST("api/storeOrder")
-    Call<StatusResponse> storeOrder(@Field("user_id") String user_id,
-                                    @Field("service_id") String service_id,
-                                    @Field("type_id") String type_id,
-                                    @Field("area") String area,
-                                    @Field("longitude") String longitude,
-                                    @Field("latitude") String latitude,
-                                    @Field("notes") String notes,
-                                    @Field("total") String total,
-                                    @Field("date") String date,
-                                    @Field("location") String location,
-                                    @Field("governorate_id") String governorate_id,
-                                    @Field("city_id") String city_id,
-                                    @Field("sub_places[]") List<Integer> sub_places
+    Call<OrderResponseModel> storeOrder(@Field("user_id") String user_id,
+                                        @Field("service_id") String service_id,
+                                        @Field("type_id") String type_id,
+                                        @Field("area") String area,
+                                        @Field("longitude") String longitude,
+                                        @Field("latitude") String latitude,
+                                        @Field("notes") String notes,
+                                        @Field("total") String total,
+                                        @Field("date") String date,
+                                        @Field("location") String location,
+                                        @Field("governorate_id") String governorate_id,
+                                        @Field("city_id") String city_id,
+                                        @Field("sub_places[]") List<Integer> sub_places
 
 
     );

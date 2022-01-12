@@ -37,6 +37,7 @@ import com.betna.R;
 import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_login.LoginActivity;
+import com.betna.activities_fragments.activity_web_view.WebViewActivity;
 import com.betna.adapters.PreWorkAdapter;
 import com.betna.adapters.Rate2Adapter;
 import com.betna.adapters.RateAdapter;
@@ -53,6 +54,7 @@ import com.betna.models.AddServiceModel;
 import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
 import com.betna.models.MetersModel;
+import com.betna.models.OrderResponseModel;
 import com.betna.models.RateModel;
 import com.betna.models.ServiceDataModel;
 import com.betna.models.ServiceModel;
@@ -944,17 +946,23 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         dialog.show();
         Api.getService(Tags.base_url)
                 .storeOrder(userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", ids)
-                .enqueue(new Callback<StatusResponse>() {
+                .enqueue(new Callback<OrderResponseModel>() {
                     @Override
-                    public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                    public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
                         //    Log.e("ldkkf", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body().getStatus() == 200) {
-                                Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
+                               /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
                                 intent.putExtra("type", "order");
                                 startActivity(intent);
+                                finishAffinity();*/
+
+                                Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
+                                intent.putExtra("url", response.body().getData());
+                                startActivity(intent);
                                 finishAffinity();
+
 
 
                             }
@@ -977,7 +985,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     }
 
                     @Override
-                    public void onFailure(Call<StatusResponse> call, Throwable t) {
+                    public void onFailure(Call<OrderResponseModel> call, Throwable t) {
                         try {
                             dialog.dismiss();
                             if (t.getMessage() != null) {
