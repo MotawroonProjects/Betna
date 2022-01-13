@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -58,6 +60,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private boolean canSend = false;
     private AddServiceModel addServiceModel;
     private PhoneAuthProvider.ForceResendingToken forceResendingToken;
+    private int req;
+    private ActivityResultLauncher<Intent> launcher;
 
 
     @Override
@@ -111,8 +115,17 @@ public class VerificationCodeActivity extends AppCompatActivity {
             }
 
         });
-        sendSmsCode();
 
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1) {
+                if (result.getResultCode() == RESULT_OK) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
+        sendSmsCode();
+        //login();
     }
 
     private void sendSmsCode() {
@@ -290,7 +303,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
     private void navigateToHomeActivity(UserModel body) {
         preferences.create_update_userdata(VerificationCodeActivity.this, body);
         preferences.create_update_session(VerificationCodeActivity.this, Tags.session_login);
-        Intent intent = null;
+      /*  Intent intent = null;
         if (addServiceModel == null) {
             intent = new Intent(this, HomeActivity.class);
 
@@ -303,19 +316,20 @@ public class VerificationCodeActivity extends AppCompatActivity {
             intent = getIntent();
             setResult(RESULT_OK, intent);
             //  finish();
-        }
+        }*/
 
+        setResult(RESULT_OK);
         finish();
 
     }
 
     private void navigateToSignUpActivity() {
+        req = 1;
         Intent intent = new Intent(this, SignUpActivity.class);
         intent.putExtra("phone", phone);
         intent.putExtra("phone_code", phone_code);
         intent.putExtra("data", addServiceModel);
-        startActivity(intent);
-        finish();
+        launcher.launch(intent);
     }
 
 
@@ -327,10 +341,5 @@ public class VerificationCodeActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
 }

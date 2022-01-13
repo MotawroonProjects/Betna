@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -50,7 +52,8 @@ public class ServiceDetialsActivity extends AppCompatActivity implements Listene
     private PreWorkAdapter preWorkAdapter;
     private List<RateModel> rateModelList;
     private Rate2Adapter rate2Adapter;
-
+    private int req;
+    private ActivityResultLauncher<Intent> launcher;
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -95,12 +98,21 @@ public class ServiceDetialsActivity extends AppCompatActivity implements Listene
         binding.btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                req =1;
                 Intent intent = new Intent(ServiceDetialsActivity.this, SendOrderActivity.class);
                 intent.putExtra("data", serviceModel);
-                startActivity(intent);
+                launcher.launch(intent);
             }
         });
+
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1) {
+                if (result.getResultCode() == RESULT_OK) {
+                  
+                }
+            }
+        });
+
 
         getservicebyId();
 

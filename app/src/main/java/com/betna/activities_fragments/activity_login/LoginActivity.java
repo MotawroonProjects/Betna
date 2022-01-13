@@ -10,6 +10,8 @@ import android.transition.Fade;
 import android.transition.Transition;
 import android.view.animation.LinearInterpolator;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -30,12 +32,11 @@ public class LoginActivity extends AppCompatActivity {
     private String lang;
     private LoginModel loginModel;
     private Preferences preferences;
-    //    private CountryModel[] countries;
-//    private List<CountryModel> countryModelList = new ArrayList<>();
-//    private CountriesAdapter countriesAdapter;
-    // private AlertDialog dialog;
+
     private String phone_code = "+20";
     private AddServiceModel addServiceModel;
+    private int req;
+    private ActivityResultLauncher<Intent> launcher;
 
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -54,17 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            Transition transition = new Fade();
-            transition.setInterpolator(new LinearInterpolator());
-            transition.setDuration(500);
-            getWindow().setEnterTransition(transition);
-            getWindow().setExitTransition(transition);
-
-        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         getDataFromIntent();
         initView();
@@ -106,18 +96,18 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         binding.llBack.setOnClickListener(v -> {
-          navigateToHomeActivity();
+            finish();
         });
 
-    }
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1) {
+                if (result.getResultCode() == RESULT_OK) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
 
-
-
-
-    private void navigateToHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
     }
 
 
@@ -128,16 +118,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToConfirmCode() {
+        req = 1;
         Intent intent = new Intent(this, VerificationCodeActivity.class);
         intent.putExtra("phone_code", loginModel.getPhone_code());
         intent.putExtra("phone", loginModel.getPhone());
         intent.putExtra("data", addServiceModel);
-        startActivity(intent);
-        finish();
+        launcher.launch(intent);
+
     }
 
-    @Override
-    public void onBackPressed() {
-        navigateToHomeActivity();
-    }
+
 }

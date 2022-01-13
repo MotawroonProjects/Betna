@@ -72,7 +72,7 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
         });
         binding.llBack.setOnClickListener(view -> finish());
         binding.whatsapp.setOnClickListener(v -> {
-            String phone ="";
+            String phone = "+201211300049";
             String url = "https://api.whatsapp.com/send?phone=" + phone;
             try {
                 PackageManager pm = getPackageManager();
@@ -143,7 +143,6 @@ public class ContactUsActivity extends AppCompatActivity implements Listeners.Ba
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         finish();
     }
 }

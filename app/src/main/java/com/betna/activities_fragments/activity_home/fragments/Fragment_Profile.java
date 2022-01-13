@@ -82,10 +82,19 @@ public class Fragment_Profile extends Fragment implements Listeners.ProfileActio
     }
 
 
+    public void updateUserData(){
+        userModel = preferences.getUserData(activity);
+        binding.setModel(userModel);
+    }
     @Override
     public void onLogout() {
-        activity.logout();
+        preferences.clear(activity);
+        userModel = null;
+        binding.setModel(userModel);
+        activity.displayFragmentMain();
     }
+
+
 
     @Override
     public void onMyPreOrder() {

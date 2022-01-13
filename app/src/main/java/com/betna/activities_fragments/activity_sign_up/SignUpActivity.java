@@ -378,7 +378,9 @@ public class SignUpActivity extends AppCompatActivity {
     private void navigateToHomeActivity(UserModel body) {
         preferences.create_update_userdata(SignUpActivity.this, body);
         preferences.create_update_session(SignUpActivity.this, Tags.session_login);
-        Intent intent = null;
+        setResult(RESULT_OK);
+        finish();
+      /*  Intent intent = null;
         if (addServiceModel == null) {
             intent = new Intent(this, HomeActivity.class);
         }
@@ -391,19 +393,11 @@ public class SignUpActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             intent = getIntent();
-            setResult(RESULT_OK, intent);
+
             //  finish();
-        }
-        finish();
+        }*/
+
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, VerificationCodeActivity.class);
-        intent.putExtra("phone_code", phone_code);
-        intent.putExtra("phone", phone);
-        intent.putExtra("data", addServiceModel);
-        startActivity(intent);
-        finish();
-    }
+
 }

@@ -303,7 +303,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 addServiceModel.setArea(progress + "");
                 addServiceModel.setNotes(binding.edtNote.getText().toString());
                 addServiceModel.setAddress(binding.edtAddress.getText().toString());
-                addServiceModel.setTotal(total+"");
+                addServiceModel.setTotal(total + "");
                 Log.e("note", addServiceModel.getNotes());
                 Log.e("address", addServiceModel.getAddress());
                 Log.e("gov", addServiceModel.getGovernorate_id() + "");
@@ -313,7 +313,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
                 if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0 && ids.size() > 0 && meterList.size() > 0) {
                     if (userModel != null) {
-                         sendorder();
+                        sendorder();
 //                        Intent intent = new Intent(SendOrderActivity.this, CompleteOrderActivity.class);
 //                        intent.putExtra("data", addServiceModel);
 //                        startActivity(intent);
@@ -957,12 +957,11 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                                 intent.putExtra("type", "order");
                                 startActivity(intent);
                                 finishAffinity();*/
-
+                                Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
                                 intent.putExtra("url", response.body().getData());
                                 startActivity(intent);
-                                finishAffinity();
-
+                                finish();
 
 
                             }

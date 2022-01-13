@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,13 +60,14 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentDepartments fragmentDepartments;
     private FragmentOrders fragmentOrders;
     private FragmentPartner fragmentPartner;
-
     private Fragment_Profile fragment_profile;
     private UserModel userModel;
     private String lang;
     private boolean backPressed = false;
     private String type;
     private Fragment currentFragment;
+    private ActivityResultLauncher<Intent> launcher;
+    private int req;
 
 
     protected void attachBaseContext(Context newBase) {
@@ -101,17 +106,18 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        binding.imageNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (userModel != null) {
-                    Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
-                    startActivity(intent);
-                } else {
-                    navigateToSignInActivity();
-                }
+        binding.imageNotification.setOnClickListener(view -> {
+            userModel = preferences.getUserData(this);
+            if (userModel != null) {
+                Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
+                startActivity(intent);
+            } else {
+                navigateToSignInActivity();
             }
         });
+
+
+
         if (userModel != null) {
             updateTokenFireBase();
         }
@@ -122,6 +128,15 @@ public class HomeActivity extends AppCompatActivity {
             displayFragmentMain();
 
         }
+
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req==1){
+                if (result.getResultCode()==RESULT_OK){
+                    userModel = preferences.getUserData(this);
+                    updateTokenFireBase();
+                }
+            }
+        });
     }
 
     private void updateTokenFireBase() {
@@ -220,6 +235,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     break;
                 case 2:
+                    userModel = preferences.getUserData(this);
                     if (userModel != null) {
                         displayFragmentOrders();
                     } else {
@@ -375,6 +391,7 @@ public class HomeActivity extends AppCompatActivity {
 
             if (fragment_profile.isAdded()) {
                 fragmentManager.beginTransaction().show(fragment_profile).commit();
+                fragment_profile.updateUserData();
 
             } else {
                 fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_profile, "fragment_profile").commit();
@@ -450,67 +467,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void logout() {
 
-        navigateToSignInActivity();
-//        if (userModel==null){
-//            finish();
-//            return;
-//        }
-//        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
-//        dialog.setCancelable(false);
-//        dialog.setCanceledOnTouchOutside(false);
-//        dialog.show();
-//        Api.getService(Tags.base_url)
-//                .logout("Bearer " + userModel.getData().getToken())
-//                .enqueue(new Callback<StatusResponse>() {
-//                    @Override
-//                    public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
-//                        dialog.dismiss();
-//                        if (response.isSuccessful()) {
-//                            if (response.body() != null && response.body().getStatus() == 200) {
-//                                navigateToSignInActivity();
-//                            }
-//
-//                        } else {
-//                            dialog.dismiss();
-//                            try {
-//                                Log.e("error", response.code() + "__" + response.errorBody().string());
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            if (response.code() == 500) {
-//                            } else {
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<StatusResponse> call, Throwable t) {
-//                        try {
-//                            dialog.dismiss();
-//                            if (t.getMessage() != null) {
-//                                Log.e("error", t.getMessage() + "__");
-//
-//                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
-//                                } else {
-//                                }
-//                            }
-//                        } catch (Exception e) {
-//                            Log.e("Error", e.getMessage() + "__");
-//                        }
-//                    }
-//                });
-
-    }
 
 
     public void navigateToSignInActivity() {
-        preferences.clear(this);
+        req =1;
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        launcher.launch(intent);
+
     }
 
 
