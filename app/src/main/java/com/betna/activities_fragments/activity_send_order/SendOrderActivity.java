@@ -54,8 +54,10 @@ import com.betna.models.AddServiceModel;
 import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
 import com.betna.models.MetersModel;
+import com.betna.models.OrderModel;
 import com.betna.models.OrderResponseModel;
 import com.betna.models.RateModel;
+import com.betna.models.SendOrderModel;
 import com.betna.models.ServiceDataModel;
 import com.betna.models.ServiceModel;
 import com.betna.models.SingleServiceDataModel;
@@ -355,6 +357,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     public void calculateTotal() {
         total = 0.0;
         totalItemCost = 0.0;
+
 
         totalItemCost = getTotalOfMeters();
         total = totalItemCost + shippingCost;
@@ -749,6 +752,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
     public void setsubselection(SubTypeModel specialModel, int adapterPosition) {
         if (specialModel.isSelected()) {
+
             addMeterView(specialModel, adapterPosition);
 
         } else {
@@ -772,6 +776,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private void addMeterView(SubTypeModel specialModel, int adapterPosition) {
         MetersRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.meters_row, null, false);
         MetersModel metersModel = new MetersModel(this);
+        metersModel.setSub_cat_id(specialModel.getId() + "");
         metersModel.setTitle(specialModel.getName());
         metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
         rowBinding.getRoot().setTag(adapterPosition);
@@ -814,7 +819,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         calendar.set(Calendar.MONTH, monthOfYear);
 
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         date = dateFormat.format(new Date(calendar.getTimeInMillis()));
         // binding.tvDay.setText(date);
         addServiceModel.setDate(date);
@@ -939,29 +944,45 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
     private void sendorder() {
         userModel = preferences.getUserData(this);
+        List<SendOrderModel.Details> detailsList = new ArrayList<>();
+        if (meterList.size() > 0) {
+            for (MetersRowBinding rowBinding : meterList) {
+                MetersModel metersModel = rowBinding.getModel();
+                SendOrderModel.Details details = new SendOrderModel.Details(metersModel.getSub_cat_id(), metersModel.getMeter_number());
+                detailsList.add(details);
+            }
+        }
+        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList);
 
         //Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .storeOrder(userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", ids)
+                .sendOrder(model)
                 .enqueue(new Callback<OrderResponseModel>() {
                     @Override
                     public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
                         //    Log.e("ldkkf", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
-                            if (response.body().getStatus() == 200) {
+                            if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
                                 intent.putExtra("type", "order");
                                 startActivity(intent);
                                 finishAffinity();*/
-                                Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
-                                intent.putExtra("url", response.body().getData());
-                                startActivity(intent);
-                                finish();
+
+                                if (!response.body().getData().isEmpty()) {
+                                    Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
+                                    intent.putExtra("url", response.body().getData());
+                                    startActivity(intent);
+                                    finish();
+                                    Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
+
+                                }
 
 
                             }

@@ -33,6 +33,7 @@ import com.betna.activities_fragments.activity_complete_order.CompleteOrderActiv
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_login.LoginActivity;
 import com.betna.activities_fragments.activity_send_order.SendOrderActivity;
+import com.betna.activities_fragments.activity_web_view.WebViewActivity;
 import com.betna.adapters.SpinnerCityAdapter;
 import com.betna.adapters.SpinnerGoveAdapter;
 import com.betna.adapters.SubTypeAdapter;
@@ -46,6 +47,8 @@ import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
 import com.betna.models.MetersModel;
 import com.betna.models.OrderModel;
+import com.betna.models.OrderResponseModel;
+import com.betna.models.SendOrderModel;
 import com.betna.models.ServiceModel;
 import com.betna.models.StatusResponse;
 import com.betna.models.SubTypeDataModel;
@@ -118,6 +121,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
     private double shippingCost;
     private double totalItemCost = 0.0;
     private double total = 0.0;
+
     @Override
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -132,6 +136,209 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         initView();
 
     }
+
+    private void initView() {
+        meterList = new ArrayList<>();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+
+        Calendar endDate = Calendar.getInstance(TimeZone.getDefault());
+        endDate.add(Calendar.MONTH, 1);
+        Calendar startDate = Calendar.getInstance(TimeZone.getDefault());
+        // startDate.add(Calendar.MONTH, -1);
+        date = dateFormat.format(new Date(startDate.getTimeInMillis()));
+
+        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
+
+                .range(startDate, endDate).datesNumberOnScreen(5)
+
+                .build();
+        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
+            @Override
+            public void onDateSelected(Calendar dates, int position) {
+                // on below line we are printing date
+                // in the logcat which is selected.
+                //  Log.e("TAG", "CURRENT DATE IS " + date.getTime());
+                date = dateFormat.format(new Date(dates.getTimeInMillis()));
+
+
+            }
+        });
+        addServiceModel = new AddServiceModel();
+        typeModelList = new ArrayList<>();
+        subTypeModelList = new ArrayList<>();
+        dataList = new ArrayList<>();
+        cityList = new ArrayList<>();
+        ids = new ArrayList<>();
+
+        preferences = Preferences.getInstance();
+        userModel = preferences.getUserData(this);
+        Paper.init(this);
+        lang = Paper.book().read("lang", "ar");
+        binding.setLang(lang);
+        binding.setModel(orderModel.getService());
+        typeAdapter = new TypeAdapter(typeModelList, this);
+        binding.recviewtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
+        binding.recviewtype.setAdapter(typeAdapter);
+        subTypeAdapter = new SubTypeAdapter(subTypeModelList, this);
+        binding.recviewsubtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
+        binding.recviewsubtype.setAdapter(subTypeAdapter);
+        adapter = new SpinnerGoveAdapter(dataList, this);
+        spinnerCityAdapter = new SpinnerCityAdapter(cityList, this);
+        binding.spGover.setAdapter(adapter);
+        binding.spCity.setAdapter(spinnerCityAdapter);
+        binding.llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        binding.progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                binding.progressBarinsideText.setText(seekBar.getProgress() + "");
+                binding.progressBar.setTooltipText(seekBar.getProgress() + "");
+                progress = seekBar.getProgress();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+        getType();
+//        binding.tvdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                datePickerDialog.show(getFragmentManager(), "");
+//            }
+//        });
+//        binding.tvDay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                datePickerDialog.show(getFragmentManager(), "");
+//            }
+//        });
+        binding.btBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addServiceModel.setLatitude(lat + "");
+                addServiceModel.setLongitude(lng + "");
+                addServiceModel.setArea(progress + "");
+                addServiceModel.setNotes(binding.edtNote.getText().toString());
+                addServiceModel.setOrderid(orderModel.getId());
+                addServiceModel.setType("update");
+                addServiceModel.setNotes(binding.edtNote.getText().toString());
+                addServiceModel.setAddress(binding.edtAddress.getText().toString());
+
+                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0 && ids.size() > 0) {
+                    if (userModel != null) {
+                        updateorder();
+//                        Intent intent = new Intent(UpdateOrderActivity.this, CompleteOrderActivity.class);
+//                        intent.putExtra("data", addServiceModel);
+//                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(UpdateOrderActivity.this, LoginActivity.class);
+                        intent.putExtra("data", addServiceModel);
+                        startActivity(intent);
+                    }
+
+                } else {
+                    if (addServiceModel.getNotes().isEmpty()) {
+                        binding.edtNote.setError(getResources().getString(R.string.field_req));
+                    }
+                    if (addServiceModel.getAddress().isEmpty()) {
+                        binding.edtAddress.setError(getResources().getString(R.string.field_req));
+                    }
+                    if (addServiceModel.getGovernorate_id() == 0) {
+                        Toast.makeText(UpdateOrderActivity.this, getResources().getString(R.string.ch_gover), Toast.LENGTH_LONG).show();
+                    }
+                    if (addServiceModel.getCity_id() == 0) {
+                        Toast.makeText(UpdateOrderActivity.this, getResources().getString(R.string.ch_city), Toast.LENGTH_LONG).show();
+
+                    }
+                    if (ids.size() == 0) {
+                        Toast.makeText(UpdateOrderActivity.this, getResources().getString(R.string.ch_sub), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+        });
+
+        binding.spGover.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+
+                    addServiceModel.setGovernorate_id(0);
+                    //binding.tvtitle.setText(getResources().getString(R.string.fees));
+                    shippingCost = 0.0;
+                    binding.setShipping(shippingCost + "");
+
+                } else {
+                    addServiceModel.setGovernorate_id(dataList.get(i).getId());
+                    // binding.tvtitle.setText(getResources().getString(R.string.fees) + dataList.get(i).getPrice());
+                    getCities(dataList.get(i).getId());
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    shippingCost = 0.0;
+                    addServiceModel.setCity_id(0);
+                } else {
+                    addServiceModel.setCity_id(cityList.get(i).getId());
+                    if (cityList.get(i).getPrice() > 0) {
+                        shippingCost = cityList.get(i).getPrice();
+                        binding.setShipping(shippingCost + "");
+
+                    } else {
+                        shippingCost = dataList.get(binding.spGover.getSelectedItemPosition()).getPrice();
+                        binding.setShipping(dataList.get(binding.spGover.getSelectedItemPosition()).getPrice() + "");
+
+                    }
+
+                }
+                calculateTotal();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        createDateDialog();
+        updateData();
+        getGovernates();
+
+        total = orderModel.getGrand_total();
+        totalItemCost = orderModel.getTotal();
+        shippingCost = orderModel.getFees();
+
+        binding.setTotal(orderModel.getGrand_total() + "");
+        binding.setItemTotal(orderModel.getTotal() + "");
+        binding.setShipping(orderModel.getFees() + "");
+        //    CheckPermission();
+
+    }
+
 
     private void CheckPermission() {
         if (ActivityCompat.checkSelfPermission(this, fineLocPerm) != PackageManager.PERMISSION_GRANTED) {
@@ -306,23 +513,24 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         subTypeModelList.clear();
         subTypeModelList.addAll(body.getData());
         subTypeAdapter.notifyDataSetChanged();
-     for(int i=0;i<subTypeModelList.size();i++){
-         for(int j=0;j<orderModel.getSub_places().size();j++){
-             if(orderModel.getSub_places().get(j).getSub_place_id()==subTypeModelList.get(i).getId()){
-                 SubTypeModel subTypeModel=subTypeModelList.get(i);
-                 subTypeModel.setSelected(true);
-                 subTypeModelList.set(i,subTypeModel);
-                 subTypeAdapter.notifyItemChanged(i);
-                 ids.add(subTypeModel.getId());
+        for (int i = 0; i < subTypeModelList.size(); i++) {
+            for (int j = 0; j < orderModel.getSub_places().size(); j++) {
+                if (orderModel.getSub_places().get(j).getSub_place_id() == subTypeModelList.get(i).getId()) {
+                    SubTypeModel subTypeModel = subTypeModelList.get(i);
+                    subTypeModel.setSelected(true);
+                    subTypeModelList.set(i, subTypeModel);
+                    subTypeAdapter.notifyItemChanged(i);
+                    ids.add(subTypeModel.getId());
+
+                    addMeterView(subTypeModel, i, orderModel.getSub_places().get(j).getArea(), Double.parseDouble(subTypeModel.getPrice()));
 
 
+                    break;
+                }
+            }
+        }
 
 
-
-                 break;
-             }
-         }
-     }
     }
 
     private void updateData(TypeDataModel body) {
@@ -340,201 +548,6 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         typeModel.setSelected(true);
         typeModelList.set(pos, typeModel);
         typeAdapter.notifyDataSetChanged();
-
-    }
-
-
-    private void initView() {
-        meterList = new ArrayList<>();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
-        Calendar endDate = Calendar.getInstance(TimeZone.getDefault());
-        endDate.add(Calendar.MONTH, 1);
-        Calendar startDate = Calendar.getInstance(TimeZone.getDefault());
-        // startDate.add(Calendar.MONTH, -1);
-        date = dateFormat.format(new Date(startDate.getTimeInMillis()));
-
-        HorizontalCalendar horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
-
-                .range(startDate, endDate).datesNumberOnScreen(5)
-
-                .build();
-        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
-            @Override
-            public void onDateSelected(Calendar dates, int position) {
-                // on below line we are printing date
-                // in the logcat which is selected.
-                //  Log.e("TAG", "CURRENT DATE IS " + date.getTime());
-                date = dateFormat.format(new Date(dates.getTimeInMillis()));
-
-
-            }
-        });
-        addServiceModel = new AddServiceModel();
-        typeModelList = new ArrayList<>();
-        subTypeModelList = new ArrayList<>();
-        dataList = new ArrayList<>();
-        cityList = new ArrayList<>();
-        ids = new ArrayList<>();
-
-        preferences = Preferences.getInstance();
-        userModel = preferences.getUserData(this);
-        Paper.init(this);
-        lang = Paper.book().read("lang", "ar");
-        binding.setLang(lang);
-        binding.setModel(orderModel.getService());
-        typeAdapter = new TypeAdapter(typeModelList, this);
-        binding.recviewtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
-        binding.recviewtype.setAdapter(typeAdapter);
-        subTypeAdapter = new SubTypeAdapter(subTypeModelList, this);
-        binding.recviewsubtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
-        binding.recviewsubtype.setAdapter(subTypeAdapter);
-        adapter = new SpinnerGoveAdapter(dataList, this);
-        spinnerCityAdapter = new SpinnerCityAdapter(cityList, this);
-        binding.spGover.setAdapter(adapter);
-        binding.spCity.setAdapter(spinnerCityAdapter);
-        binding.llBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        binding.progressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                binding.progressBarinsideText.setText(seekBar.getProgress() + "");
-                binding.progressBar.setTooltipText(seekBar.getProgress() + "");
-                progress = seekBar.getProgress();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        getType();
-//        binding.tvdate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                datePickerDialog.show(getFragmentManager(), "");
-//            }
-//        });
-//        binding.tvDay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                datePickerDialog.show(getFragmentManager(), "");
-//            }
-//        });
-        binding.btBuy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addServiceModel.setLatitude(lat + "");
-                addServiceModel.setLongitude(lng + "");
-                addServiceModel.setArea(progress + "");
-                addServiceModel.setNotes(binding.edtNote.getText().toString());
-                addServiceModel.setOrderid(orderModel.getId());
-                addServiceModel.setType("update");
-                addServiceModel.setNotes(binding.edtNote.getText().toString());
-                addServiceModel.setAddress(binding.edtAddress.getText().toString());
-
-                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0&&ids.size()>0) {
-                    if (userModel != null) {
-                        updateorder();
-//                        Intent intent = new Intent(UpdateOrderActivity.this, CompleteOrderActivity.class);
-//                        intent.putExtra("data", addServiceModel);
-//                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(UpdateOrderActivity.this, LoginActivity.class);
-                        intent.putExtra("data", addServiceModel);
-                        startActivity(intent);
-                    }
-
-                } else {
-                    if (addServiceModel.getNotes().isEmpty()) {
-                        binding.edtNote.setError(getResources().getString(R.string.field_req));
-                    }
-                    if (addServiceModel.getAddress().isEmpty()) {
-                        binding.edtAddress.setError(getResources().getString(R.string.field_req));
-                    }
-                    if (addServiceModel.getGovernorate_id() == 0) {
-                        Toast.makeText(UpdateOrderActivity.this, getResources().getString(R.string.ch_gover), Toast.LENGTH_LONG).show();
-                    }
-                    if (addServiceModel.getCity_id() == 0) {
-                        Toast.makeText(UpdateOrderActivity.this, getResources().getString(R.string.ch_city), Toast.LENGTH_LONG).show();
-
-                    }
-                    if(ids.size()==0){
-                        Toast.makeText(UpdateOrderActivity.this,getResources().getString(R.string.ch_sub),Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-
-        });
-
-
-        binding.spGover.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-
-                    addServiceModel.setGovernorate_id(0);
-                    //binding.tvtitle.setText(getResources().getString(R.string.fees));
-                    shippingCost = 0.0;
-                    binding.setShipping(shippingCost + "");
-
-                } else {
-                    addServiceModel.setGovernorate_id(dataList.get(i).getId());
-                    // binding.tvtitle.setText(getResources().getString(R.string.fees) + dataList.get(i).getPrice());
-                    getCities(dataList.get(i).getId());
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        binding.spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0) {
-                    shippingCost = 0.0;
-                    addServiceModel.setCity_id(0);
-                } else {
-                    addServiceModel.setCity_id(cityList.get(i).getId());
-                    if (cityList.get(i).getPrice() > 0) {
-                        shippingCost = cityList.get(i).getPrice();
-                        binding.setShipping(shippingCost + "");
-
-                    } else {
-                        shippingCost = dataList.get(binding.spGover.getSelectedItemPosition()).getPrice();
-                        binding.setShipping(dataList.get(binding.spGover.getSelectedItemPosition()).getPrice() + "");
-
-                    }
-
-                }
-                calculateTotal();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        createDateDialog();
-        updateData();
-        getGovernates();
-
-        //    CheckPermission();
 
     }
 
@@ -901,13 +914,13 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
     }
 
-    public void setsubselection(SubTypeModel specialModel,int adapterPosition) {
+    public void setsubselection(SubTypeModel specialModel, int adapterPosition) {
         //   type = specialModel.getId() + "";
         //addServiceModel.setType_id(specialModel.getId());
-      //  Log.e("sslls",ids.size()+"");
+        //  Log.e("sslls",ids.size()+"");
 
         if (specialModel.isSelected()) {
-            addMeterView(specialModel, adapterPosition);
+            addMeterView(specialModel, adapterPosition, "", 0.0);
 
         } else {
             removeMeterView(specialModel, adapterPosition);
@@ -924,9 +937,11 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
     }
 
-    private void addMeterView(SubTypeModel specialModel, int adapterPosition) {
+    private void addMeterView(SubTypeModel specialModel, int adapterPosition, String amount, double price) {
         MetersRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.meters_row, null, false);
         MetersModel metersModel = new MetersModel(this);
+        metersModel.setMeter_price(price);
+        metersModel.setMeter_number(amount);
         metersModel.setTitle(specialModel.getName());
         metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
         rowBinding.getRoot().setTag(adapterPosition);
@@ -964,19 +979,44 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
+
+        List<SendOrderModel.Details> detailsList = new ArrayList<>();
+        if (meterList.size() > 0) {
+            for (MetersRowBinding rowBinding : meterList) {
+                MetersModel metersModel = rowBinding.getModel();
+                SendOrderModel.Details details = new SendOrderModel.Details(metersModel.getSub_cat_id(), metersModel.getMeter_number());
+                detailsList.add(details);
+            }
+        }
+        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList);
+        model.setOrder_id(orderModel.getId() + "");
+
+
         Api.getService(Tags.base_url)
-                .updateOrder(addServiceModel.getOrderid()+"",userModel.getUser().getId() + " ", addServiceModel.getService_id() + " ", addServiceModel.getType_id() + " ", addServiceModel.getArea(), addServiceModel.getLongitude(), addServiceModel.getLatitude(), addServiceModel.getNotes(), addServiceModel.getTotal(), addServiceModel.getDate(),addServiceModel.getAddress(),addServiceModel.getGovernorate_id()+"",addServiceModel.getCity_id()+"",ids)
-                .enqueue(new Callback<StatusResponse>() {
+                .updateOrder(model)
+                .enqueue(new Callback<OrderResponseModel>() {
                     @Override
-                    public void onResponse(Call<StatusResponse> call, Response<StatusResponse> response) {
+                    public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
                         Log.e("ldkkf", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
-                            if (response.body().getStatus() == 200) {
-                                Intent intent = new Intent(UpdateOrderActivity.this, HomeActivity.class);
+                            if (response.body() != null && response.body().getStatus() == 200) {
+                               /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
                                 intent.putExtra("type", "order");
                                 startActivity(intent);
-                                finishAffinity();
+                                finishAffinity();*/
+
+                                if (!response.body().getData().isEmpty()) {
+                                    Intent intent = new Intent(UpdateOrderActivity.this, WebViewActivity.class);
+                                    intent.putExtra("url", response.body().getData());
+                                    startActivity(intent);
+                                    finish();
+                                    Toast.makeText(UpdateOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Toast.makeText(UpdateOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
+
+                                }
 
 
                             }
@@ -999,7 +1039,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                     }
 
                     @Override
-                    public void onFailure(Call<StatusResponse> call, Throwable t) {
+                    public void onFailure(Call<OrderResponseModel> call, Throwable t) {
                         try {
                             dialog.dismiss();
                             if (t.getMessage() != null) {

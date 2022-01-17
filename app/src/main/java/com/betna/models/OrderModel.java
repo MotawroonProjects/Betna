@@ -16,6 +16,9 @@ public class OrderModel implements Serializable {
     private String notes;
     private String status;
     private double total;
+    private double fees;
+    private double grand_total;
+
     private int governorate_id;
     private int city_id;
     private String created_at;
@@ -23,6 +26,7 @@ public class OrderModel implements Serializable {
     private String location;
     private ServiceModel service;
     private List<SubPlaces> sub_places;
+
 
     public int getId() {
         return id;
@@ -100,10 +104,19 @@ public class OrderModel implements Serializable {
         return sub_places;
     }
 
-    public class SubPlaces implements Serializable{
+    public double getFees() {
+        return fees;
+    }
+
+    public double getGrand_total() {
+        return grand_total;
+    }
+
+    public static class SubPlaces implements Serializable {
         private int id;
         private int order_id;
         private int sub_place_id;
+        private String area;
 
         public int getId() {
             return id;
@@ -115,6 +128,10 @@ public class OrderModel implements Serializable {
 
         public int getSub_place_id() {
             return sub_place_id;
+        }
+
+        public String getArea() {
+            return area;
         }
     }
 }

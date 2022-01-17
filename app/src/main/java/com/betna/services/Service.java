@@ -9,6 +9,7 @@ import com.betna.models.OrderDataModel;
 import com.betna.models.OrderResponseModel;
 import com.betna.models.PartnerDataModel;
 import com.betna.models.RateDataModel;
+import com.betna.models.SendOrderModel;
 import com.betna.models.ServiceDataModel;
 import com.betna.models.SettingDataModel;
 import com.betna.models.SingleOrderModel;
@@ -143,6 +144,9 @@ public interface Service {
 
     );
 
+    @POST("api/storeOrder")
+    Call<OrderResponseModel> sendOrder(@Body SendOrderModel sendOrderModel);
+
     @GET("api/aboutUs")
     Call<SettingDataModel> getSetting();
 
@@ -154,28 +158,12 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("api/reOrder")
-    Call<StatusResponse> reOrder(
-            @Field("order_id") String order_id
+    Call<StatusResponse> reOrder(@Field("order_id") String order_id
     );
 
     @FormUrlEncoded
     @POST("api/updateOrder")
-    Call<StatusResponse> updateOrder(@Field("order_id") String order_id,
-                                     @Field("user_id") String user_id,
-                                     @Field("service_id") String service_id,
-                                     @Field("type_id") String type_id,
-                                     @Field("area") String area,
-                                     @Field("longitude") String longitude,
-                                     @Field("latitude") String latitude,
-                                     @Field("notes") String notes,
-                                     @Field("total") String total,
-                                     @Field("date") String date,
-                                     @Field("location") String location,
-                                     @Field("governorate_id") String governorate_id,
-                                     @Field("city_id") String city_id,
-                                     @Field("sub_places[]") List<Integer> sub_places
-
-    );
+    Call<OrderResponseModel> updateOrder(@Body SendOrderModel model);
 
     @FormUrlEncoded
     @POST("api/deleteOrder")
