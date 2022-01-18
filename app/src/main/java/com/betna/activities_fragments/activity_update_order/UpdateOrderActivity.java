@@ -998,7 +998,6 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                     @Override
                     public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
-                        Log.e("ldkkf", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
@@ -1010,13 +1009,13 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
                                     Intent intent = new Intent(UpdateOrderActivity.this, WebViewActivity.class);
                                     intent.putExtra("url", response.body().getData());
                                     startActivity(intent);
-                                    finish();
-                                    Toast.makeText(UpdateOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
 
                                 } else {
-                                    Toast.makeText(UpdateOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
 
                                 }
+                                finish();
+                                Toast.makeText(UpdateOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
 
 
                             }

@@ -103,18 +103,18 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:fillViewport="true"
-                android:visibility="gone">
+                android:visibility="gone"
+
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
 
@@ -157,103 +157,118 @@
                             android:clickable="false"
                             android:lineSpacingExtra="5dp"
                             android:longClickable="false"
-                            android:text="@{model.desc}"
+                            android:text='@{model.desc}'
                             android:textColor="@color/black"
                             android:textSize="15sp" />
 
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout
-                        android:id="@+id/llprework"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="visible">
 
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
 
+                        <LinearLayout
+                            android:id="@+id/llprework"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
 
-                        >
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:padding="3dp"
-                            android:src="@drawable/ic_work" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="@string/previous_work"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recviewpre"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <LinearLayout
-                        android:id="@+id/llRate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
+                            android:orientation="horizontal"
 
 
-                        >
+                            >
 
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:padding="3dp"
-                            android:src="@drawable/ic_user_rate" />
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:padding="3dp"
+                                android:src="@drawable/ic_work" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@string/previous_work"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recviewpre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:id="@+id/llRate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
                             android:gravity="center_vertical"
-                            android:text="@string/customer_rates"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:orientation="horizontal"
 
+
+                            >
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:padding="3dp"
+                                android:src="@drawable/ic_user_rate" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@string/customer_rates"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recviewRate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recviewRate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
                 </LinearLayout>
+
             </androidx.core.widget.NestedScrollView>
 
-            <ProgressBar
-                android:id="@+id/progBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+            <Button
+                android:id="@+id/btnOrder"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:text="@string/order_now"
+                android:textColor="@color/white"
+                android:textSize="18sp"
                 android:visibility="gone" />
+
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnOrder"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorAccent"
-            android:gravity="center"
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:visibility="gone"
-            android:text="@string/order_now"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+
+            />
+
     </FrameLayout>
 </layout>
 
