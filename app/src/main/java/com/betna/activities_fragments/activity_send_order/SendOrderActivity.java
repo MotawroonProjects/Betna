@@ -140,6 +140,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private double shippingCost;
     private double totalItemCost = 0.0;
     private double total = 0.0;
+    private MetersModel metersModel;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -158,6 +159,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
     private void initView() {
         meterList = new ArrayList<>();
+        metersModel = new MetersModel(this);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
         Calendar endDate = Calendar.getInstance(TimeZone.getDefault());
@@ -313,7 +315,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 Log.e("ids", ids.size() + "");
                 Log.e("meter", meterList.size() + "");
 
-                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0 && ids.size() > 0 && meterList.size() > 0) {
+                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0 && ((ids.size() > 0 && meterList.size() > 0 && subTypeModelList.size() > 0) || subTypeModelList.size() == 0)) {
                     if (userModel != null) {
                         sendorder();
 //                        Intent intent = new Intent(SendOrderActivity.this, CompleteOrderActivity.class);
@@ -339,7 +341,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                         Toast.makeText(SendOrderActivity.this, getResources().getString(R.string.ch_city), Toast.LENGTH_LONG).show();
 
                     }
-                    if (ids.size() == 0) {
+                    if (ids.size() == 0 && subTypeModelList.size() > 0) {
                         Toast.makeText(SendOrderActivity.this, getResources().getString(R.string.ch_sub), Toast.LENGTH_LONG).show();
                     }
                 }
@@ -358,8 +360,11 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         total = 0.0;
         totalItemCost = 0.0;
 
-
-        totalItemCost = getTotalOfMeters();
+        if (subTypeModelList.size() > 0) {
+            totalItemCost = getTotalOfMeters();
+        } else {
+            totalItemCost = metersModel.getTotal_meter_price();
+        }
         total = totalItemCost + shippingCost;
         binding.setItemTotal(totalItemCost + "");
 
@@ -643,9 +648,8 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
                             if (response.body() != null && response.body().getStatus() == 200) {
                                 if (response.body().getData() != null) {
-                                    subTypeModelList.clear();
-                                    subTypeModelList.addAll(response.body().getData());
-                                    subTypeAdapter.notifyDataSetChanged();
+
+                                    updateSub(response.body(), type);
                                 }
                             } else {
 
@@ -700,6 +704,21 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
     }
 
+    private void updateSub(SubTypeDataModel body, int type) {
+        subTypeModelList.clear();
+        subTypeModelList.addAll(body.getData());
+        subTypeAdapter.notifyDataSetChanged();
+        if (subTypeModelList.size() > 0) {
+            binding.lltype.setVisibility(View.GONE);
+            metersModel.setMeter_price(0);
+        } else {
+            binding.lltype.setVisibility(View.VISIBLE);
+            metersModel.setMeter_number("0");
+            binding.setMetersmodel(metersModel);
+
+        }
+    }
+
     private void updateData(TypeDataModel body) {
         typeModelList.clear();
         TypeModel typeModel = body.getData().get(0);
@@ -708,6 +727,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         typeModelList.set(0, typeModel);
         addServiceModel.setType_id(typeModel.getId());
         typeAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -746,6 +766,8 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         meterList.clear();
         binding.llMeters.removeAllViews();
         addServiceModel.setType_id(specialModel.getId());
+        metersModel.setTitle(specialModel.getTitle());
+        metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
         getType(specialModel.getId());
 
     }

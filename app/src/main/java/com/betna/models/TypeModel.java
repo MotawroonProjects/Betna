@@ -9,6 +9,7 @@ public class TypeModel implements Serializable {
     private String created_at;
     private String updated_at;
     private boolean selected;
+    private String price;
 
     public int getId() {
         return id;
@@ -32,6 +33,10 @@ public class TypeModel implements Serializable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public String getPrice() {
+        return price;
     }
 }
 
