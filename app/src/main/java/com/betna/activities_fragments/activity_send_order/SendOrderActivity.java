@@ -352,6 +352,16 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         createDateDialog();
         updateData();
         getGovernates();
+
+        binding.rbCash.setOnClickListener(v -> {
+            addServiceModel.setPayment("cash");
+        });
+
+        binding.rbOnline.setOnClickListener(v -> {
+            addServiceModel.setPayment("online");
+        });
+
+
         // CheckPermission();
 
     }
@@ -974,7 +984,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 detailsList.add(details);
             }
         }
-        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList);
+        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList,addServiceModel.getPayment());
 
         //Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
@@ -986,7 +996,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     @Override
                     public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
-                        //    Log.e("ldkkf", response.body().getStatus() + " " + response.code());
+                           // Log.e("error", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
@@ -994,16 +1004,22 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                                 startActivity(intent);
                                 finishAffinity();*/
 
-                                if (!response.body().getData().isEmpty()) {
-                                    Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
-                                    intent.putExtra("url", response.body().getData());
-                                    startActivity(intent);
-                                    finish();
-                                    Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                if (addServiceModel.getPayment().equals("online")) {
+                                    if (!response.body().getData().isEmpty()) {
+                                        Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
+                                        intent.putExtra("url", response.body().getData());
+                                        startActivity(intent);
+                                        finish();
+                                        Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+
+                                    } else {
+                                        Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
+
+                                    }
 
                                 } else {
-                                    Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
-
+                                    Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
 
 

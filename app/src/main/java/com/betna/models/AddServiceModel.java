@@ -19,6 +19,7 @@ public class AddServiceModel implements Serializable {
     private int governorate_id;
     private int city_id;
     private String address;
+    private String pay_type = "cash";
 
     public int getService_id() {
         return service_id;
@@ -130,6 +131,14 @@ public class AddServiceModel implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPayment() {
+        return pay_type;
+    }
+
+    public void setPayment(String payment) {
+        this.pay_type = payment;
     }
 }
 

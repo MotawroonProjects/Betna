@@ -18,7 +18,7 @@ public class OrderModel implements Serializable {
     private double total;
     private double fees;
     private double grand_total;
-
+    private String pay_type;
     private int governorate_id;
     private int city_id;
     private String created_at;
@@ -27,6 +27,9 @@ public class OrderModel implements Serializable {
     private ServiceModel service;
     private List<SubPlaces> sub_places;
 
+    public String getPay_type() {
+        return pay_type;
+    }
 
     public int getId() {
         return id;

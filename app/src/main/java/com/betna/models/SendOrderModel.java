@@ -18,9 +18,10 @@ public class SendOrderModel implements Serializable {
     private String location;
     private String governorate_id;
     private String city_id;
+    private String pay_type;
     private List<Details> details;
 
-    public SendOrderModel(String user_id, String service_id, String type_id, String longitude, String latitude, String notes, String total, String fees, String grand_total, String date, String location, String governorate_id, String city_id, List<Details> details) {
+    public SendOrderModel(String user_id, String service_id, String type_id, String longitude, String latitude, String notes, String total, String fees, String grand_total, String date, String location, String governorate_id, String city_id, List<Details> details,String pay_type) {
         this.user_id = user_id;
         this.service_id = service_id;
         this.type_id = type_id;
@@ -35,6 +36,7 @@ public class SendOrderModel implements Serializable {
         this.governorate_id = governorate_id;
         this.city_id = city_id;
         this.details = details;
+        this.pay_type = pay_type;
     }
 
     public String getOrder_id() {
@@ -155,6 +157,14 @@ public class SendOrderModel implements Serializable {
 
     public void setDetails(List<Details> details) {
         this.details = details;
+    }
+
+    public String getPay_type() {
+        return pay_type;
+    }
+
+    public void setPay_type(String pay_type) {
+        this.pay_type = pay_type;
     }
 
     public static class Details implements Serializable {
