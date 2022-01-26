@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -41,6 +43,8 @@ public class AllServiceActivity extends AppCompatActivity {
 
     private List<ServiceModel> serviceModelList;
     private ServiceAdapter ServiceAdapter;
+    private int req;
+    private ActivityResultLauncher<Intent> launcher;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -86,7 +90,14 @@ public class AllServiceActivity extends AppCompatActivity {
 
         getServices();
         binding.swipeRefresh.setOnRefreshListener(this::getServices);
-
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1) {
+                if (result.getResultCode() == RESULT_OK) {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
     }
 
 
@@ -179,8 +190,9 @@ public class AllServiceActivity extends AppCompatActivity {
 
 
     public void showService(ServiceModel serviceModel) {
+        req=1;
         Intent intent = new Intent(this, ServiceDetialsActivity.class);
         intent.putExtra("data", serviceModel);
-        startActivity(intent);
+        launcher.launch(intent);
     }
 }

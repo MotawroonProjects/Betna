@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.betna.R;
 import com.betna.activities_fragments.activity_home.fragments.FragmentDepartments;
 import com.betna.activities_fragments.activity_services.ServiceActivity;
+import com.betna.activities_fragments.activtyallservice.AllServiceActivity;
 import com.betna.databinding.ServiceRowBinding;
 import com.betna.databinding.TopServiceRowBinding;
 import com.betna.models.ServiceModel;
@@ -62,6 +63,10 @@ myHolder.itemView.setOnClickListener(new View.OnClickListener() {
         }
         else if(context instanceof ServiceActivity){
             ServiceActivity serviceActivity=(ServiceActivity) context;
+            serviceActivity.showService(list.get(holder.getLayoutPosition()));
+        }
+        else if(context instanceof AllServiceActivity){
+            AllServiceActivity serviceActivity=(AllServiceActivity) context;
             serviceActivity.showService(list.get(holder.getLayoutPosition()));
         }
     }

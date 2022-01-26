@@ -129,7 +129,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private String date;
     private AddServiceModel addServiceModel;
     private double lat = 0.0, lng = 0.0;
-
+    private int req;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
@@ -180,15 +180,19 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 // in the logcat which is selected.
                 //  Log.e("TAG", "CURRENT DATE IS " + date.getTime());
                 date = dateFormat.format(new Date(dates.getTimeInMillis()));
-
+                addServiceModel.setDate(date);
 
             }
         });
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+           if(req==2&&result.getResultCode()==RESULT_OK){
+               setResult(RESULT_OK);
+               finish();
+           }else{
             userModel = preferences.getUserData(this);
             if (userModel != null) {
                 sendorder();
-            }
+            }}
 
         });
 
@@ -283,13 +287,13 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     if (cityList.get(i).getPrice() > 0) {
                         shippingCost = cityList.get(i).getPrice();
                         binding.setShipping(shippingCost + "");
-
                     } else {
                         shippingCost = dataList.get(binding.spGover.getSelectedItemPosition()).getPrice();
                         binding.setShipping(dataList.get(binding.spGover.getSelectedItemPosition()).getPrice() + "");
 
                     }
-
+                    Log.e("gffff", shippingCost + "")
+                    ;
                 }
                 calculateTotal();
             }
@@ -984,9 +988,9 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 detailsList.add(details);
             }
         }
-        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList,addServiceModel.getPayment());
-
-        //Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
+        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
+        Log.e("jjjj", model.getDate());
+        // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
@@ -996,7 +1000,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     @Override
                     public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
-                           // Log.e("error", response.body().getStatus() + " " + response.code());
+                        // Log.e("error", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
@@ -1006,10 +1010,10 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
                                 if (addServiceModel.getPayment().equals("online")) {
                                     if (!response.body().getData().isEmpty()) {
+                                        req=2;
                                         Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
                                         intent.putExtra("url", response.body().getData());
-                                        startActivity(intent);
-                                        finish();
+                                        launcher.launch(intent);
                                         Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
 
                                     } else {
@@ -1019,6 +1023,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
                                 } else {
                                     Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
                                     finish();
                                 }
 

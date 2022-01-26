@@ -1,5 +1,8 @@
 package com.betna.activities_fragments.activity_home.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -53,7 +58,19 @@ public class FragmentDepartments extends Fragment {
     private List<ServiceModel> serviceModelList;
     private ServiceAdapter serviceAdapter;
     private String departmentid="0", query;
-
+    private int req;
+    private ActivityResultLauncher<Intent> launcher;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1) {
+                if (result.getResultCode() == RESULT_OK) {
+                    activity.displayFragmentOrders();
+                }
+            }
+        });
+    }
     public static FragmentDepartments newInstance() {
         return new FragmentDepartments();
     }
@@ -65,6 +82,7 @@ public class FragmentDepartments extends Fragment {
         initView();
         return binding.getRoot();
     }
+
 
 
     private void initView() {
@@ -279,9 +297,10 @@ public class FragmentDepartments extends Fragment {
     }
 
     public void showService(ServiceModel serviceModel) {
+        req=1;
         Intent intent = new Intent(activity, ServiceDetialsActivity.class);
         intent.putExtra("data", serviceModel);
-        startActivity(intent);
+        launcher.launch(intent);
     }
 
 

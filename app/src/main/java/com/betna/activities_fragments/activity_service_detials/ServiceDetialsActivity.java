@@ -108,7 +108,8 @@ public class ServiceDetialsActivity extends AppCompatActivity implements Listene
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (req == 1) {
                 if (result.getResultCode() == RESULT_OK) {
-                  
+                    setResult(RESULT_OK);
+                  finish();
                 }
             }
         });

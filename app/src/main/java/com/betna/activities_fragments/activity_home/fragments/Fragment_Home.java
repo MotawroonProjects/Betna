@@ -1,5 +1,8 @@
 package com.betna.activities_fragments.activity_home.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -59,6 +64,20 @@ public class Fragment_Home extends Fragment {
     private SliderAdapter sliderAdapter;
     private Timer timer;
     private TimerTask timerTask;
+    private int req;
+    private ActivityResultLauncher<Intent> launcher;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (req == 1) {
+                if (result.getResultCode() == RESULT_OK) {
+                    activity.displayFragmentOrders();
+                }
+            }
+        });
+    }
 
     public static Fragment_Home newInstance() {
         return new Fragment_Home();
@@ -74,7 +93,6 @@ public class Fragment_Home extends Fragment {
     }
 
 
-
     private void initView() {
         serviceModelList = new ArrayList<>();
         categoryModelList = new ArrayList<>();
@@ -84,7 +102,7 @@ public class Fragment_Home extends Fragment {
         Paper.init(activity);
         lang = Paper.book().read("lang", "ar");
         topServiceAdapter = new TopServiceAdapter(serviceModelList, activity, this);
-        binding.recViewTopService.setLayoutManager(new GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL,false));
+        binding.recViewTopService.setLayoutManager(new GridLayoutManager(activity, 2, GridLayoutManager.HORIZONTAL, false));
         binding.recViewTopService.setAdapter(topServiceAdapter);
         departmentAdapter = new DepartmentAdapter(categoryModelList, activity, this);
         binding.recViewDepartments.setLayoutManager(new GridLayoutManager(activity, 2));
@@ -98,8 +116,9 @@ public class Fragment_Home extends Fragment {
         binding.tvShowAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(activity, AllServiceActivity.class);
-                startActivity(intent);
+                req=1;
+                Intent intent = new Intent(activity, AllServiceActivity.class);
+                launcher.launch(intent);
             }
         });
     }
@@ -320,15 +339,17 @@ public class Fragment_Home extends Fragment {
     }
 
     public void showservice(CategoryModel categoryModel) {
+        req=1;
         Intent intent = new Intent(activity, ServiceActivity.class);
         intent.putExtra("data", categoryModel);
-        startActivity(intent);
+        launcher.launch(intent);
     }
 
     public void showService(ServiceModel serviceModel) {
+        req=1;
         Intent intent = new Intent(activity, ServiceDetialsActivity.class);
         intent.putExtra("data", serviceModel);
-        startActivity(intent);
+        launcher.launch(intent);
     }
 
     public class MyTask extends TimerTask {

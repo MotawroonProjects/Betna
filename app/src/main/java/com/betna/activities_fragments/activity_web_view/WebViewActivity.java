@@ -72,9 +72,7 @@ public class WebViewActivity extends AppCompatActivity {
         });
 
         binding.llBack.setOnClickListener(v -> {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("type", "order");
-            startActivity(intent);
+            setResult(RESULT_OK);
             finish();
         });
     }
