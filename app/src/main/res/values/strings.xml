@@ -95,5 +95,9 @@
     <string name="payment_way">Payment way</string>
     <string name="cash_on_delivery">Cash on delivery</string>
     <string name="online_payment">Online payment</string>
-
+    <string name="accept1">Accept</string>
+    <string name="terms_and_conditions">Terms And Conditions</string>
+    <string name="please_accept_terms">Please Accept Terms And Condition</string>
+    <string name="cash_on_delivery1">Cash</string>
+    <string name="online_payment1">Online</string>
 </resources>

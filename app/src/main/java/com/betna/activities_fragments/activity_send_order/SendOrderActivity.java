@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,23 +29,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.betna.R;
-import com.betna.activities_fragments.activity_complete_order.CompleteOrderActivity;
-import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_login.LoginActivity;
 import com.betna.activities_fragments.activity_web_view.WebViewActivity;
-import com.betna.adapters.PreWorkAdapter;
-import com.betna.adapters.Rate2Adapter;
-import com.betna.adapters.RateAdapter;
 import com.betna.adapters.SpinnerCityAdapter;
 import com.betna.adapters.SpinnerGoveAdapter;
 import com.betna.adapters.SubTypeAdapter;
 import com.betna.adapters.TypeAdapter;
 import com.betna.databinding.ActivitySendOrderBinding;
-import com.betna.databinding.ActivityServiceDetialsBinding;
 import com.betna.databinding.MetersRowBinding;
 import com.betna.interfaces.Listeners;
 import com.betna.language.Language;
@@ -54,14 +45,9 @@ import com.betna.models.AddServiceModel;
 import com.betna.models.Cities_Model;
 import com.betna.models.Governate_Model;
 import com.betna.models.MetersModel;
-import com.betna.models.OrderModel;
 import com.betna.models.OrderResponseModel;
-import com.betna.models.RateModel;
 import com.betna.models.SendOrderModel;
-import com.betna.models.ServiceDataModel;
 import com.betna.models.ServiceModel;
-import com.betna.models.SingleServiceDataModel;
-import com.betna.models.StatusResponse;
 import com.betna.models.SubTypeDataModel;
 import com.betna.models.SubTypeModel;
 import com.betna.models.TypeDataModel;
@@ -84,12 +70,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,7 +80,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 import devs.mulham.horizontalcalendar.HorizontalCalendar;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
@@ -116,7 +97,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private String type;
     private List<TypeModel> typeModelList;
     private TypeAdapter typeAdapter;
-    private List<SubTypeModel> subTypeModelList;
+    private List<TypeModel.ServicePlaces> subTypeModelList;
     private SubTypeAdapter subTypeAdapter;
     private List<Governate_Model.Data> dataList;
     private SpinnerGoveAdapter adapter;
@@ -141,6 +122,8 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private double totalItemCost = 0.0;
     private double total = 0.0;
     private MetersModel metersModel;
+
+    
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -185,14 +168,15 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
             }
         });
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-           if(req==2&&result.getResultCode()==RESULT_OK){
-               setResult(RESULT_OK);
-               finish();
-           }else{
-            userModel = preferences.getUserData(this);
-            if (userModel != null) {
-                sendorder();
-            }}
+            if (req == 2 && result.getResultCode() == RESULT_OK) {
+                setResult(RESULT_OK);
+                finish();
+            } else {
+                userModel = preferences.getUserData(this);
+                if (userModel != null) {
+                    sendorder();
+                }
+            }
 
         });
 
@@ -208,6 +192,50 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);
         binding.setModel(serviceModel);
+        if (serviceModel.getPlaces() != null && serviceModel.getPlaces().size() > 0) {
+            typeModelList.addAll(serviceModel.getPlaces());
+            TypeModel typeModel = typeModelList.get(0);
+            typeModel.setSelected(true);
+            typeModelList.set(0, typeModel);
+            addServiceModel.setType_id(typeModel.getId()+"");
+
+            if (typeModel.getGet_services_place_price_many().size() > 1) {
+                subTypeModelList.addAll(typeModel.getGet_services_place_price_many());
+            } else {
+                if (typeModel.getGet_services_place_price_many().size() == 1 && typeModel.getGet_services_place_price_many().get(0).getSub_place() != null) {
+                    subTypeModelList.addAll(typeModel.getGet_services_place_price_many());
+
+                }
+            }
+        } else {
+            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+                total = shippingCost + serviceModel.getPrice();
+                binding.setItemTotal(serviceModel.getPrice() + "");
+
+                binding.setTotal(total + "");
+            } else {
+                binding.lltype.setVisibility(View.VISIBLE);
+                metersModel.setMeter_number("0");
+                addServiceModel.setType_id("");
+
+                binding.setMetersmodel(metersModel);
+                binding.tv.setVisibility(View.GONE);
+            }
+        }
+        if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+            total = shippingCost + serviceModel.getPrice();
+            binding.setItemTotal(serviceModel.getPrice() + "");
+            binding.lltype.setVisibility(View.GONE);
+            binding.tv.setVisibility(View.GONE);
+            binding.setTotal(total + "");
+        } else {
+            if (serviceModel.getPlaces().size() == 0) {
+                binding.lltype.setVisibility(View.VISIBLE);
+                metersModel.setMeter_price(serviceModel.getPrice());
+                metersModel.setMeter_number("0");
+                binding.setMetersmodel(metersModel);
+            }
+        }
         binding.progressBar.incrementProgressBy(10);
         typeAdapter = new TypeAdapter(typeModelList, this);
         binding.recviewtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
@@ -244,7 +272,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
             }
         });
-        getType();
+        //getType();
 
 //        binding.tvDay.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -377,7 +405,12 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         if (subTypeModelList.size() > 0) {
             totalItemCost = getTotalOfMeters();
         } else {
-            totalItemCost = metersModel.getTotal_meter_price();
+            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+                totalItemCost = serviceModel.getPrice();
+
+            } else {
+                totalItemCost = metersModel.getTotal_meter_price();
+            }
         }
         total = totalItemCost + shippingCost;
         binding.setItemTotal(totalItemCost + "");
@@ -388,7 +421,12 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private double getTotalOfMeters() {
         double total = 0.0;
         for (MetersRowBinding rowBinding : meterList) {
-            total += rowBinding.getModel().getTotal_meter_price();
+            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+                total += rowBinding.getModel().getMeter_price();
+
+            } else {
+                total += rowBinding.getModel().getTotal_meter_price();
+            }
         }
 
         return total;
@@ -572,155 +610,155 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
     }
 
-    public void getType() {
-        binding.progBar.setVisibility(View.VISIBLE);
-        Api.getService(Tags.base_url)
-                .getTYpe()
-                .enqueue(new Callback<TypeDataModel>() {
-                    @Override
-                    public void onResponse(Call<TypeDataModel> call, Response<TypeDataModel> response) {
-                        binding.progBar.setVisibility(View.GONE);
-
-                        if (response.isSuccessful()) {
-
-                            if (response.body() != null && response.body().getStatus() == 200) {
-                                if (response.body().getData() != null) {
-                                    if (response.body().getData().size() > 0) {
-                                        binding.scroll.setVisibility(View.VISIBLE);
-                                        binding.fltotal.setVisibility(View.VISIBLE);
-                                        updateData(response.body());
-                                    }
-                                }
-                            } else {
-
-                                //  Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-
-                            }
-
-
-                        } else {
-
-                            binding.progBar.setVisibility(View.GONE);
-
-                            switch (response.code()) {
-                                case 500:
-                                    //   Toast.makeText(SignUpActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
-                                    break;
-                                default:
-                                    //   Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                            try {
-                                Log.e("error_code", response.code() + "_");
-                            } catch (NullPointerException e) {
-
-                            }
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<TypeDataModel> call, Throwable t) {
-                        try {
-                            binding.progBar.setVisibility(View.GONE);
-
-//                            binding.arrow.setVisibility(View.VISIBLE);
+//    public void getType() {
+//        binding.progBar.setVisibility(View.VISIBLE);
+//        Api.getService(Tags.base_url)
+//                .getTYpe()
+//                .enqueue(new Callback<TypeDataModel>() {
+//                    @Override
+//                    public void onResponse(Call<TypeDataModel> call, Response<TypeDataModel> response) {
+//                        binding.progBar.setVisibility(View.GONE);
+//
+//                        if (response.isSuccessful()) {
+//
+//                            if (response.body() != null && response.body().getStatus() == 200) {
+//                                if (response.body().getData() != null) {
+//                                    if (response.body().getData().size() > 0) {
+//                                        binding.scroll.setVisibility(View.VISIBLE);
+//                                        binding.fltotal.setVisibility(View.VISIBLE);
+//                                        updateData(response.body());
+//                                    }
+//                                }
+//                            } else {
+//
+//                                //  Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//
+//                            }
+//
+//
+//                        } else {
 //
 //                            binding.progBar.setVisibility(View.GONE);
-                            if (t.getMessage() != null) {
-                                Log.e("error", t.getMessage());
-                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
-                                    //     Toast.makeText(SignUpActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                                } else if (t.getMessage().toLowerCase().contains("socket") || t.getMessage().toLowerCase().contains("canceled")) {
-                                } else {
-                                    //  Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        } catch (Exception e) {
-
-                        }
-                    }
-                });
-
-    }
-
-    public void getType(int type) {
-        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
-        dialog.setCancelable(false);
-        dialog.show();
-        subTypeModelList.clear();
-        subTypeAdapter.notifyDataSetChanged();
-        Api.getService(Tags.base_url)
-                .getSubTYpe(type)
-                .enqueue(new Callback<SubTypeDataModel>() {
-                    @Override
-                    public void onResponse(Call<SubTypeDataModel> call, Response<SubTypeDataModel> response) {
-                        dialog.dismiss();
-                        if (response.isSuccessful()) {
-
-                            if (response.body() != null && response.body().getStatus() == 200) {
-                                if (response.body().getData() != null) {
-
-                                    updateSub(response.body(), type);
-                                }
-                            } else {
-
-                                //  Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-
-                            }
-
-
-                        } else {
-
-
-                            switch (response.code()) {
-                                case 500:
-                                    //   Toast.makeText(SignUpActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
-                                    break;
-                                default:
-                                    //   Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                                    break;
-                            }
-                            try {
-                                Log.e("error_code", response.code() + "_");
-                            } catch (NullPointerException e) {
-
-                            }
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<SubTypeDataModel> call, Throwable t) {
-                        try {
-                            dialog.dismiss();
-//                            binding.arrow.setVisibility(View.VISIBLE);
 //
+//                            switch (response.code()) {
+//                                case 500:
+//                                    //   Toast.makeText(SignUpActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+//                                    break;
+//                                default:
+//                                    //   Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//                                    break;
+//                            }
+//                            try {
+//                                Log.e("error_code", response.code() + "_");
+//                            } catch (NullPointerException e) {
+//
+//                            }
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<TypeDataModel> call, Throwable t) {
+//                        try {
 //                            binding.progBar.setVisibility(View.GONE);
-                            if (t.getMessage() != null) {
-                                Log.e("error", t.getMessage());
-                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
-                                    //     Toast.makeText(SignUpActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                                } else if (t.getMessage().toLowerCase().contains("socket") || t.getMessage().toLowerCase().contains("canceled")) {
-                                } else {
-                                    //  Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                        } catch (Exception e) {
-
-                        }
-                    }
-                });
-
-    }
+//
+////                            binding.arrow.setVisibility(View.VISIBLE);
+////
+////                            binding.progBar.setVisibility(View.GONE);
+//                            if (t.getMessage() != null) {
+//                                Log.e("error", t.getMessage());
+//                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+//                                    //     Toast.makeText(SignUpActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+//                                } else if (t.getMessage().toLowerCase().contains("socket") || t.getMessage().toLowerCase().contains("canceled")) {
+//                                } else {
+//                                    //  Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                        } catch (Exception e) {
+//
+//                        }
+//                    }
+//                });
+//
+//    }
+//
+//    public void getType(int type) {
+//        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
+//        dialog.setCancelable(false);
+//        dialog.show();
+//        subTypeModelList.clear();
+//        subTypeAdapter.notifyDataSetChanged();
+//        Api.getService(Tags.base_url)
+//                .getSubTYpe(type)
+//                .enqueue(new Callback<SubTypeDataModel>() {
+//                    @Override
+//                    public void onResponse(Call<SubTypeDataModel> call, Response<SubTypeDataModel> response) {
+//                        dialog.dismiss();
+//                        if (response.isSuccessful()) {
+//
+//                            if (response.body() != null && response.body().getStatus() == 200) {
+//                                if (response.body().getData() != null) {
+//
+//                                    updateSub(response.body(), type);
+//                                }
+//                            } else {
+//
+//                                //  Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//
+//                            }
+//
+//
+//                        } else {
+//
+//
+//                            switch (response.code()) {
+//                                case 500:
+//                                    //   Toast.makeText(SignUpActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+//                                    break;
+//                                default:
+//                                    //   Toast.makeText(SignUpActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+//                                    break;
+//                            }
+//                            try {
+//                                Log.e("error_code", response.code() + "_");
+//                            } catch (NullPointerException e) {
+//
+//                            }
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<SubTypeDataModel> call, Throwable t) {
+//                        try {
+//                            dialog.dismiss();
+////                            binding.arrow.setVisibility(View.VISIBLE);
+////
+////                            binding.progBar.setVisibility(View.GONE);
+//                            if (t.getMessage() != null) {
+//                                Log.e("error", t.getMessage());
+//                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+//                                    //     Toast.makeText(SignUpActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+//                                } else if (t.getMessage().toLowerCase().contains("socket") || t.getMessage().toLowerCase().contains("canceled")) {
+//                                } else {
+//                                    //  Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                        } catch (Exception e) {
+//
+//                        }
+//                    }
+//                });
+//
+//    }
 
     private void updateSub(SubTypeDataModel body, int type) {
         subTypeModelList.clear();
-        subTypeModelList.addAll(body.getData());
+        // subTypeModelList.addAll(body.getData());
         subTypeAdapter.notifyDataSetChanged();
         if (subTypeModelList.size() > 0) {
             binding.lltype.setVisibility(View.GONE);
@@ -739,7 +777,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         typeModel.setSelected(true);
         typeModelList.addAll(body.getData());
         typeModelList.set(0, typeModel);
-        addServiceModel.setType_id(typeModel.getId());
+        addServiceModel.setType_id(typeModel.getId()+"");
         typeAdapter.notifyDataSetChanged();
 
     }
@@ -775,18 +813,49 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     }
 
     public void setselection(TypeModel specialModel) {
+        subTypeModelList.clear();
         ids.clear();
         type = specialModel.getId() + "";
         meterList.clear();
         binding.llMeters.removeAllViews();
-        addServiceModel.setType_id(specialModel.getId());
+        addServiceModel.setType_id(specialModel.getId()+"");
         metersModel.setTitle(specialModel.getTitle());
         metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
-        getType(specialModel.getId());
+        subTypeAdapter.notifyDataSetChanged();
+        if (specialModel.getGet_services_place_price_many().size() > 1) {
+            subTypeModelList.addAll(specialModel.getGet_services_place_price_many());
+        } else {
+            if (specialModel.getGet_services_place_price_many().size() == 1 && specialModel.getGet_services_place_price_many().get(0).getSub_place() != null) {
+                subTypeModelList.addAll(specialModel.getGet_services_place_price_many());
+
+            }
+        }
+        if (subTypeModelList.size() > 0) {
+            for (int i=0;i<subTypeModelList.size();i++){
+                TypeModel.ServicePlaces servicePlaces=subTypeModelList.get(i);
+                servicePlaces.setSelected(false);
+                subTypeModelList.set(i,servicePlaces);
+            }
+            binding.lltype.setVisibility(View.GONE);
+            metersModel.setMeter_price(0);
+        } else {
+            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+                total = shippingCost + serviceModel.getPrice();
+                binding.setItemTotal(serviceModel.getPrice() + "");
+
+                binding.setTotal(total + "");
+            } else {
+                binding.lltype.setVisibility(View.VISIBLE);
+                metersModel.setMeter_number("0");
+                binding.setMetersmodel(metersModel);
+            }
+        }
+        subTypeAdapter.notifyDataSetChanged();
+        // getType(specialModel.getId());
 
     }
 
-    public void setsubselection(SubTypeModel specialModel, int adapterPosition) {
+    public void setsubselection(TypeModel.ServicePlaces specialModel, int adapterPosition) {
         if (specialModel.isSelected()) {
 
             addMeterView(specialModel, adapterPosition);
@@ -809,21 +878,30 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
     }
 
-    private void addMeterView(SubTypeModel specialModel, int adapterPosition) {
+    private void addMeterView(TypeModel.ServicePlaces specialModel, int adapterPosition) {
         MetersRowBinding rowBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.meters_row, null, false);
         MetersModel metersModel = new MetersModel(this);
         metersModel.setSub_cat_id(specialModel.getId() + "");
-        metersModel.setTitle(specialModel.getName());
-        metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
+        metersModel.setTitle(specialModel.getSub_place().getName());
+        if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+            rowBinding.llMeter.setVisibility(View.GONE);
+            metersModel.setMeter_price(serviceModel.getPrice());
+
+        } else {
+            rowBinding.llMeter.setVisibility(View.VISIBLE);
+            metersModel.setMeter_price(specialModel.getPrice());
+        }
         rowBinding.getRoot().setTag(adapterPosition);
         rowBinding.setModel(metersModel);
+
         meterList.add(rowBinding);
         binding.llMeters.addView(rowBinding.getRoot());
+
         binding.setItemTotal(getTotalOfMeters() + "");
         calculateTotal();
     }
 
-    private void removeMeterView(SubTypeModel specialModel, int adapterPosition) {
+    private void removeMeterView(TypeModel.ServicePlaces specialModel, int adapterPosition) {
         int childPos = getItemPos(adapterPosition);
         if (childPos != -1) {
             binding.llMeters.removeViewAt(childPos);
@@ -988,8 +1066,10 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 detailsList.add(details);
             }
         }
+
+
         SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
-        Log.e("jjjj", model.getDate());
+        Log.e("jjjj", total+" "+totalItemCost+" "+shippingCost);
         // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
@@ -1000,7 +1080,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     @Override
                     public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
-                        // Log.e("error", response.body().getStatus() + " " + response.code());
+                         Log.e("error", response.body().getStatus() + " " + response.code());
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
@@ -1010,7 +1090,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
 
                                 if (addServiceModel.getPayment().equals("online")) {
                                     if (!response.body().getData().isEmpty()) {
-                                        req=2;
+                                        req = 2;
                                         Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
                                         intent.putExtra("url", response.body().getData());
                                         launcher.launch(intent);

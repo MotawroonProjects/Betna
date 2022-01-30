@@ -49,15 +49,15 @@ public class AboutUsActivity extends AppCompatActivity {
     }
 
     private void initView() {
-//        if(type == 2){
-//            binding.tvtitle.setText(getResources().getString(R.string.terms_and_conditions));
-//            url="";
-//        }
-//        else {
-//            url="";
-//            binding.tvtitle.setText(getResources().getString(R.string.about_app));
-//
-//        }
+        if(type == 2){
+            binding.tvtitle.setText(getResources().getString(R.string.terms_and_conditions));
+            url="";
+        }
+        else {
+            url="";
+            binding.tvtitle.setText(getResources().getString(R.string.about_app));
+
+        }
         Paper.init(this);
         lang = Paper.book().read("lang", "ar");
         binding.setLang(lang);

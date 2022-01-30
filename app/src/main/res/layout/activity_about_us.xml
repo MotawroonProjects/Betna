@@ -7,7 +7,9 @@
         <variable
             name="lang"
             type="String" />
-
+<variable
+    name="type"
+    type="int" />
         <variable
             name="model"
             type="com.betna.models.SettingDataModel.Settings" />
@@ -69,6 +71,7 @@
                         </FrameLayout>
 
                         <TextView
+                            android:id="@+id/tvtitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -100,7 +103,7 @@
                 android:layout_marginBottom="8dp"
                 android:lineSpacingExtra="5dp"
                 android:padding="8dp"
-                android:text="@{model.about_us}"
+                android:text="@{type==2?model.terms_and_conditions:model.about_us}"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
             <!--            <WebView-->

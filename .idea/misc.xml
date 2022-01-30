@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_about_us.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_send_order.xml" value="0.2" />
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_signup.xml" value="0.25235109717868337" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/fragment_home.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/meters_row.xml" value="0.16" />
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/order_row.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/pre_order_row.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/sub_type_row.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/top_service_row.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/Betna/app/src/main/res/drawable-v24/small_stroke_gray.xml" value="0.2203125" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/Betna/app/src/main/res/layout/activity_send_order.xml" value="0.25" />
         <entry key="..\:/Users/Arb Develpor/Desktop/emad/Projects/Betna/app/src/main/res/layout/activity_service_detials.xml" value="0.20416666666666666" />

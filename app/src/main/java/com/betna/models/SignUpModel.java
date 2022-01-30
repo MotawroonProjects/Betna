@@ -1,6 +1,7 @@
 package com.betna.models;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -15,17 +16,17 @@ public class SignUpModel extends BaseObservable {
     private String seconed_name;
 
 
-
     public ObservableField<String> error_first_name = new ObservableField<>();
     public ObservableField<String> error_seconed_name = new ObservableField<>();
-
+    private int isAcceptTerms;
 
 
     public boolean isDataValid(Context context) {
         if (!first_name.trim().isEmpty()
                 &&
                 !seconed_name.trim().isEmpty()
-                //&&
+                && isAcceptTerms == 1
+            //&&
 //               department_id != 0
 
 
@@ -51,7 +52,9 @@ public class SignUpModel extends BaseObservable {
 
             }
 
-
+            if (isAcceptTerms == 0) {
+                Toast.makeText(context, context.getString(R.string.please_accept_terms), Toast.LENGTH_SHORT).show();
+            }
 
 //            if (department_id == 0) {
 //                Toast.makeText(context, context.getResources().getString(R.string.ch_dep), Toast.LENGTH_LONG).show();
@@ -62,16 +65,12 @@ public class SignUpModel extends BaseObservable {
     }
 
     public SignUpModel() {
-       // setDepartment_id(1);
+        // setDepartment_id(1);
         setFirst_name("");
 
         setSeconed_name("");
-
+        setIsAcceptTerms(0);
     }
-
-
-
-
 
 
     @Bindable
@@ -84,6 +83,7 @@ public class SignUpModel extends BaseObservable {
         notifyPropertyChanged(BR.first_name);
 
     }
+
     @Bindable
     public String getSeconed_name() {
         return seconed_name;
@@ -95,7 +95,14 @@ public class SignUpModel extends BaseObservable {
 
     }
 
+    public void setIsAcceptTerms(int isAcceptTerms) {
+        this.isAcceptTerms = isAcceptTerms;
+    }
 
+    @Bindable
+    public int getIsAcceptTerms() {
+        return isAcceptTerms;
+    }
 
 
 }

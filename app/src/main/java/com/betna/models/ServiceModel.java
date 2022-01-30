@@ -17,6 +17,8 @@ public class ServiceModel implements Serializable {
     private String updated_at;
     private List<RateModel> rate;
     private List<Images> images;
+    private List<TypeModel> places;
+    private String is_price;
 
     public int getId() {
         return id;
@@ -68,6 +70,14 @@ public class ServiceModel implements Serializable {
 
     public List<Images> getImages() {
         return images;
+    }
+
+    public List<TypeModel> getPlaces() {
+        return places;
+    }
+
+    public String getIs_price() {
+        return is_price;
     }
 
     public class Images implements Serializable {

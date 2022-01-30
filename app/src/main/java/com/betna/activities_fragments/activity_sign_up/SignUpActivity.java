@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.betna.R;
 
+import com.betna.activities_fragments.activity_about_us.AboutUsActivity;
 import com.betna.activities_fragments.activity_home.HomeActivity;
 import com.betna.activities_fragments.activity_verification_code.VerificationCodeActivity;
 import com.betna.databinding.ActivitySignupBinding;
@@ -61,7 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Uri uri = null;
     private String phone_code, phone;
     private Preferences preferences;
-    private AddServiceModel addServiceModel;
+    private int isAcceptTerms = 0;
 
     protected void attachBaseContext(Context newBase) {
         Paper.init(newBase);
@@ -81,7 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
         if (intent != null) {
             phone_code = intent.getStringExtra("phone_code");
             phone = intent.getStringExtra("phone");
-            addServiceModel = (AddServiceModel) intent.getSerializableExtra("data");
         }
     }
 
@@ -131,6 +131,27 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         binding.btnCancel.setOnClickListener(view -> closeSheet());
+        binding.checkbox.setOnClickListener(view -> {
+            // navigateToTermsActivity();
+
+            if (binding.checkbox.isChecked())
+            {
+                isAcceptTerms = 1;
+                model.setIsAcceptTerms(isAcceptTerms);
+            }else
+            {
+                isAcceptTerms = 0;
+                model.setIsAcceptTerms(isAcceptTerms);
+
+            }
+        });
+
+        binding.tvTerms.setOnClickListener(view -> {
+            isAcceptTerms = 0;
+            model.setIsAcceptTerms(isAcceptTerms);
+
+            navigateToTermsActivity();
+        });
 
         binding.btnSignup.setOnClickListener(v -> {
             // navigateToHomeActivity();
@@ -399,5 +420,12 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    private void navigateToTermsActivity() {
+
+        Intent intent = new Intent(this, AboutUsActivity.class);
+        intent.putExtra("type",2);
+        startActivity(intent);
+
+    }
 
 }

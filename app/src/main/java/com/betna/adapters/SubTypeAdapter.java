@@ -22,13 +22,13 @@ import java.util.List;
 
 public class SubTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<SubTypeModel> list;
+    private List<TypeModel.ServicePlaces> list;
     private Context context;
     private LayoutInflater inflater;
     private int  selectedPos = 0;
 
     //private Fragment_Main fragment_main;
-    public SubTypeAdapter(List<SubTypeModel> list, Context context) {
+    public SubTypeAdapter(List<TypeModel.ServicePlaces> list, Context context) {
         this.list = list;
         this.context = context;
         inflater = LayoutInflater.from(context);
@@ -52,7 +52,11 @@ public class SubTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         MyHolder myHolder = (MyHolder) holder;
-        myHolder.binding.setModel(list.get(position));
+        if(list.get(position).getSub_place()!=null){
+        myHolder.binding.setModel(list.get(position));}
+        else {
+            myHolder.itemView.setVisibility(View.GONE);
+        }
       //  updateSelection(selectedPos);
         if(list.get(position).isSelected()){
             selectedPos = position;
@@ -75,7 +79,7 @@ public class SubTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
         if (adapterPosition != -1) {
-            SubTypeModel specialModel = list.get(selectedPos);
+            TypeModel.ServicePlaces specialModel = list.get(selectedPos);
             if(specialModel.isSelected()){
                 specialModel.setSelected(false);
             }
@@ -89,7 +93,7 @@ public class SubTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
             else   if (context instanceof UpdateOrderActivity) {
                 UpdateOrderActivity activity = (UpdateOrderActivity) context;
-                activity.setsubselection(specialModel,adapterPosition);
+               // activity.setsubselection(specialModel,adapterPosition);
 
             }
 

@@ -133,6 +133,9 @@ public class HomeActivity extends AppCompatActivity {
             if (req==1){
                 if (result.getResultCode()==RESULT_OK){
                     userModel = preferences.getUserData(this);
+                    if(fragment_profile!=null){
+                        fragment_profile.updateUserData();
+                    }
                     updateTokenFireBase();
                 }
             }

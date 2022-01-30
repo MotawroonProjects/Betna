@@ -96,5 +96,9 @@
     <string name="payment_way">طريقة الدفع</string>
     <string name="cash_on_delivery">الدفع كاش</string>
     <string name="online_payment">الدفع اون لاين</string>
-
+    <string name="accept1">الموافقة على</string>
+    <string name="terms_and_conditions">الشروط والاحكام</string>
+    <string name="please_accept_terms">من فضلك اقبل الشروط  والاحكام</string>
+    <string name="cash_on_delivery1"> كاش</string>
+    <string name="online_payment1"> اون لاين</string>
 </resources>

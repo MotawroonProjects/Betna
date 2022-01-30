@@ -180,7 +180,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         typeAdapter = new TypeAdapter(typeModelList, this);
         binding.recviewtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
         binding.recviewtype.setAdapter(typeAdapter);
-        subTypeAdapter = new SubTypeAdapter(subTypeModelList, this);
+        //subTypeAdapter = new SubTypeAdapter(subTypeModelList, this);
         binding.recviewsubtype.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
         binding.recviewsubtype.setAdapter(subTypeAdapter);
         adapter = new SpinnerGoveAdapter(dataList, this);
@@ -739,7 +739,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         binding.edtNote.setText(orderModel.getNotes());
         binding.edtAddress.setText(orderModel.getLocation());
 
-        addServiceModel.setType_id(orderModel.getType_id());
+        addServiceModel.setType_id(orderModel.getType_id()+"");
         //  binding.tvDay.setText(date);
         addServiceModel.setService_id(orderModel.getService().getId());
         addServiceModel.setTitle(orderModel.getService().getTitle());
@@ -779,8 +779,8 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
 
     public void setselection(TypeModel specialModel) {
         ids.clear();
-        addServiceModel.setType_id(specialModel.getId());
-        getType(specialModel.getId());
+        addServiceModel.setType_id(specialModel.getId()+"");
+       // getType(specialModel.getId());
     }
 
     @Override

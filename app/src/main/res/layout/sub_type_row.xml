@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.betna.models.SubTypeModel" />
+            type="com.betna.models.TypeModel.ServicePlaces" />
 
         <import type="android.graphics.Color" />
     </data>
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_gravity="center"
-                android:text="@{model.name}"
+                android:text="@{model.sub_place.name}"
                 android:textColor="@color/gray14"
                 android:textSize="14sp" />
 

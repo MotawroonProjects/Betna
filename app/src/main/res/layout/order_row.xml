@@ -9,7 +9,8 @@
             type="com.betna.models.OrderModel" />
 
         <import type="android.graphics.Color" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,18 +57,14 @@
 
                     <TextView
                         android:id="@+id/tvtitle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:text="@{model.service.title}"
                         android:textColor="@color/gray14"
                         android:textSize="14sp" />
 
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
 
                     <Button
                         android:id="@+id/btnServices"
@@ -117,10 +114,10 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:visibility="gone"
                         android:text='@{model.service.price+""}'
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -128,10 +125,39 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:visibility="gone"
                         android:text="@string/egp"
                         android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/payment_way"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="14sp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text='@{" : "+(model.pay_type.equals("cash")?@string/cash_on_delivery1:@string/online_payment1)}'
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+
                 </LinearLayout>
 
                 <View
@@ -145,8 +171,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility='@{model.status.equals("sent")?View.VISIBLE:View.GONE,default=gone}'
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility='@{model.status.equals("sent")?View.VISIBLE:View.GONE,default=gone}'>
 
                     <LinearLayout
                         android:id="@+id/llEdit"
@@ -181,16 +207,15 @@
                         android:layout_width="1dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
-                        android:background="@color/gray20"
-                        />
+                        android:background="@color/gray20" />
 
                     <LinearLayout
                         android:id="@+id/llDelete"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_gravity="center"
                         android:orientation="horizontal">
 
                         <ImageView
