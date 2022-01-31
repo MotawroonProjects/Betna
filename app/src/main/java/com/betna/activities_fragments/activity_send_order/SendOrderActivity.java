@@ -70,6 +70,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.gson.Gson;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.IOException;
@@ -123,7 +124,6 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private double total = 0.0;
     private MetersModel metersModel;
 
-    
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -197,7 +197,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
             TypeModel typeModel = typeModelList.get(0);
             typeModel.setSelected(true);
             typeModelList.set(0, typeModel);
-            addServiceModel.setType_id(typeModel.getId()+"");
+            addServiceModel.setType_id(typeModel.getId() + "");
 
             if (typeModel.getGet_services_place_price_many().size() > 1) {
                 subTypeModelList.addAll(typeModel.getGet_services_place_price_many());
@@ -208,7 +208,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 }
             }
         } else {
-            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+            if (serviceModel.getIs_price() != null && serviceModel.getIs_price().equals("0")) {
                 total = shippingCost + serviceModel.getPrice();
                 binding.setItemTotal(serviceModel.getPrice() + "");
 
@@ -222,7 +222,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 binding.tv.setVisibility(View.GONE);
             }
         }
-        if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+        if (serviceModel.getIs_price() != null && serviceModel.getIs_price().equals("0")) {
             total = shippingCost + serviceModel.getPrice();
             binding.setItemTotal(serviceModel.getPrice() + "");
             binding.lltype.setVisibility(View.GONE);
@@ -405,7 +405,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         if (subTypeModelList.size() > 0) {
             totalItemCost = getTotalOfMeters();
         } else {
-            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+            if (serviceModel.getIs_price() != null && serviceModel.getIs_price().equals("0")) {
                 totalItemCost = serviceModel.getPrice();
 
             } else {
@@ -421,7 +421,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
     private double getTotalOfMeters() {
         double total = 0.0;
         for (MetersRowBinding rowBinding : meterList) {
-            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+            if (serviceModel.getIs_price() != null && serviceModel.getIs_price().equals("0")) {
                 total += rowBinding.getModel().getMeter_price();
 
             } else {
@@ -777,7 +777,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         typeModel.setSelected(true);
         typeModelList.addAll(body.getData());
         typeModelList.set(0, typeModel);
-        addServiceModel.setType_id(typeModel.getId()+"");
+        addServiceModel.setType_id(typeModel.getId() + "");
         typeAdapter.notifyDataSetChanged();
 
     }
@@ -818,7 +818,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         type = specialModel.getId() + "";
         meterList.clear();
         binding.llMeters.removeAllViews();
-        addServiceModel.setType_id(specialModel.getId()+"");
+        addServiceModel.setType_id(specialModel.getId() + "");
         metersModel.setTitle(specialModel.getTitle());
         metersModel.setMeter_price(Double.parseDouble(specialModel.getPrice()));
         subTypeAdapter.notifyDataSetChanged();
@@ -831,15 +831,15 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
             }
         }
         if (subTypeModelList.size() > 0) {
-            for (int i=0;i<subTypeModelList.size();i++){
-                TypeModel.ServicePlaces servicePlaces=subTypeModelList.get(i);
+            for (int i = 0; i < subTypeModelList.size(); i++) {
+                TypeModel.ServicePlaces servicePlaces = subTypeModelList.get(i);
                 servicePlaces.setSelected(false);
-                subTypeModelList.set(i,servicePlaces);
+                subTypeModelList.set(i, servicePlaces);
             }
             binding.lltype.setVisibility(View.GONE);
             metersModel.setMeter_price(0);
         } else {
-            if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+            if (serviceModel.getIs_price() != null && serviceModel.getIs_price().equals("0")) {
                 total = shippingCost + serviceModel.getPrice();
                 binding.setItemTotal(serviceModel.getPrice() + "");
 
@@ -883,7 +883,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         MetersModel metersModel = new MetersModel(this);
         metersModel.setSub_cat_id(specialModel.getId() + "");
         metersModel.setTitle(specialModel.getSub_place().getName());
-        if (serviceModel.getIs_price()!=null&&serviceModel.getIs_price().equals("1")) {
+        if (serviceModel.getIs_price() != null && serviceModel.getIs_price().equals("0")) {
             rowBinding.llMeter.setVisibility(View.GONE);
             metersModel.setMeter_price(serviceModel.getPrice());
 
@@ -1066,10 +1066,11 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 detailsList.add(details);
             }
         }
-
-
         SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
-        Log.e("jjjj", total+" "+totalItemCost+" "+shippingCost);
+        Log.e("jjjj", total + " " + totalItemCost + " " + shippingCost);
+//        Gson gson = new Gson();
+//        String user_data = gson.toJson(model);
+//        Log.e("lllll", user_data);
         // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
         ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
@@ -1080,7 +1081,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                     @Override
                     public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
                         dialog.dismiss();
-                         Log.e("error", response.body().getStatus() + " " + response.code());
+                        Log.e("error", response.code() + "" + response.body().getStatus());
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);

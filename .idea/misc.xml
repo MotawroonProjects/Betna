@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Betna/app/src/main/res/layout/activity_home.xml" value="0.128125" />
+        <entry key="..\:/Betna/app/src/main/res/layout/fragment_orders.xml" value="0.128125" />
+        <entry key="..\:/Betna/app/src/main/res/layout/fragment_partner.xml" value="0.128125" />
+        <entry key="..\:/Betna/app/src/main/res/layout/fragment_profile.xml" value="0.128125" />
+        <entry key="..\:/Betna/app/src/main/res/layout/order_row.xml" value="0.128125" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_about_us.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_send_order.xml" value="0.2" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_signup.xml" value="0.25235109717868337" />
@@ -76,7 +81,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

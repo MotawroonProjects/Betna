@@ -7,7 +7,7 @@ public class AddServiceModel implements Serializable {
 
     private int service_id;
     private String title;
-    private String type_id;
+    private String type_id="";
     private String area;
     private String longitude;
     private String latitude;

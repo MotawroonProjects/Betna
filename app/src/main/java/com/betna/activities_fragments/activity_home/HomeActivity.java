@@ -285,6 +285,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             updateBottomNavigationPosition(0);
+            binding.setTitle("");
 
             //   binding.setTitle(getString(R.string.home));
 
@@ -318,7 +319,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             updateBottomNavigationPosition(2);
 
-            // binding.setTitle(getString(R.string.offers));
+             binding.setTitle("");
         } catch (Exception e) {
         }
     }
@@ -344,6 +345,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             updateBottomNavigationPosition(1);
+            binding.setTitle("");
 
             //  binding.setTitle(getString(R.string.cart));
         } catch (Exception e) {
@@ -371,6 +373,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             updateBottomNavigationPosition(3);
+            binding.setTitle(getResources().getString(R.string.suc_part));
 
             //  binding.setTitle(getString(R.string.cart));
         } catch (Exception e) {
@@ -401,6 +404,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
             updateBottomNavigationPosition(4);
+            binding.setTitle("");
 
             //binding.setTitle(getString(R.string.profile));
         } catch (Exception e) {
