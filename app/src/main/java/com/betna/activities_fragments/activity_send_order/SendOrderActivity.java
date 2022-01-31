@@ -1062,91 +1062,104 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         if (meterList.size() > 0) {
             for (MetersRowBinding rowBinding : meterList) {
                 MetersModel metersModel = rowBinding.getModel();
-                SendOrderModel.Details details = new SendOrderModel.Details(metersModel.getSub_cat_id(), metersModel.getMeter_number());
+                SendOrderModel.Details details;
+                if (metersModel.getMeter_number().trim().isEmpty()) {
+                    details = new SendOrderModel.Details(metersModel.getSub_cat_id(), 0);
+                }
+                else {
+                    details = new SendOrderModel.Details(metersModel.getSub_cat_id(), Double.parseDouble(metersModel.getMeter_number()));
+                }
                 detailsList.add(details);
             }
         }
-        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
-        Log.e("jjjj", total + " " + totalItemCost + " " + shippingCost);
-//        Gson gson = new Gson();
-//        String user_data = gson.toJson(model);
-//        Log.e("lllll", user_data);
-        // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
-        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
+
+
+    SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
+    //  Log.e("jjjj", total + " " + totalItemCost + " " + shippingCost);
+    Gson gson = new Gson();
+    String user_data = gson.toJson(model);
+    //Log.e("lllll", user_data);
+    // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
+    ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .sendOrder(model)
-                .enqueue(new Callback<OrderResponseModel>() {
-                    @Override
-                    public void onResponse(Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
-                        dialog.dismiss();
-                        Log.e("error", response.code() + "" + response.body().getStatus());
-                        if (response.isSuccessful()) {
-                            if (response.body() != null && response.body().getStatus() == 200) {
+            .
+
+    sendOrder(model)
+                .
+
+    enqueue(new Callback<OrderResponseModel>() {
+        @Override
+        public void onResponse
+        (Call < OrderResponseModel > call, Response < OrderResponseModel > response){
+            dialog.dismiss();
+            Log.e("error", response.code() + "" + response.body().getStatus());
+            if (response.isSuccessful()) {
+                if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
                                 intent.putExtra("type", "order");
                                 startActivity(intent);
                                 finishAffinity();*/
 
-                                if (addServiceModel.getPayment().equals("online")) {
-                                    if (!response.body().getData().isEmpty()) {
-                                        req = 2;
-                                        Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
-                                        intent.putExtra("url", response.body().getData());
-                                        launcher.launch(intent);
-                                        Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                    if (addServiceModel.getPayment().equals("online")) {
+                        if (!response.body().getData().isEmpty()) {
+                            req = 2;
+                            Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
+                            intent.putExtra("url", response.body().getData());
+                            launcher.launch(intent);
+                            Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
 
-                                    } else {
-                                        Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-                                } else {
-                                    Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-                                    setResult(RESULT_OK);
-                                    finish();
-                                }
-
-
-                            }
                         } else {
-                            try {
-                                Log.e("mmmmmmmmmm", response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
 
-
-                            if (response.code() == 500) {
-                                //    Toast.makeText(VerificationCodeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Log.e("mmmmmmmmmm", response.code() + "");
-
-                                //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                            }
                         }
+
+                    } else {
+                        Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
                     }
 
-                    @Override
-                    public void onFailure(Call<OrderResponseModel> call, Throwable t) {
-                        try {
-                            dialog.dismiss();
-                            if (t.getMessage() != null) {
-                                Log.e("msg_category_error", t.toString() + "__");
 
-                                if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
-                                    // Toast.makeText(VerificationCodeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        } catch (Exception e) {
-                            Log.e("Error", e.getMessage() + "__");
-                        }
+                }
+            } else {
+                try {
+                    Log.e("mmmmmmmmmm", response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                if (response.code() == 500) {
+                    //    Toast.makeText(VerificationCodeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("mmmmmmmmmm", response.code() + "");
+
+                    //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onFailure (Call < OrderResponseModel > call, Throwable t){
+            try {
+                dialog.dismiss();
+                if (t.getMessage() != null) {
+                    Log.e("msg_category_error", t.toString() + "__");
+
+                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                        // Toast.makeText(VerificationCodeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                    } else {
+                        //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage() + "__");
+            }
+        }
+    });
 
-    }
+}
 
 }

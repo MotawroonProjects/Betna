@@ -984,7 +984,7 @@ public class UpdateOrderActivity extends AppCompatActivity implements Listeners.
         if (meterList.size() > 0) {
             for (MetersRowBinding rowBinding : meterList) {
                 MetersModel metersModel = rowBinding.getModel();
-                SendOrderModel.Details details = new SendOrderModel.Details(metersModel.getSub_cat_id(), metersModel.getMeter_number());
+                SendOrderModel.Details details = new SendOrderModel.Details(metersModel.getSub_cat_id(), Double.parseDouble(metersModel.getMeter_number()));
                 detailsList.add(details);
             }
         }

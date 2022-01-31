@@ -169,9 +169,9 @@ public class SendOrderModel implements Serializable {
 
     public static class Details implements Serializable {
         private String sub_place_id;
-        private String area;
+        private double area;
 
-        public Details(String sub_place_id, String area) {
+        public Details(String sub_place_id, double area) {
             this.sub_place_id = sub_place_id;
             this.area = area;
         }
@@ -180,7 +180,7 @@ public class SendOrderModel implements Serializable {
             return sub_place_id;
         }
 
-        public String getArea() {
+        public double getArea() {
             return area;
         }
     }
