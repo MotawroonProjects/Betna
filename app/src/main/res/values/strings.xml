@@ -101,5 +101,5 @@
     <string name="cash_on_delivery1">Cash</string>
     <string name="online_payment1">Online</string>
     <string name="suc_part">Success Partners The Arab Group</string>
-    <string name="meter_must_be">"Number Of Meters Must Be More Than "</string>
+    <string name="meter_must_be">Number Of Meters Must Be More Than </string>
 </resources>

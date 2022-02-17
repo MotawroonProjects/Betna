@@ -102,5 +102,5 @@
     <string name="cash_on_delivery1"> كاش</string>
     <string name="online_payment1"> اون لاين</string>
     <string name="suc_part">شركاء النجاح المجموعه العربيه</string>
-    <string name="meter_must_be">"Number Of Meters Must Be More Than "</string>
+    <string name="meter_must_be">عدد الامتار يجب ان يكون اكبر من </string>
 </resources>
