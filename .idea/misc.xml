@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Betna/app/src/main/res/drawable/small_stroke_gray.xml" value="0.1" />
+        <entry key="..\:/Betna/app/src/main/res/layout/activity_about_us.xml" value="0.1527777777777778" />
         <entry key="..\:/Betna/app/src/main/res/layout/activity_home.xml" value="0.128125" />
+        <entry key="..\:/Betna/app/src/main/res/layout/activity_send_order.xml" value="0.11646586345381527" />
         <entry key="..\:/Betna/app/src/main/res/layout/fragment_orders.xml" value="0.128125" />
         <entry key="..\:/Betna/app/src/main/res/layout/fragment_partner.xml" value="0.128125" />
         <entry key="..\:/Betna/app/src/main/res/layout/fragment_profile.xml" value="0.128125" />
+        <entry key="..\:/Betna/app/src/main/res/layout/meters_row.xml" value="0.1361111111111111" />
         <entry key="..\:/Betna/app/src/main/res/layout/order_row.xml" value="0.128125" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_about_us.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Ahmed/AndroidStudioProjects/Betna/app/src/main/res/layout/activity_send_order.xml" value="0.2" />

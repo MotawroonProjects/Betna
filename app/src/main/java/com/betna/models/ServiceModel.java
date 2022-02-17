@@ -19,6 +19,7 @@ public class ServiceModel implements Serializable {
     private List<Images> images;
     private List<TypeModel> places;
     private String is_price;
+    private double min_meter;
 
     public int getId() {
         return id;
@@ -78,6 +79,10 @@ public class ServiceModel implements Serializable {
 
     public String getIs_price() {
         return is_price;
+    }
+
+    public double getMin_meter() {
+        return min_meter;
     }
 
     public class Images implements Serializable {

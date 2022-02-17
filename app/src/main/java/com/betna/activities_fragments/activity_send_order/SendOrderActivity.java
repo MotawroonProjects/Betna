@@ -346,23 +346,46 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 Log.e("city", addServiceModel.getCity_id() + "");
                 Log.e("ids", ids.size() + "");
                 Log.e("meter", meterList.size() + "");
+                int valid=1;
+                if(meterList.size()>0){
+                    for(int i=0;i<meterList.size();i++){
+                        MetersRowBinding metersRowBinding=meterList.get(i);
+                        MetersModel metersModel=meterList.get(i).getModel();
+                        if(metersModel.getMeter_number().equals("")||Double.parseDouble(metersModel.getMeter_number())<serviceModel.getMin_meter()){
+                            metersRowBinding.edtmeters.setError(getResources().getString(R.string.meter_must_be)+" "+serviceModel.getMin_meter());
+                            valid=0;
+                        }
+                        else {
+                            metersRowBinding.edtmeters.setError(null);
+                        }
 
-                if (!addServiceModel.getNotes().isEmpty() && !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0 && ((ids.size() > 0 && meterList.size() > 0 && subTypeModelList.size() > 0) || subTypeModelList.size() == 0)) {
-                    if (userModel != null) {
-                        sendorder();
+                    }
+                }
+                if(serviceModel.getIs_price().equals("1")&&serviceModel.getPlaces().size()==0){
+                    if(metersModel.getMeter_number().equals("")||Double.parseDouble(metersModel.getMeter_number())<serviceModel.getMin_meter()){
+                        valid=0;
+                        binding.edtmeters.setError(getResources().getString(R.string.meter_must_be)+" "+serviceModel.getMin_meter());
+                    }
+                    else{
+                        binding.edtmeters.setError(null);
+                    }
+                }
+
+                if ( !addServiceModel.getAddress().isEmpty() && addServiceModel.getGovernorate_id() != 0 && addServiceModel.getCity_id() != 0 && ((ids.size() > 0 && meterList.size() > 0 && subTypeModelList.size() > 0) || subTypeModelList.size() == 0)) {
+                 if(valid==1) {
+                     if (userModel != null) {
+                         sendorder();
 //                        Intent intent = new Intent(SendOrderActivity.this, CompleteOrderActivity.class);
 //                        intent.putExtra("data", addServiceModel);
 //                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(SendOrderActivity.this, LoginActivity.class);
-                        intent.putExtra("data", addServiceModel);
-                        launcher.launch(intent);
-                    }
-
+                     } else {
+                         Intent intent = new Intent(SendOrderActivity.this, LoginActivity.class);
+                         intent.putExtra("data", addServiceModel);
+                         launcher.launch(intent);
+                     }
+                 }
                 } else {
-                    if (addServiceModel.getNotes().isEmpty()) {
-                        binding.edtNote.setError(getResources().getString(R.string.field_req));
-                    }
+
                     if (addServiceModel.getAddress().isEmpty()) {
                         binding.edtAddress.setError(getResources().getString(R.string.field_req));
                     }
@@ -1065,8 +1088,7 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 SendOrderModel.Details details;
                 if (metersModel.getMeter_number().trim().isEmpty()) {
                     details = new SendOrderModel.Details(metersModel.getSub_cat_id(), 0);
-                }
-                else {
+                } else {
                     details = new SendOrderModel.Details(metersModel.getSub_cat_id(), Double.parseDouble(metersModel.getMeter_number()));
                 }
                 detailsList.add(details);
@@ -1074,92 +1096,88 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
         }
 
 
-    SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
-    //  Log.e("jjjj", total + " " + totalItemCost + " " + shippingCost);
-    Gson gson = new Gson();
-    String user_data = gson.toJson(model);
-    //Log.e("lllll", user_data);
-    // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
-    ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
+        SendOrderModel model = new SendOrderModel(userModel.getUser().getId() + "", addServiceModel.getService_id() + "", addServiceModel.getType_id() + "", addServiceModel.getLongitude() + "", addServiceModel.getLatitude() + "", addServiceModel.getNotes(), totalItemCost + "", shippingCost + "", total + "", addServiceModel.getDate(), addServiceModel.getAddress(), addServiceModel.getGovernorate_id() + "", addServiceModel.getCity_id() + "", detailsList, addServiceModel.getPayment());
+        //  Log.e("jjjj", total + " " + totalItemCost + " " + shippingCost);
+        Gson gson = new Gson();
+        String user_data = gson.toJson(model);
+        //Log.e("lllll", user_data);
+        // Log.e("mddmmd", serviceModel.getArea() + " " + serviceModel.getNotes() + " " + serviceModel.getService_id() + " " + serviceModel.getType_id() + "   " + serviceModel.getDate() + "   " + serviceModel.getLatitude() + " " + serviceModel.getLongitude() + " " + serviceModel.getTotal());
+        ProgressDialog dialog = Common.createProgressDialog(this, getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-            .
-
-    sendOrder(model)
-                .
-
-    enqueue(new Callback<OrderResponseModel>() {
-        @Override
-        public void onResponse
-        (Call < OrderResponseModel > call, Response < OrderResponseModel > response){
-            dialog.dismiss();
-            Log.e("error", response.code() + "" + response.body().getStatus());
-            if (response.isSuccessful()) {
-                if (response.body() != null && response.body().getStatus() == 200) {
+                .sendOrder(model)
+                .enqueue(new Callback<OrderResponseModel>() {
+                            @Override
+                            public void onResponse
+                                    (Call<OrderResponseModel> call, Response<OrderResponseModel> response) {
+                                dialog.dismiss();
+                                Log.e("error", response.code() + "" + response.body().getStatus());
+                                if (response.isSuccessful()) {
+                                    if (response.body() != null && response.body().getStatus() == 200) {
                                /* Intent intent = new Intent(SendOrderActivity.this, HomeActivity.class);
                                 intent.putExtra("type", "order");
                                 startActivity(intent);
                                 finishAffinity();*/
 
-                    if (addServiceModel.getPayment().equals("online")) {
-                        if (!response.body().getData().isEmpty()) {
-                            req = 2;
-                            Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
-                            intent.putExtra("url", response.body().getData());
-                            launcher.launch(intent);
-                            Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                        if (addServiceModel.getPayment().equals("online")) {
+                                            if (!response.body().getData().isEmpty()) {
+                                                req = 2;
+                                                Intent intent = new Intent(SendOrderActivity.this, WebViewActivity.class);
+                                                intent.putExtra("url", response.body().getData());
+                                                launcher.launch(intent);
+                                                Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(SendOrderActivity.this, "invalid payment url", Toast.LENGTH_SHORT).show();
 
-                        }
+                                            }
 
-                    } else {
-                        Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-
-
-                }
-            } else {
-                try {
-                    Log.e("mmmmmmmmmm", response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                                        } else {
+                                            Toast.makeText(SendOrderActivity.this, getString(R.string.suc), Toast.LENGTH_SHORT).show();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                        }
 
 
-                if (response.code() == 500) {
-                    //    Toast.makeText(VerificationCodeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.e("mmmmmmmmmm", response.code() + "");
+                                    }
+                                } else {
+                                    try {
+                                        Log.e("mmmmmmmmmm", response.errorBody().string());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
-                    //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
 
-        @Override
-        public void onFailure (Call < OrderResponseModel > call, Throwable t){
-            try {
-                dialog.dismiss();
-                if (t.getMessage() != null) {
-                    Log.e("msg_category_error", t.toString() + "__");
+                                    if (response.code() == 500) {
+                                        //    Toast.makeText(VerificationCodeActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Log.e("mmmmmmmmmm", response.code() + "");
 
-                    if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
-                        // Toast.makeText(VerificationCodeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                    } else {
-                        //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage() + "__");
-            }
-        }
-    });
+                                        //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
 
-}
+                            @Override
+                            public void onFailure(Call<OrderResponseModel> call, Throwable t) {
+                                try {
+                                    dialog.dismiss();
+                                    if (t.getMessage() != null) {
+                                        Log.e("msg_category_error", t.toString() + "__");
+
+                                        if (t.getMessage().toLowerCase().contains("failed to connect") || t.getMessage().toLowerCase().contains("unable to resolve host")) {
+                                            // Toast.makeText(VerificationCodeActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            //Toast.makeText(VerificationCodeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("Error", e.getMessage() + "__");
+                                }
+                            }
+                        });
+
+    }
 
 }
