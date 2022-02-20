@@ -348,17 +348,28 @@ public class SendOrderActivity extends AppCompatActivity implements Listeners.Ba
                 Log.e("meter", meterList.size() + "");
                 int valid=1;
                 if(meterList.size()>0){
+                    double metertotal=0;
                     for(int i=0;i<meterList.size();i++){
                         MetersRowBinding metersRowBinding=meterList.get(i);
                         MetersModel metersModel=meterList.get(i).getModel();
-                        if(metersModel.getMeter_number().equals("")||Double.parseDouble(metersModel.getMeter_number())<serviceModel.getMin_meter()){
-                            metersRowBinding.edtmeters.setError(getResources().getString(R.string.meter_must_be)+" "+serviceModel.getMin_meter());
-                            valid=0;
-                        }
-                        else {
-                            metersRowBinding.edtmeters.setError(null);
-                        }
+//                        if(metersModel.getMeter_number().equals("")||Double.parseDouble(metersModel.getMeter_number())<serviceModel.getMin_meter()){
+                         //   metersRowBinding.edtmeters.setError(getResources().getString(R.string.meter_must_be)+" "+serviceModel.getMin_meter());
+                           if(metersModel.getMeter_number().equals("")){
+                               metertotal+=0;
+                           }
+                           else{
+                               metertotal+=Double.parseDouble(metersModel.getMeter_number());
+                           }
 
+//                        }
+//                        else {
+//                         //   metersRowBinding.edtmeters.setError(null);
+//                        }
+
+                    }
+                    if(metertotal<serviceModel.getMin_meter()){
+                        valid=0;
+                        Toast.makeText(SendOrderActivity.this,getResources().getString(R.string.meter_must_be),Toast.LENGTH_LONG).show();
                     }
                 }
                 if(serviceModel.getIs_price().equals("1")&&serviceModel.getPlaces().size()==0){
